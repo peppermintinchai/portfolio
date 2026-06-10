@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>TIFFANY.DONG_VAULT // ARCHIVE</title>
+<meta name="description" content="PEPPERMINTINCHAI // ARCHIVE — a public-facing creative archive." />
+<style>
+  /* ============================================================
+     TIFFANY.DONG_VAULT_V3.2   ·   Theme: BLACK (red accent)
+     ============================================================ */
+  :root, body[data-theme="black-cherry"] {
+    --bg:#000000; --fg:#ffffff; --line:#222222; --muted:#555555; --dim:#888888;
+    --accent:#c91f32; --on-accent:#160305; --accent-soft:rgba(201,31,50,0.18); --accent-glow:rgba(201,31,50,0.38);
+    --frame-a:#0a0a0a; --frame-b:#050505;
+  }
+  :root { --pad: clamp(14px, 2.45vw, 34px); --track: 0.15em; --font: "Helvetica Neue", Helvetica, Arial, "Inter", system-ui, sans-serif; --mono: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 13.5px; line-height: 1.48; letter-spacing: 0.01em; min-height: 100vh; overflow-x: hidden; transition: background .4s ease, color .4s ease; }
+  a { color: inherit; text-decoration: none; }
+  .tag { font-size: 9.5px; text-transform: uppercase; letter-spacing: var(--track); color: var(--dim); font-variant-numeric: tabular-nums; }
+  .section-title { text-transform: uppercase; letter-spacing: var(--track); font-weight: 600; font-size: clamp(12px, 1.15vw, 14px); }
+  .accent-text { color: var(--accent); }
+  .nowrap { white-space: nowrap; }
+
+  /* ---- BOOT ---- */
+  #boot { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; padding: 24px; transition: opacity .45s ease; }
+  #boot.done { opacity: 0; pointer-events: none; }
+  .boot-window { width: min(580px, 94vw); background: #000; border: 1px solid var(--accent); border-top: 3px solid var(--accent); box-shadow: 0 0 50px var(--accent-glow); padding: clamp(22px, 4vw, 36px); font-family: var(--mono); }
+  .boot-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; border-bottom: 1px solid var(--accent); padding-bottom: 14px; margin-bottom: 18px; }
+  .boot-head .bh-l { font-size: 11px; letter-spacing: var(--track); color: #fff; text-transform: uppercase; }
+  .boot-head .bh-r { font-size: 10px; letter-spacing: var(--track); color: var(--accent); text-transform: uppercase; }
+  .boot-title { font-size: clamp(12px, 1.6vw, 14px); letter-spacing: 0.08em; color: #fff; text-transform: uppercase; line-height: 1.6; margin-bottom: 18px; }
+  .boot-title .cursor { display:inline-block; width:9px; height:14px; background:var(--accent); margin-left:6px; transform:translateY(2px); animation: blink 1s steps(2,start) infinite; }
+  .diag { font-size: 11px; line-height: 2.0; letter-spacing: 0.04em; color: #888; margin-bottom: 18px; }
+  .diag .line { display: flex; justify-content: space-between; gap: 12px; opacity: 0; transform: translateX(-6px); animation: lineIn .35s ease forwards; text-transform: uppercase; white-space: nowrap; }
+  .diag .line span:first-child { overflow: hidden; text-overflow: ellipsis; }
+  .diag .ok { color: var(--accent); } .diag .lock { color: #fff; }
+  .diag .line:nth-child(1){animation-delay:.12s;} .diag .line:nth-child(2){animation-delay:.32s;}
+  .diag .line:nth-child(3){animation-delay:.52s;} .diag .line:nth-child(4){animation-delay:.72s;}
+  .diag .line:nth-child(5){animation-delay:.92s;} .diag .line:nth-child(6){animation-delay:1.12s;}
+  @keyframes lineIn { to { opacity: 1; transform: none; } }
+  .boot-bar { height: 4px; background: rgba(0,0,0,0.6); border: 1px solid var(--accent); margin-bottom: 22px; position: relative; overflow: hidden; }
+  .boot-bar::after { content:""; position:absolute; inset:0; width:0; background: var(--accent); animation: fill 1.35s ease forwards .18s; }
+  @keyframes fill { to { width: 100%; } }
+  .boot-btn { width: 100%; background: transparent; border: 1px solid var(--accent); color: #fff; font-family: var(--mono); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; padding: 16px; cursor: pointer; opacity: 0; animation: lineIn .32s ease forwards 1.45s; transition: background .2s ease, color .2s ease, box-shadow .2s ease; }
+  .boot-btn:hover { background: var(--accent); color: var(--on-accent); box-shadow: 0 0 24px var(--accent-glow); }
+  body.booting { overflow: hidden; }
+  .frame { transition: filter .5s ease, opacity .5s ease, transform .5s ease; }
+  body.booting .frame { filter: blur(7px); opacity: .35; transform: scale(0.992); pointer-events: none; }
+
+  /* ---- FRAME / HEADER ---- */
+  .frame { border-left: 1px solid var(--line); border-right: 1px solid var(--line); max-width: 1600px; margin: 0 auto; min-height: 100vh; }
+  header.masthead { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 16px; padding: var(--pad); border-bottom: 1px solid var(--line); }
+  .masthead .wordmark { text-transform: uppercase; letter-spacing: var(--track); font-weight: 600; font-size: clamp(15px, 2.2vw, 22px); white-space: nowrap; }
+  .masthead .wordmark .slash { color: var(--accent); margin: 0 0.4em; }
+  .masthead .meta { text-align: right; line-height: 1.85; }
+  .masthead .meta .reg { color: var(--accent); }
+  .statusbar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding: 10px var(--pad); border-bottom: 1px solid var(--line); }
+  .statusbar .on { color: var(--accent); }
+  /* terminal-inspired data string */
+  .datastring { font-family: var(--mono); font-size: 11px; letter-spacing: 0.05em; color: var(--dim); padding: 12px var(--pad); border-bottom: 1px solid var(--line); line-height: 1.9; text-transform: uppercase; overflow-x: auto; white-space: nowrap; }
+  .datastring .ds-p { color: var(--accent); margin-right: 6px; }
+  .datastring .dv { color: var(--muted); opacity: 0.55; margin: 0 5px; }
+  .datastring .v { color: var(--fg); }
+  .datastring .v.on { color: var(--accent); }
+  .datastring .ds-cur { display: inline-block; width: 7px; height: 12px; background: var(--accent); margin-left: 6px; transform: translateY(1px); animation: blink 1.1s steps(2,start) infinite; }
+  @media (max-width: 620px) { .datastring { white-space: normal; } }
+
+  /* ---- THEME SWITCH ---- */
+  .theme-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 16px; padding: 10px var(--pad); border-bottom: 1px solid var(--line); }
+  .sw-group { display: flex; flex-wrap: wrap; gap: 8px; }
+  .sw { display: inline-flex; align-items: center; gap: 8px; background: transparent; border: 1px solid var(--line); color: var(--dim); font-family: var(--font); font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; padding: 7px 12px; cursor: pointer; transition: border-color .2s ease, color .2s ease, background .2s ease; }
+  .sw i { width: 11px; height: 11px; border: 1px solid rgba(127,127,127,.4); display: inline-block; }
+  .sw:hover { color: var(--fg); border-color: var(--accent); }
+  .sw.active { border-color: var(--accent); color: var(--fg); background: var(--accent-soft); }
+
+  /* ---- TABS ---- */
+  .tabs { position: sticky; top: 0; z-index: 50; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); border-bottom: 1px solid var(--line); background: rgba(0,0,0,0.94); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 12px 30px rgba(0,0,0,0.32); }
+  .tab { appearance: none; background: transparent; border: none; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: left; cursor: pointer; padding: clamp(11px,1.25vw,15px) var(--pad); display: flex; flex-direction: column; gap: 6px; position: relative; min-height: 56px; transition: background .2s ease, color .2s ease; }
+  .tab .t-idx { font-size: 10px; letter-spacing: var(--track); color: var(--muted); font-variant-numeric: tabular-nums; transition: color .2s ease; }
+  .tab .t-name { font-size: clamp(10px,1.05vw,12px); letter-spacing: var(--track); text-transform: uppercase; color: var(--dim); transition: color .2s ease; line-height: 1.3; }
+  .tab:hover .t-name, .tab:hover .t-idx { color: var(--fg); }
+  .tab.active { background: var(--accent-soft); }
+  .tab.active .t-name { color: var(--fg); }
+  .tab.active .t-idx { color: var(--accent); }
+  .tab.active::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--accent); box-shadow: 0 0 12px var(--accent-glow); }
+  @media (max-width: 760px) {
+    .tabs { display: flex; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; }
+    .tabs::-webkit-scrollbar { display: none; }
+    .tab { flex: 0 0 142px; padding: 12px 14px; min-height: 56px; }
+  }
+
+  /* ---- PANES ---- */
+  .pane { display: none; animation: paneIn .35s ease; }
+  .pane.active { display: block; }
+  @keyframes paneIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  .module-label { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 12px var(--pad); border-bottom: 1px solid var(--line); }
+  .sub-label { padding: 10px var(--pad); border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .sub-label .lead { color: var(--accent); }
+  .lead .sl { opacity: 0.45; }  /* faded // slashes — muted vs the red text */
+  /* major section header: bigger + divider above */
+  .sub-label.major { border-top: 2px solid var(--line); padding-top: clamp(24px, 3.5vw, 40px); padding-bottom: 14px; }
+  .sub-label.major .lead { font-size: clamp(16px, 2.4vw, 22px); font-weight: 600; letter-spacing: var(--track); }
+  .empty { padding: clamp(70px, 14vw, 180px) var(--pad); text-align: center; text-transform: uppercase; letter-spacing: var(--track); color: var(--dim); font-size: clamp(13px, 1.7vw, 16px); }
+  .empty .accent-text { display: block; margin-top: 12px; }
+
+  /* ---- GRIDS / CARDS ---- */
+  .grid { display: grid; }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+  @media (max-width: 900px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 760px) { .grid-2 { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .grid-3 { grid-template-columns: 1fr; } }
+  .card { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: var(--pad); display: flex; flex-direction: column; gap: 10px; }
+  .grid-3 .card:nth-child(3n) { border-right: none; }
+  .grid-2 .card:nth-child(2n) { border-right: none; }
+  @media (max-width: 900px) { .grid-3 .card:nth-child(3n){border-right:1px solid var(--line);} .grid-3 .card:nth-child(2n){border-right:none;} }
+  @media (max-width: 560px) { .grid-3 .card { border-right:none; } }
+  @media (max-width: 760px) { .grid-2 .card { border-right:none; } }
+  .cap-top, .cap-bottom { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .cap-bottom { flex-direction: column; }
+  .cap-bottom .title { font-size: 11px; letter-spacing: var(--track); text-transform: uppercase; color: var(--fg); overflow-wrap: anywhere; min-width: 0; }
+  .cap-bottom .note { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); line-height: 1.5; }
+  .desc { font-size: 12px; color: var(--dim); line-height: 1.65; letter-spacing: 0.03em; }
+  .frame-16x9 { position: relative; width: 100%; overflow: hidden; aspect-ratio: 16 / 9; background: linear-gradient(135deg, rgba(255,255,255,0.035), transparent 34%), repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 12px), var(--frame-b); border: 1px solid rgba(150,150,150,0.18); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.018); }
+  .frame-portrait { aspect-ratio: 9 / 16; width: min(100%, 240px); align-self: center; margin-inline: auto; }
+  .frame-16x9:hover { border-color: rgba(201,31,50,0.48); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02), 0 0 18px rgba(201,31,50,0.10); }
+  .frame-16x9 video, .frame-16x9 img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 1; object-fit: cover; background: #000; }
+  .frame-16x9::before { content: attr(data-ph); position: absolute; inset: 0; z-index: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; letter-spacing: var(--track); color: var(--muted); text-transform: uppercase; text-align: center; padding: 12px; }
+  .audio-row { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
+  .audio-note { font-size: 10px; letter-spacing: 0.08em; color: var(--dim); text-transform: uppercase; line-height: 1.5; }
+  .audio-stack { display: flex; flex-direction: column; gap: 14px; margin-top: 2px; }
+  .card audio { width: 100%; height: 34px; }
+  .music-audio-card audio.enhanced { display: none; }
+  .audio-ui { position: relative; display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: 10px; border: 1px solid rgba(150,150,150,0.18); background: linear-gradient(135deg, rgba(255,255,255,0.035), transparent 36%), repeating-linear-gradient(90deg, rgba(255,255,255,0.018) 0, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 12px), rgba(7,7,7,0.96); box-shadow: inset 2px 0 0 rgba(201,31,50,0.42), inset 0 0 0 1px rgba(255,255,255,0.018); padding: 9px; min-width: 0; }
+  .audio-ui::after { content: ""; position: absolute; left: 46px; right: 10px; bottom: 5px; height: 1px; background: linear-gradient(90deg, rgba(201,31,50,0.34), transparent); opacity: .6; }
+  .audio-play { width: 30px; height: 30px; border: 1px solid rgba(170,170,170,0.24); background: rgba(255,255,255,0.035); color: var(--accent); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; line-height: 1; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.018); transition: border-color .2s ease, background .2s ease, color .2s ease; }
+  .audio-play:hover { border-color: rgba(201,31,50,0.62); background: rgba(201,31,50,0.14); color: #fff; }
+  .audio-track { position: relative; height: 7px; background: rgba(255,255,255,0.055); overflow: hidden; cursor: pointer; border: 1px solid rgba(127,127,127,0.14); }
+  .audio-fill { position: absolute; inset: 0 auto 0 0; width: 0%; background: linear-gradient(90deg, rgba(201,31,50,0.78), rgba(201,31,50,0.38)); box-shadow: 0 0 10px rgba(201,31,50,0.24); }
+  .audio-time { font-family: var(--mono); color: rgba(255,255,255,0.58); font-size: 10px; letter-spacing: 0.04em; white-space: nowrap; }
+  .video-ui { position: absolute; bottom: 0; left: 0; right: 0; z-index: 2; display: grid; grid-template-columns: 30px 1fr auto; align-items: center; gap: 8px; padding: 8px 10px; background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 60%, transparent 100%); opacity: 0; transition: opacity .25s ease; pointer-events: none; }
+  .frame-16x9:hover .video-ui, .video-ui.playing { opacity: 1; pointer-events: auto; }
+  .video-play { width: 26px; height: 26px; border: 1px solid rgba(170,170,170,0.24); background: rgba(0,0,0,0.5); color: #fff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; line-height: 1; border-radius: 0; transition: border-color .2s ease, background .2s ease; flex-shrink: 0; }
+  .video-play:hover { border-color: rgba(201,31,50,0.62); background: rgba(201,31,50,0.18); color: #fff; }
+  .video-track { position: relative; height: 4px; background: rgba(255,255,255,0.1); overflow: hidden; cursor: pointer; min-width: 0; }
+  .video-fill { position: absolute; inset: 0 auto 0 0; width: 0%; background: var(--accent); box-shadow: 0 0 8px rgba(201,31,50,0.3); }
+  .video-time { font-family: var(--mono); color: rgba(255,255,255,0.6); font-size: 9px; letter-spacing: 0.04em; white-space: nowrap; flex-shrink: 0; }
+  .music-grid { gap: 10px; padding: 10px; background: rgba(127,127,127,0.025); border-bottom: 1px solid var(--line); }
+  .music-grid .card { border: 1px solid rgba(127,127,127,0.13); background: rgba(255,255,255,0.018); padding: clamp(14px, 2vw, 24px); }
+  .music-grid .card:nth-child(n) { border-right: 1px solid rgba(127,127,127,0.13); }
+  .music-grid .frame-16x9 { border-color: rgba(127,127,127,0.16); }
+  .music-grid .frame-16x9:hover { border-color: var(--accent); }
+  .music-set { border-bottom: 1px solid var(--line); }
+  .music-set .music-grid { border-bottom: none; }
+  .music-note { padding: 12px var(--pad); border-bottom: 1px solid rgba(127,127,127,0.12); font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dim); line-height: 1.7; max-width: 760px; }
+  .music-audio-card { grid-column: 1 / -1; }
+  .music-audio-card .audio-stack { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px 18px; }
+  .audio-group { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .audio-group-title { font-size: 10px; letter-spacing: var(--track); color: var(--fg); text-transform: uppercase; padding-bottom: 7px; border-bottom: 1px solid rgba(201,31,50,0.26); text-shadow: 0 0 14px rgba(201,31,50,0.18); }
+  .music-audio-card .audio-row { margin-top: 0; min-width: 0; padding-top: 10px; border-top: 1px solid rgba(127,127,127,0.12); }
+  .audio-group .audio-row:first-of-type { border-top: none; padding-top: 0; }
+  .music-audio-card audio { height: 30px; }
+  /* link-based video cards (play overlay -> opens the video link) */
+  .frame-16x9 .vid-link { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; transition: background .2s ease; }
+  .frame-16x9 .vid-link:hover { background: var(--accent-soft); }
+  .vid-link .play { width: 38px; height: 38px; border: 1px solid var(--dim); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: border-color .2s ease; }
+  .vid-link .play::after { content: ""; width: 0; height: 0; border-left: 9px solid var(--dim); border-top: 6px solid transparent; border-bottom: 6px solid transparent; margin-left: 3px; transition: border-left-color .2s ease; }
+  .vid-link:hover .play { border-color: var(--accent); }
+  .vid-link:hover .play::after { border-left-color: var(--accent); }
+  .vid-link .open { font-size: 10px; letter-spacing: var(--track); color: var(--dim); text-transform: uppercase; }
+  .frame-16x9 iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; z-index: 1; background: #000; }
+  .media-pop-trigger { position: absolute; inset: 0; z-index: 3; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.10); border: 0; cursor: pointer; opacity: 0; transition: opacity .2s ease, background .2s ease; }
+  .frame-16x9:hover .media-pop-trigger, .media-pop-trigger:focus-visible { opacity: 1; background: rgba(0,0,0,0.48); outline: none; }
+  .media-pop-trigger span { width: 42px; height: 42px; border: 1px solid rgba(170,170,170,0.42); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: rgba(7,7,7,0.78); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.025), 0 0 18px rgba(201,31,50,0.12); }
+  .media-pop-trigger span::before { content: ""; width: 0; height: 0; border-left: 11px solid var(--accent); border-top: 7px solid transparent; border-bottom: 7px solid transparent; margin-left: 3px; }
+  .media-pop-trigger em { position: absolute; left: 12px; bottom: 10px; font-style: normal; font-size: 10px; letter-spacing: var(--track); color: var(--fg); text-transform: uppercase; }
+  .media-desktop { position: fixed; inset: 0; z-index: 1120; pointer-events: none; }
+  .media-window { position: fixed; left: 50%; top: 50%; width: min(920px, calc(100vw - 28px)); height: min(550px, calc(100vh - 28px)); min-width: 320px; min-height: 230px; max-width: calc(100vw - 18px); max-height: calc(100vh - 18px); overflow: hidden; background: #000; border: 1px solid rgba(150,150,150,0.22); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.028), inset 3px 0 0 rgba(201,31,50,0.42), 0 18px 54px rgba(0,0,0,0.62), 0 0 16px rgba(201,31,50,0.08); pointer-events: auto; display: flex; flex-direction: column; animation: reveal .2s ease; }
+  .media-window.portrait { width: min(390px, calc(100vw - 28px)); height: min(610px, calc(100vh - 28px)); }
+  .media-head { height: 31px; flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1px solid rgba(160,160,160,0.18); padding: 0 7px 0 10px; background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(201,31,50,0.045), rgba(0,0,0,0.1)); cursor: move; user-select: none; touch-action: none; }
+  .media-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 9.5px; letter-spacing: var(--track); color: var(--dim); text-transform: uppercase; }
+  .media-actions { display: inline-flex; gap: 5px; flex: 0 0 auto; }
+  .media-close { width: 22px; height: 22px; background: transparent; border: 1px solid rgba(127,127,127,0.24); color: var(--dim); cursor: pointer; line-height: 1; font-size: 13px; }
+  .media-close:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+  .media-stage { position: relative; flex: 1 1 auto; min-height: 0; background: #000; }
+  .media-stage video, .media-stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; object-fit: contain; }
+  .resize-handle { position: absolute; z-index: 4; opacity: 0; transition: opacity .18s ease, background .18s ease; }
+  .media-window:hover .resize-handle { opacity: 1; }
+  .resize-n, .resize-s { left: 10px; right: 10px; height: 7px; cursor: ns-resize; }
+  .resize-e, .resize-w { top: 36px; bottom: 10px; width: 7px; cursor: ew-resize; }
+  .resize-n { top: 0; }
+  .resize-s { bottom: 0; }
+  .resize-e { right: 0; }
+  .resize-w { left: 0; }
+  .resize-ne, .resize-nw, .resize-se, .resize-sw { width: 14px; height: 14px; }
+  .resize-ne { right: 0; top: 0; cursor: nesw-resize; }
+  .resize-nw { left: 0; top: 0; cursor: nwse-resize; }
+  .resize-se { right: 0; bottom: 0; cursor: nwse-resize; background: linear-gradient(135deg, transparent 45%, rgba(160,160,160,0.35) 46%, rgba(160,160,160,0.35) 54%, transparent 55%); opacity: .75; }
+  .resize-sw { left: 0; bottom: 0; cursor: nesw-resize; }
+  .resize-n:hover, .resize-s:hover { background: rgba(201,31,50,0.16); }
+  .resize-e:hover, .resize-w:hover { background: rgba(201,31,50,0.16); }
+  @media (max-width: 560px) {
+    .media-window { left: 9px !important; top: 72px !important; width: calc(100vw - 18px) !important; height: min(420px, calc(100vh - 90px)); min-width: 0; }
+  }
+
+  /* ---- photo wall (free-flowing stills) ---- */
+  .stills-layout { border-bottom: 1px solid var(--line); }
+  .photo-wall { display: flex; flex-wrap: wrap; gap: 6px; padding: clamp(12px, 2vw, 24px); }
+  .photo-wall img { height: 160px; width: auto; display: block; flex: 0 0 auto; border: 1px solid var(--line); transition: border-color .2s ease, opacity .2s ease; cursor: pointer; }
+  .photo-wall img:hover { border-color: var(--accent); opacity: 0.85; }
+  .grid-fluid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  /* compact media (lives in FILM) */
+  .media-strip { display: flex; flex-wrap: wrap; gap: 8px 18px; padding: var(--pad); border-bottom: 1px solid var(--line); }
+  .media-strip a { font-size: 11px; letter-spacing: var(--track); text-transform: uppercase; color: var(--dim); transition: color .2s ease; }
+  .media-strip a:hover { color: var(--accent); }
+  .fav-list { font-size: 12px; letter-spacing: 0.05em; color: var(--dim); text-transform: uppercase; line-height: 1.9; }
+  .cal-note { padding: var(--pad); border-bottom: 1px solid var(--line); font-size: 12px; letter-spacing: 0.05em; color: var(--dim); text-transform: uppercase; line-height: 1.8; max-width: 760px; }
+  .req-btn { display: inline-flex; align-items: center; gap: 7px; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 9px 15px; font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; cursor: pointer; font-family: var(--font); transition: background .2s ease, color .2s ease; }
+  .req-btn:hover { background: var(--accent); color: var(--on-accent); }
+  .mini-gate { padding: clamp(18px, 3vw, 30px) var(--pad); border-bottom: 1px solid var(--line); }
+  .mini-gate-inner { display: flex; flex-direction: column; gap: 10px; max-width: 620px; }
+  .mini-gate .prompt { font-size: 12px; letter-spacing: var(--track); color: var(--fg); text-transform: uppercase; }
+  .mini-gate .gate-meta { font-size: 10px; letter-spacing: 0.08em; color: var(--dim); text-transform: uppercase; line-height: 1.6; }
+  .mini-gate-form { display: flex; border: 1px solid rgba(127,127,127,0.24); background: rgba(127,127,127,0.035); }
+  .mini-gate-form input { flex: 1; min-width: 0; background: transparent; border: none; outline: none; color: var(--fg); font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; padding: 10px 12px; text-transform: uppercase; }
+  .mini-gate-form input::placeholder { color: var(--muted); }
+  .mini-gate-form button { background: transparent; border: none; border-left: 1px solid rgba(127,127,127,0.2); color: var(--dim); font-family: var(--font); font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; padding: 0 14px; cursor: pointer; transition: color .2s ease, background .2s ease; }
+  .mini-gate-form button:hover { background: var(--accent-soft); color: var(--accent); }
+  .mini-gate .msg { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; min-height: 14px; text-transform: uppercase; color: var(--muted); }
+  .mini-gate .msg.denied { color: var(--accent); animation: flash 0.45s steps(2,start) 3; }
+  .mini-gate .msg.granted { color: var(--accent); }
+  @media (max-width: 680px) {
+    .mini-gate-inner { max-width: none; }
+    .photo-wall img { height: 120px; }
+    .grid-fluid { grid-template-columns: 1fr; }
+  }
+  /* (locked-audio removed — audio now open) */
+
+  /* ---- request-slot modal ---- */
+  .req-modal { position: fixed; inset: 0; z-index: 1100; background: rgba(0,0,0,0.9); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; padding: 24px; }
+  .req-modal.open { display: flex; animation: reveal .3s ease; }
+  .req-box { width: min(520px, 94vw); background: var(--bg); border: 1px solid var(--accent); border-top: 3px solid var(--accent); box-shadow: 0 0 50px var(--accent-glow); padding: clamp(22px, 4vw, 34px); }
+  .req-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--accent); padding-bottom: 14px; margin-bottom: 6px; }
+  .req-head .rh-t { font-size: 13px; letter-spacing: var(--track); text-transform: uppercase; color: var(--fg); font-weight: 600; }
+  .req-close { background: transparent; border: none; color: var(--dim); font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; cursor: pointer; }
+  .req-close:hover { color: var(--accent); }
+  .req-label { display: block; font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; color: var(--accent); margin: 16px 0 6px; }
+  .req-input, .req-textarea { width: 100%; background: transparent; border: 1px solid var(--line); color: var(--fg); font-family: var(--font); font-size: 12px; letter-spacing: 0.04em; padding: 11px 12px; }
+  .req-input:focus, .req-textarea:focus { outline: none; border-color: var(--accent); }
+  .req-textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+  .chat-bubble-input { border-radius: 0 10px 10px 10px; background: rgba(255,255,255,0.025); min-height: 110px; }
+  .req-send { margin-top: 22px; width: 100%; justify-content: center; }
+  .req-send:disabled { opacity: 0.35; cursor: not-allowed; }
+  .req-send:disabled:hover { background: transparent; color: var(--accent); }
+  .req-status { font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; color: var(--dim); margin-top: 14px; min-height: 14px; }
+  .req-status.ok { color: var(--accent); }
+  .req-status.err { color: var(--accent); }
+  .credential-modal .req-box { border-color: var(--accent); box-shadow: 0 0 42px rgba(201,31,50,0.28); }
+  .availability-modal .req-box { border-color: rgba(127,127,127,0.36); border-top-color: var(--fg); box-shadow: 0 0 42px rgba(255,255,255,0.07); }
+  .choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 8px; }
+  .choice-pill { display: flex; align-items: center; gap: 9px; border: 1px solid rgba(127,127,127,0.2); background: rgba(127,127,127,0.035); color: var(--dim); padding: 10px 11px; font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; cursor: pointer; transition: border-color .2s ease, color .2s ease, background .2s ease; }
+  .choice-pill:hover { border-color: var(--accent); color: var(--fg); background: var(--accent-soft); }
+  .choice-pill input { width: 13px; height: 13px; accent-color: var(--accent); }
+  @media (max-width: 520px) { .choice-grid { grid-template-columns: 1fr; } }
+
+  /* ---- xp blocks: balanced resume rows ---- */
+  .xp { display: grid; grid-template-columns: minmax(250px, 1.1fr) minmax(190px, 0.74fr) minmax(210px, 0.82fr); gap: 5px clamp(14px, 2.1vw, 28px); align-items: start; padding: 13px var(--pad); border-bottom: 1px solid var(--line); transition: background .2s ease; }
+  .xp:last-child { border-bottom: none; }
+  .xp:hover { background: var(--accent-soft); }
+  .xp:hover .xp-role { color: var(--accent); }
+  .xp-l, .xp-r { display: contents; }
+  .xp-co { font-size: clamp(13px,1.6vw,15px); text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg); font-weight: 600; }
+  .xp-role { grid-column: 2; grid-row: 1 / span 2; align-self: start; max-width: 270px; font-size: 11px; letter-spacing: 0.055em; color: var(--dim); text-transform: uppercase; line-height: 1.55; }
+  .xp-loc { grid-column: 1; grid-row: 2; justify-self: start; text-align: left; font-size: 10px; letter-spacing: var(--track); color: var(--muted); text-transform: uppercase; line-height: 1.7; }
+  .xp-date { grid-column: 3; grid-row: 1; justify-self: end; text-align: right; font-size: 10px; letter-spacing: var(--track); color: var(--fg); text-transform: uppercase; white-space: nowrap; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .xp-r .chips { grid-column: 3; grid-row: 2; flex-wrap: nowrap; justify-content: flex-end; justify-self: end; max-width: 100%; min-width: 0; }
+  /* chips wrap naturally */
+  /* experience keyword tags — kept boxed but softened so they don't overwhelm */
+  .chip-sm { flex: 0 0 auto; border: 1px solid rgba(127,127,127,0.16); background: rgba(127,127,127,0.05); border-radius: 2px; padding: 5px 10px; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; color: var(--dim); }
+  .more-block { border-bottom: 1px solid var(--line); }
+  .more-block summary { list-style: none; cursor: pointer; padding: 14px var(--pad); display: flex; justify-content: space-between; align-items: center; gap: 14px; border-bottom: 1px solid var(--line); color: var(--accent); transition: background .2s ease; }
+  .more-block summary:hover { background: var(--accent-soft); }
+  .more-block summary::-webkit-details-marker { display: none; }
+  .more-block summary::after { content: "+"; width: 24px; height: 24px; border: 1px solid rgba(127,127,127,0.22); display: inline-flex; align-items: center; justify-content: center; color: var(--dim); font-size: 14px; line-height: 1; transition: border-color .2s ease, color .2s ease, background .2s ease; }
+  .more-block summary:hover::after { border-color: var(--accent); color: var(--accent); background: rgba(201,31,50,0.08); }
+  .more-block[open] summary::after { content: "–"; border-color: var(--accent); color: var(--accent); background: rgba(201,31,50,0.08); }
+  .more-block .spec { border-top: none; }
+  .more-block[open] summary { display: none; }
+  .skillset { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(24px, 5vw, 72px); padding: clamp(18px, 3vw, 34px) var(--pad); border-bottom: 1px solid var(--line); }
+  .skill-row { display: grid; grid-template-columns: 132px 1fr; gap: 16px; align-items: baseline; padding: 12px 0; border-bottom: 1px solid rgba(127,127,127,0.12); }
+  .skill-row:nth-last-child(-n+2) { border-bottom-color: transparent; }
+  .skill-key { font-size: 10px; letter-spacing: var(--track); color: var(--accent); text-transform: uppercase; }
+  .skill-val { font-size: 12px; letter-spacing: 0.07em; color: var(--dim); text-transform: uppercase; line-height: 1.8; }
+  @media (max-width: 760px) {
+    .skillset { grid-template-columns: 1fr; }
+    .skill-row { grid-template-columns: 1fr; gap: 6px; }
+    .skill-row:nth-last-child(-n+2) { border-bottom: 1px solid rgba(127,127,127,0.12); }
+    .skill-row:last-child { border-bottom-color: transparent; }
+  }
+
+  /* ---- single featured project ---- */
+  .project-feature { display: grid; grid-template-columns: minmax(260px, 0.82fr) minmax(280px, 1fr); width: min(920px, calc(100% - (var(--pad) * 2))); margin: var(--pad) auto; border: 1px solid var(--line); cursor: pointer; transition: border-color .2s ease, background .2s ease, transform .2s ease; }
+  .project-feature:hover { border-color: var(--accent); background: var(--accent-soft); transform: translateY(-1px); }
+  .project-feature.static { cursor: default; }
+  .project-feature.static:hover { border-color: var(--line); background: transparent; transform: none; }
+  @media (max-width: 760px) { .project-feature { grid-template-columns: 1fr; width: calc(100% - (var(--pad) * 2)); } }
+  .pf-media { display: flex; align-items: center; justify-content: center; padding: clamp(18px, 3vw, 34px); overflow: hidden; border-right: 1px solid var(--line); background: repeating-linear-gradient(45deg,var(--frame-a) 0,var(--frame-a) 1px,transparent 1px,transparent 7px), var(--frame-b); }
+  @media (max-width: 760px) { .pf-media { border-right: none; border-bottom: 1px solid var(--line); } }
+  .pf-img { display: block; width: min(100%, 330px); aspect-ratio: 5 / 4; object-fit: cover; object-position: center 44%; border: 1px solid rgba(127,127,127,0.24); background: #000; box-shadow: 0 16px 34px rgba(0,0,0,0.28); }
+  .pf-info { padding: clamp(18px, 2.4vw, 32px); display: flex; flex-direction: column; gap: 14px; justify-content: center; }
+  .pf-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+  .pf-title { font-size: clamp(17px, 2.2vw, 24px); text-transform: uppercase; letter-spacing: var(--track); color: var(--fg); font-weight: 600; }
+  .pf-stack-label { font-size: 10px; letter-spacing: var(--track); color: var(--accent); text-transform: uppercase; margin-bottom: 6px; }
+  .pf-stack { font-size: 12px; letter-spacing: 0.06em; color: var(--dim); text-transform: uppercase; line-height: 1.85; }
+  .pf-link { font-size: 11px; letter-spacing: var(--track); color: var(--accent); text-transform: uppercase; }
+  @media (max-width: 680px) {
+    .xp { grid-template-columns: 1fr; }
+    .xp-l, .xp-r { display: flex; }
+    .xp-l { flex-direction: column; gap: 6px; min-width: 0; }
+    .xp-r { flex-direction: column; align-items: flex-start; gap: 9px; text-align: left; }
+    .xp-loc, .xp-date, .xp-r .chips { grid-column: auto; grid-row: auto; justify-self: auto; text-align: left; transform: none; }
+    .xp-r .chips { justify-content: flex-start; }
+  }
+
+  /* ---- media: connection cards + chips ---- */
+  .conn { display: grid; grid-template-columns: repeat(4, 1fr); border-bottom: 1px solid var(--line); }
+  @media (max-width: 900px) { .conn { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px) { .conn { grid-template-columns: 1fr; } }
+  .conn a { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: var(--pad); display: flex; flex-direction: column; gap: 12px; min-height: 100px; justify-content: space-between; transition: background .2s ease; }
+  .conn a:hover { background: var(--accent-soft); }
+  .conn a .p-name { font-size: clamp(13px,1.6vw,17px); letter-spacing: var(--track); text-transform: uppercase; color: var(--fg); }
+  .conn a .p-foot { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .conn a .p-handle { font-size: 10px; letter-spacing: 0.06em; color: var(--dim); text-transform: lowercase; }
+  .conn a .p-arr { color: var(--accent); font-size: 12px; }
+  .logset { padding: var(--pad); border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 120px 1fr; gap: 14px 20px; align-items: start; }
+  .logset:last-child { border-bottom: none; }
+  @media (max-width: 560px) { .logset { grid-template-columns: 1fr; gap: 8px; } }
+  .logset .ls-key { font-size: 10px; letter-spacing: var(--track); color: var(--accent); text-transform: uppercase; padding-top: 6px; }
+  .chip { border: 1px solid var(--line); padding: 6px 11px; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--dim); }
+
+  /* ---- availability gate ---- */
+  .gate { padding: clamp(28px, 6vw, 72px) var(--pad); border-bottom: 1px solid var(--line); }
+  .gate-inner { max-width: 860px; display: flex; flex-direction: column; gap: 10px; }
+  .gate-head { display: flex; align-items: flex-start; gap: 18px; }
+  .gate .prompt { font-family: var(--font); font-size: 12px; letter-spacing: var(--track); color: var(--fg); text-transform: uppercase; }
+  .public-availability { max-width: 760px; border-left: 1px solid rgba(201,31,50,0.42); padding-left: 12px; font-size: 9.5px; letter-spacing: 0.075em; color: var(--dim); text-transform: uppercase; line-height: 1.65; }
+  .public-availability .pa-key { color: var(--accent); }
+  .gate .gate-meta { font-size: 10px; letter-spacing: 0.08em; color: var(--dim); text-transform: uppercase; line-height: 1.6; }
+  .gate .prompt .cursor { display:inline-block; width:8px; height:14px; background:var(--accent); margin-left:6px; transform:translateY(2px); animation: blink 1.1s steps(2,start) infinite; }
+  .gate-form { display: flex; width: min(100%, 460px); border: 1px solid rgba(127,127,127,0.24); background: rgba(127,127,127,0.035); }
+  .gate-form input { flex: 1; min-width: 0; background: transparent; border: none; outline: none; color: var(--fg); font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; padding: 10px 12px; text-transform: uppercase; }
+  .gate-form input::placeholder { color: var(--muted); letter-spacing: 0.12em; }
+  .gate-form button { background: transparent; border: none; border-left: 1px solid rgba(127,127,127,0.2); color: var(--dim); font-family: var(--font); font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; padding: 0 14px; cursor: pointer; transition: background .2s ease, color .2s ease; }
+  .gate-form button:hover { background: var(--accent-soft); color: var(--accent); }
+  .gate .msg { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; min-height: 14px; text-transform: uppercase; color: var(--muted); }
+  .gate .msg.denied { color: var(--accent); animation: flash 0.45s steps(2,start) 3; }
+  .gate .msg.granted { color: var(--accent); }
+  @media (max-width: 680px) {
+    .gate-head { flex-direction: column; gap: 8px; }
+    .public-availability { max-width: none; }
+  }
+  @keyframes flash { to { opacity: 0.25; } }
+  .locked { display: none; }
+  .locked.unlocked { display: block; animation: reveal .5s ease; }
+  .schedule-label { background: rgba(255,255,255,0.025); border-top: 1px solid rgba(127,127,127,0.16); }
+  .schedule-label .lead { color: var(--fg); }
+  .schedule-label > .tag:last-child { color: var(--accent); }
+  .schedule-table { border-bottom: 1px solid var(--line); }
+  .schedule-table .xp { grid-template-columns: minmax(140px, 0.45fr) minmax(220px, 0.82fr) minmax(260px, 1fr); gap: 4px clamp(16px, 2vw, 26px); padding-block: 11px; }
+  .schedule-table .xp:hover { background: rgba(201,31,50,0.08); }
+  .schedule-table .xp-l, .schedule-table .xp-r { display: contents; }
+  .schedule-table .xp-loc { grid-column: 1; grid-row: 1; justify-self: start; text-align: left; font-size: 10px; letter-spacing: 0.12em; color: rgba(255,255,255,0.82); opacity: .95; }
+  .schedule-table .xp-date { grid-column: 1; grid-row: 2; justify-self: start; text-align: left; font-size: 10px; letter-spacing: 0.1em; color: var(--muted); }
+  .schedule-table .xp-co { grid-column: 2; grid-row: 1 / span 2; align-self: start; font-size: clamp(13px, 1.4vw, 15px); letter-spacing: 0.06em; line-height: 1.45; color: rgba(255,255,255,0.74); font-weight: 500; }
+  .schedule-table .xp-role { grid-column: 3; grid-row: 1 / span 2; max-width: none; font-size: 11px; letter-spacing: 0.04em; line-height: 1.55; color: var(--dim); }
+  .schedule-month { padding: 18px var(--pad) 8px; border-top: 1px solid rgba(201,31,50,0.28); border-bottom: 1px solid rgba(201,31,50,0.2); background: rgba(201,31,50,0.07); font-size: clamp(12px, 1.3vw, 15px); letter-spacing: var(--track); color: var(--accent); text-transform: uppercase; }
+  .schedule-month:first-child { padding-top: 12px; }
+  .schedule-group { padding: 12px var(--pad) 6px; font-size: 10px; letter-spacing: 0.13em; color: var(--muted); text-transform: uppercase; border-bottom: 1px solid rgba(127,127,127,0.08); background: rgba(255,255,255,0.012); }
+  @media (max-width: 680px) {
+    .schedule-table .xp { grid-template-columns: 1fr; }
+    .schedule-table .xp-l, .schedule-table .xp-r { display: flex; }
+    .schedule-table .xp-l { flex-direction: column; gap: 6px; }
+    .schedule-table .xp-r { align-items: flex-start; }
+    .schedule-table .xp-co, .schedule-table .xp-role, .schedule-table .xp-loc, .schedule-table .xp-date { grid-column: auto; grid-row: auto; justify-self: auto; text-align: left; }
+  }
+  @keyframes reveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  /* ---- context ---- */
+  .blurb { padding: clamp(42px, 7vw, 88px) var(--pad); display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
+  .context-layout { width: 100%; display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.92fr); gap: clamp(28px, 6vw, 86px); align-items: center; }
+  .blurb p { max-width: 760px; text-transform: uppercase; letter-spacing: 0.07em; line-height: 1.95; font-size: clamp(12px, 1.25vw, 15px); color: var(--fg); text-wrap: pretty; }
+  .blurb p .q { color: var(--accent); }
+  .mind-map { width: 100%; display: flex; flex-direction: column; gap: 18px; }
+  .map-core { align-self: center; border: 1px solid var(--accent); color: var(--fg); padding: 14px 18px; text-align: center; text-transform: uppercase; letter-spacing: var(--track); font-size: 12px; background: var(--accent-soft); box-shadow: 0 0 24px rgba(201,31,50,0.12); }
+  .map-core .sub { display: block; margin-top: 6px; color: var(--dim); font-size: 10px; letter-spacing: 0.08em; }
+  .map-branches { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding-top: 18px; }
+  .map-branches::before { content: ""; position: absolute; top: 0; left: 18%; right: 18%; height: 1px; background: rgba(201,31,50,0.42); }
+  .map-branches.compact { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto; }
+  .map-branches.compact::before { left: 50%; right: auto; width: 1px; height: 18px; }
+  .map-node { position: relative; min-height: 86px; border: 1px solid rgba(127,127,127,0.16); background: rgba(255,255,255,0.018); padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+  .map-node::before { content: ""; position: absolute; top: -18px; left: 50%; height: 18px; border-left: 1px solid rgba(201,31,50,0.34); }
+  .map-node .k { color: var(--accent); font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; }
+  .map-node .v { color: var(--dim); font-size: 11px; letter-spacing: 0.06em; line-height: 1.6; text-transform: uppercase; }
+  .map-branches.compact .map-node { align-items: center; text-align: center; }
+  @media (max-width: 900px) {
+    .context-layout { grid-template-columns: 1fr; align-items: start; }
+    .blurb p { max-width: 100%; }
+  }
+  @media (max-width: 520px) {
+    .map-branches { grid-template-columns: 1fr; }
+    .map-branches::before, .map-node::before { display: none; }
+  }
+  .proof-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); border-top: 1px solid var(--line); }
+  .proof-card { padding: clamp(18px, 3vw, 30px) var(--pad); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; min-height: 128px; }
+  .proof-card:last-child { border-right: none; }
+  .proof-card.proof-locked { color: var(--dim); background: rgba(127,127,127,0.025); }
+  .proof-card .proof-title { font-size: 12px; letter-spacing: var(--track); color: var(--fg); text-transform: uppercase; }
+  .proof-card .proof-meta { font-size: 10px; letter-spacing: 0.08em; color: var(--dim); text-transform: uppercase; line-height: 1.6; }
+  .proof-card a, .proof-card button { align-self: flex-start; margin-top: auto; }
+  .download-link { display: inline-flex; align-items: center; border: 1px solid var(--accent); color: var(--accent); padding: 9px 14px; font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; font-family: inherit; cursor: pointer; background: transparent; }
+  .download-link:hover { background: var(--accent); color: var(--on-accent); }
+  .proof-gate { grid-column: span 2; }
+  .proof-secure { display: none; }
+  .proof-secure.unlocked { display: flex; animation: reveal .45s ease; }
+  .proof-form { display: flex; width: min(100%, 460px); border: 1px solid rgba(127,127,127,0.24); background: rgba(127,127,127,0.035); margin-top: auto; }
+  .proof-form input { flex: 1; min-width: 0; background: transparent; border: none; outline: none; color: var(--fg); font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; padding: 10px 12px; text-transform: uppercase; }
+  .proof-form input::placeholder { color: var(--muted); }
+  .proof-form button { margin-top: 0; background: transparent; border: none; border-left: 1px solid rgba(127,127,127,0.2); color: var(--dim); font-family: var(--font); font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; padding: 0 14px; cursor: pointer; transition: color .2s ease, background .2s ease; }
+  .proof-form button:hover { background: var(--accent-soft); color: var(--accent); }
+  .proof-msg { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; min-height: 14px; text-transform: uppercase; color: var(--muted); }
+  .proof-msg.denied { color: var(--accent); animation: flash 0.45s steps(2,start) 3; }
+  .proof-msg.granted { color: var(--accent); }
+  @media (max-width: 760px) { .proof-grid { grid-template-columns: 1fr; } .proof-card, .proof-gate { border-right: none; grid-column: auto; } }
+  footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding: var(--pad); border-top: 1px solid var(--line); }
+  .blink { display:inline-block; width:7px; height:12px; background:var(--accent); margin-left:6px; transform:translateY(1px); animation: blink 1.1s steps(2,start) infinite; }
+  @keyframes blink { to { opacity: 0; } }
+</style>
+</head>
+<body class="booting" data-theme="black-cherry">
+
+  <!-- ================= BOOT ================= -->
+  <div id="boot">
+    <div class="boot-window" role="dialog" aria-label="System initialization">
+      <div class="boot-head"><span class="bh-l">TIFFANY.DONG_VAULT</span><span class="bh-r">V3.1 // SECURE</span></div>
+      <div class="boot-title">BOOT_SEQUENCE: INITIALIZING TIFFANY.DONG_VAULT_V3.0...<span class="cursor"></span></div>
+      <div class="diag">
+        <div class="line"><span>&gt; MOUNTING VAULT PARTITIONS</span><span class="ok">[ OK ]</span></div>
+        <div class="line"><span>&gt; DECRYPTING ARCHIVE INDEX</span><span class="ok">[ OK ]</span></div>
+        <div class="line"><span>&gt; CALIBRATING GAME DEV · ART · MUSIC</span><span class="ok">[ OK ]</span></div>
+        <div class="line"><span>&gt; LINKING MEDIA</span><span class="ok">[ OK ]</span></div>
+        <div class="line"><span>&gt; AUTH MODULE // AVAILABILITY</span><span class="lock">[ LOCKED ]</span></div>
+        <div class="line"><span>&gt; SYSTEM READY</span><span class="ok">[ 100% ]</span></div>
+      </div>
+      <div class="boot-bar"></div>
+      <button class="boot-btn" id="boot-ack">[ ACKNOWLEDGE // ACCESS SYSTEM ]</button>
+    </div>
+  </div>
+
+  <main class="frame">
+
+    <!-- ================= MASTHEAD ================= -->
+    <header class="masthead">
+      <div class="wordmark">PEPPERMINTINCHAI<span class="slash">//</span>ARCHIVE</div>
+      <div class="meta">
+        <div class="tag">TIFFANY&nbsp;DONG&nbsp;//&nbsp;COMPUTER&nbsp;SCIENCE</div>
+        <div class="tag reg">REG_TIMESTAMP&nbsp;//&nbsp;12042007&nbsp;//&nbsp;CLASS_ESTP_3W4</div>
+        <div class="tag">NYC&nbsp;//&nbsp;BOSTON</div>
+      </div>
+    </header>
+
+    <div class="datastring">
+      <span class="ds-p">&gt;</span>OPERATOR:<span class="v">tiffany_dong</span><span class="dv">//</span>FIELD:<span class="v">COMPUTER_SCIENCE</span><span class="dv">//</span>BASE:<span class="v">NYC→BOSTON</span><span class="dv">//</span>BUILD:<span class="v">2026_LOG</span><span class="dv">//</span>STATUS:<span class="v on">ONLINE</span><span class="ds-cur"></span>
+    </div>
+
+    <!-- ================= TABS ================= -->
+    <nav class="tabs" role="tablist" aria-label="Archive navigation">
+      <button class="tab active" data-target="pane-projects" role="tab"><span class="t-idx">01</span><span class="t-name">GAME DEV</span></button>
+      <button class="tab" data-target="pane-music" role="tab"><span class="t-idx">02</span><span class="t-name">MUSIC</span></button>
+      <button class="tab" data-target="pane-film" role="tab"><span class="t-idx">03</span><span class="t-name">FILM</span></button>
+      <button class="tab" data-target="pane-resume" role="tab"><span class="t-idx">04</span><span class="t-name">RESUME</span></button>
+      <button class="tab" data-target="pane-availability" role="tab"><span class="t-idx">05</span><span class="t-name">AVAILABILITY</span></button>
+    </nav>
+
+    <div class="panes">
+
+      <!-- ===================== 04 // RESUME ===================== -->
+      <section class="pane" id="pane-resume" role="tabpanel">
+        <div class="module-label"><span class="section-title">[ 04 ] RESUME</span><span class="tag">CV</span></div>
+
+        <div class="sub-label major"><span class="tag lead"><span class="sl">//</span> EDUCATION</span></div>
+        <div class="spec">
+          <div class="xp"><div class="xp-l"><span class="xp-co">BOSTON UNIVERSITY</span><span class="xp-role">B.A. COMPUTER SCIENCE & <span class="nowrap">LOCKING IN 🔒</span></span><span class="xp-loc">BOSTON, MASSACHUSETTS</span></div><div class="xp-r"><span class="xp-date">EXPECTED MAY 2029</span><div class="chips"><span class="chip-sm">LONDON STUDY ABROAD</span><span class="chip-sm">CONCERT BAND</span><span class="chip-sm">GAMING CLUB</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">COLUMBIA UNIVERSITY</span><span class="xp-role">PRE-COLLEGE · BIG DATA, MACHINE LEARNING & APPLIED ANALYTICS</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">2024 – 2025</span><div class="chips"><span class="chip-sm">PYTHON</span><span class="chip-sm">NASA EXOPLANETS</span><span class="chip-sm">PREDICTIVE MODELS</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">CUNY COLLEGE NOW</span><span class="xp-role">BARUCH COLLEGE · BROOKLYN COLLEGE · JOHN JAY COLLEGE</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">2023 – 2025</span><div class="chips"><span class="chip-sm">HED 1911</span><span class="chip-sm">HNSC 1200</span><span class="chip-sm">PSY 101</span><span class="chip-sm">ENG 101</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">MIDWOOD HIGH SCHOOL</span><span class="xp-role">HIGH SCHOOL DIPLOMA · MEDICAL SCIENCE</span><span class="xp-loc">BROOKLYN, NEW YORK</span></div><div class="xp-r"><span class="xp-date">2021 – 2025</span><div class="chips"><span class="chip-sm">NATIONAL HONOR SOCIETY</span><span class="chip-sm">WIND ENSEMBLE</span><span class="chip-sm">ARGUS</span><span class="chip-sm">PATTERNS</span></div></div></div>
+        </div>
+
+        <div class="sub-label major"><span class="tag lead"><span class="sl">//</span> EXPERIENCE</span></div>
+        <div class="spec">
+          <div class="xp"><div class="xp-l"><span class="xp-co">BIOECHO LIFE SCIENCES</span><span class="xp-role">LEAD GEN & MARKET RESEARCH INTERN</span><span class="xp-loc">COLOGNE, GERMANY · REMOTE</span></div><div class="xp-r"><span class="xp-date">APR 2026 – NOW</span><div class="chips"><span class="chip-sm">CRM SEGMENTATION</span><span class="chip-sm">MARKET RESEARCH</span><span class="chip-sm">B2B OUTREACH</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">URBAN ARTS PARTNERSHIP</span><span class="xp-role">ALUMNI AMBASSADOR</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">OCT 2025 – NOW</span><div class="chips"><span class="chip-sm">STAKEHOLDER COMMS</span><span class="chip-sm">DONOR ENGAGEMENT</span><span class="chip-sm">SITE VISITS</span><span class="chip-sm">INNOVATOR SUMMIT</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">UNIQLO USA</span><span class="xp-role">SALES RETAIL ASSOCIATE</span><span class="xp-loc">BOSTON, MASSACHUSETTS</span></div><div class="xp-r"><span class="xp-date">FEB 2026 – MAR 2026</span><div class="chips"><span class="chip-sm">CUSTOMER SERVICE</span><span class="chip-sm">INVENTORY CONTROL</span><span class="chip-sm">STORE OPS</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">PROJECT DESTINED</span><span class="xp-role">REAL ESTATE PRIVATE EQUITY INTERN</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">DEC 2025 – FEB 2026</span><div class="chips"><span class="chip-sm">FINANCIAL MODELING</span><span class="chip-sm">INVESTMENT ANALYSIS</span><span class="chip-sm">RISK ASSESSMENT</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">BROOKLYN CONSERVATORY OF MUSIC</span><span class="xp-role">EVENTS VOLUNTEER</span><span class="xp-loc">BROOKLYN, NEW YORK</span></div><div class="xp-r"><span class="xp-date">OCT 2025 – DEC 2025</span><div class="chips"><span class="chip-sm">EVENT OPERATIONS</span><span class="chip-sm">GUEST CHECK-IN</span><span class="chip-sm">LOGISTICS</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">EXTREME KIDS & CREW</span><span class="xp-role">MARKETING INTERN</span><span class="xp-loc">BROOKLYN, NEW YORK</span></div><div class="xp-r"><span class="xp-date">JUL 2025 – AUG 2025</span><div class="chips"><span class="chip-sm">CONTENT STRATEGY</span><span class="chip-sm">NEWSLETTERS</span><span class="chip-sm">YOUTH OUTREACH</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">MYPY CODING</span><span class="xp-role">PYTHON & SCRATCH INSTRUCTOR</span><span class="xp-loc">WASHINGTON, D.C. · REMOTE</span></div><div class="xp-r"><span class="xp-date">FEB 2025 – AUG 2025</span><div class="chips"><span class="chip-sm">PYTHON INSTRUCTION</span><span class="chip-sm">SCRATCH CURRICULUM</span><span class="chip-sm">1:1 MENTORING</span></div></div></div>
+          <details class="more-block">
+            <summary><span class="tag lead"><span class="sl">//</span> ADDITIONAL EXPERIENCE</span></summary>
+            <div class="spec">
+              <div class="xp"><div class="xp-l"><span class="xp-co">NYC DEPT FOR THE AGING</span><span class="xp-role">GENERAL & ADMINISTRATIVE SERVICES INTERN</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">JUL 2024 – AUG 2024</span><div class="chips"><span class="chip-sm">ADMIN OPERATIONS</span><span class="chip-sm">DATA DIGITIZATION</span><span class="chip-sm">PROCESS SUPPORT</span></div></div></div>
+              <div class="xp"><div class="xp-l"><span class="xp-co">KODE WITH KLOSSY</span><span class="xp-role">DATA SCIENCE PROGRAM PARTICIPANT</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">MAY 2024 – JUN 2024</span><div class="chips"><span class="chip-sm">DATA VISUALIZATION</span><span class="chip-sm">AI CHATBOT</span><span class="chip-sm">LOOKER STUDIO</span></div></div></div>
+              <div class="xp"><div class="xp-l"><span class="xp-co">ADOBE × HE3AT</span><span class="xp-role">DIGITAL MEDIA INTERN</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">DEC 2023 – JUN 2024</span><div class="chips"><span class="chip-sm">ADOBE CREATIVE SUITE</span><span class="chip-sm">WEB MEDIA</span><span class="chip-sm">WEB MAINTENANCE</span></div></div></div>
+              <div class="xp"><div class="xp-l"><span class="xp-co">PUPILPREP</span><span class="xp-role">PROGRAM COORDINATOR</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">SEP 2023 – DEC 2025</span><div class="chips"><span class="chip-sm">MENTOR TRAINING</span><span class="chip-sm">PROGRAM OPS</span><span class="chip-sm">STUDENT OUTREACH</span></div></div></div>
+              <div class="xp"><div class="xp-l"><span class="xp-co">NYC ALL-CITY CONCERT BAND</span><span class="xp-role">CLARINETIST</span><span class="xp-loc">BROOKLYN, NEW YORK</span></div><div class="xp-r"><span class="xp-date">SEP 2023 – JUN 2024</span><div class="chips"><span class="chip-sm">ENSEMBLE PERFORMANCE</span><span class="chip-sm">NY PHIL MENTORSHIP</span><span class="chip-sm">LIVE CONCERTS</span></div></div></div>
+              <div class="xp"><div class="xp-l"><span class="xp-co">AGAINST ALL ODDS</span><span class="xp-role">CANCER RESEARCHER</span><span class="xp-loc">ROCKAWAY, NEW JERSEY · REMOTE</span></div><div class="xp-r"><span class="xp-date">SEP 2023 – JAN 2024</span><div class="chips"><span class="chip-sm">RESEARCH SYNTHESIS</span><span class="chip-sm">CANCER AWARENESS</span><span class="chip-sm">PUBLIC AWARENESS</span></div></div></div>
+              <div class="xp"><div class="xp-l"><span class="xp-co">SHESCI</span><span class="xp-role">RESEARCH HEAD</span><span class="xp-loc">HOUSTON, TEXAS · REMOTE</span></div><div class="xp-r"><span class="xp-date">SEP 2023 – JAN 2024</span><div class="chips"><span class="chip-sm">RESEARCH CURATION</span><span class="chip-sm">STEM EQUITY</span><span class="chip-sm">PARTNERSHIPS</span></div></div></div>
+              <div class="xp"><div class="xp-l"><span class="xp-co">ISO @ THIRD STREET MUSIC SCHOOL</span><span class="xp-role">CLARINETIST</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">SEP 2023 – NOV 2023</span><div class="chips"><span class="chip-sm">ORCHESTRAL PERFORMANCE</span><span class="chip-sm">MASTER CLASSES</span><span class="chip-sm">NEW MUSIC</span></div></div></div>
+              <div class="xp"><div class="xp-l"><span class="xp-co">GIRLS WHO CODE</span><span class="xp-role">SELF-PACED PARTICIPANT</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">JUL 2023 – AUG 2023</span><div class="chips"><span class="chip-sm">WEB DEVELOPMENT</span><span class="chip-sm">JAVASCRIPT</span><span class="chip-sm">DATA ANALYTICS</span></div></div></div>
+              <div class="xp"><div class="xp-l"><span class="xp-co">ENCODE JUSTICE</span><span class="xp-role">NY OUTREACH DIRECTOR</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">MAY 2023 – JUN 2025</span><div class="chips"><span class="chip-sm">AI POLICY</span><span class="chip-sm">COMMUNITY ORGANIZING</span><span class="chip-sm">ADVOCACY</span></div></div></div>
+              <div class="xp"><div class="xp-l"><span class="xp-co">MEE NOODLE SHOP</span><span class="xp-role">FRONT OF HOUSE</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">JUN 2022 – AUG 2022</span><div class="chips"><span class="chip-sm">CUSTOMER SERVICE</span><span class="chip-sm">POS SYSTEMS</span><span class="chip-sm">FAST-PACED OPS</span></div></div></div>
+              <div class="xp"><div class="xp-l"><span class="xp-co">PARENT CHILD ASSOCIATION</span><span class="xp-role">COMMUNITY VOLUNTEER</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">JUN 2022 – AUG 2022</span><div class="chips"><span class="chip-sm">COMMUNITY SERVICE</span><span class="chip-sm">EVENT SUPPORT</span><span class="chip-sm">NEIGHBORHOOD CLEANUP</span></div></div></div>
+            </div>
+          </details>
+        </div>
+
+        <div class="sub-label major"><span class="tag lead"><span class="sl">//</span> SKILLS</span></div>
+        <div class="skillset">
+          <div class="skill-row"><span class="skill-key">PROGRAMMING</span><span class="skill-val">PYTHON • JAVA • JAVASCRIPT • C# • HTML/CSS</span></div>
+          <div class="skill-row"><span class="skill-key">LIBRARIES</span><span class="skill-val">NUMPY • SCIPY • PANDAS • SEABORN • MATPLOTLIB</span></div>
+          <div class="skill-row"><span class="skill-key">TOOLS</span><span class="skill-val">UNITY • VS CODE • JUPYTER • ADOBE CC • MS OFFICE</span></div>
+          <div class="skill-row"><span class="skill-key">LANGUAGES</span><span class="skill-val">ENGLISH • MANDARIN • FUZHOUNESE • SPANISH • JAPANESE</span></div>
+          <div class="skill-row"><span class="skill-key">CERTIFICATIONS</span><span class="skill-val">UNITY CERTIFIED PROGRAMMER • W3SCHOOLS JS • CERTIFICATE ARCHIVE</span></div>
+        </div>
+
+        <div class="sub-label major"><span class="tag lead"><span class="sl">//</span> AWARDS</span></div>
+        <div class="spec">
+          <div class="xp"><div class="xp-l"><span class="xp-co">APEX FOR YOUTH COLLEGE SUCCESS SCHOLARSHIP</span><span class="xp-role">MERIT SCHOLARSHIP RECIPIENT · COLLEGE ACCESS PROGRAM ALUMNI</span></div><div class="xp-r"><span class="xp-date">2025</span><div class="chips"><span class="chip-sm">$10K / YEAR</span><span class="chip-sm">4 YEARS</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">NEW YORK ACADEMY OF SCIENCES PROJECT OF DISTINCTION</span><span class="xp-role">COGNITIVE CLASSROOM CHALLENGE · ENLEARNING · <a href="assets/docs/enlearning-final-presentation.pdf" target="_blank" rel="noopener" class="accent-text">PROJECT PDF</a></span></div><div class="xp-r"><span class="xp-date"><a href="assets/docs/resourcing-polyethylene-biochemistry.pdf" target="_blank" rel="noopener" class="accent-text">ADDITIONAL PROJECT PDF</a> · 2023</span><div class="chips"><span class="chip-sm">BRIDGING LANGUAGE GAPS</span><span class="chip-sm">APP PROTOTYPE</span></div></div></div>
+        </div>
+        <div class="sub-label"><span class="tag">CONTACT // <span class="accent-text">TDONG4@BU.EDU</span></span><a href="https://linkedin.com/in/tdong4" target="_blank" rel="noopener" class="tag accent-text">LINKEDIN.COM/IN/TDONG4 &rarr;</a></div>
+        <div class="proof-grid" aria-label="Resume documents">
+          <div class="proof-card"><span class="proof-title">FULL PDF RESUME</span><span class="proof-meta">UPDATED PDF COPY FOR DOWNLOAD.</span><a class="download-link" href="assets/docs/Tiffany_Dong_Resume.pdf" download>DOWNLOAD PDF</a></div>
+          <div class="proof-card"><span class="proof-title">CERTIFICATE ARCHIVE</span><span class="proof-meta">SELECTED CERTIFICATES, INCLUDING UNITY CERTIFIED PROGRAMMER AND W3SCHOOLS JAVASCRIPT.</span><button type="button" class="download-link cred-open" data-credential-kind="certificates">REQUEST &rarr;</button></div>
+        </div>
+      </section>
+
+      <!-- ===================== 01 // GAME DEV ===================== -->
+      <section class="pane active" id="pane-projects" role="tabpanel">
+        <div class="module-label"><span class="section-title">[ 01 ] GAME DEV</span><span class="tag">UNITY&nbsp;·&nbsp;INTERACTIVE</span></div>
+        <a class="project-feature" href="https://flyinqr.itch.io/cries-of-the-wild" target="_blank" rel="noopener" aria-label="Play Cries of the Wild on itch.io">
+          <div class="pf-media" style="background:#000;"><img class="pf-img" src="assets/img/cries-of-the-wild.png" alt="Cries of the Wild"></div>
+          <div class="pf-info">
+            <div class="pf-head"><span class="pf-title">CRIES OF THE WILD</span><span class="tag">[ RELEASED 2024 ]</span></div>
+            <p class="desc">A single-player puzzle game built collaboratively in Unity — guide a fox through atmospheric environmental puzzles while evading a looming threat.</p>
+            <div><div class="pf-stack-label">// TECH STACK</div><div class="pf-stack">UNITY • C# • BLENDER • DAW • ORIGINAL MUSIC • ORIGINAL ART</div></div>
+            <span class="pf-link">PLAY ON ITCH.IO &rarr;</span>
+          </div>
+        </a>
+
+      </section>
+
+      <!-- ===================== 02 // MUSIC ===================== -->
+      <section class="pane" id="pane-music" role="tabpanel">
+        <div class="module-label"><span class="section-title">[ 02 ] MUSIC</span><span class="tag">PERFORMANCE&nbsp;·&nbsp;AUDIO</span></div>
+
+        <!-- // FEATURED -->
+        <div class="sub-label major"><span class="tag lead"><span class="sl">//</span> FEATURED</span><span class="tag">ALL-CITY · '24</span></div>
+        <div class="project-feature static" style="margin-bottom:0;">
+          <div class="pf-media" style="padding:0;background:transparent;overflow:hidden;">
+            <div class="frame-16x9" style="width:100%;">
+              <video controls preload="none" poster="assets/img/video-posters/nycaccb-emperata-new.jpg" src="assets/video/2024-nycaccb-002.mov"></video>
+            </div>
+          </div>
+          <div class="pf-info">
+            <div class="pf-head"><span class="pf-title">NYC ALL-CITY CONCERT BAND</span><span class="tag">[ GRAND STREET CAMPUS ]</span></div>
+            <div><span class="pf-stack-label">// PROGRAM</span></div>
+            <div class="pf-stack"><em>AYO</em> — Katahj Copley<br><em>On this Bright Morning</em> — David Maslanka<br><em>Loch Lomond</em> — Frank Ticheli<br><em>Sedona</em> — Steven Reineke</div>
+          </div>
+        </div>
+
+        <!-- // BOSTON UNIVERSITY -->
+        <div class="sub-label major"><span class="tag lead"><span class="sl">//</span> BOSTON UNIVERSITY</span><span class="tag">2026 · CONCERT BAND</span></div>
+        <div class="grid grid-2">
+          <figure class="card"><div class="cap-top"><span class="tag">APR 2026</span><span class="tag">[ BU · '26 ]</span></div><div class="frame-16x9" data-ph="BU CONCERT BAND SPRING 2"><video controls preload="none" poster="assets/img/video-posters/bucbs2.jpg" src="assets/video/2026-bucbs2.mov"></video></div><figcaption class="cap-bottom"><span class="title">BU CONCERT BAND SPRING 2</span><span class="note">BU COLLEGE OF FINE ARTS</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">MAR 2026</span><span class="tag">[ BU · '26 ]</span></div><div class="frame-16x9" data-ph="BU CONCERT BAND SPRING 1"><video controls preload="none" poster="assets/img/video-posters/bucbs1.jpg" src="assets/video/2026 bucbs1-005.mov"></video></div><figcaption class="cap-bottom"><span class="title">BU CONCERT BAND SPRING 1</span><span class="note">TSAI PERFORMANCE CENTER</span></figcaption></figure>
+        </div>
+
+        <!-- // ARCHIVE -->
+        <div class="sub-label major"><span class="tag lead"><span class="sl">//</span> ARCHIVE</span><span class="tag">2017 → 2024 · SCHOOL YEARS</span></div>
+        <div class="grid grid-3">
+          <figure class="card"><div class="cap-top"><span class="tag">WINTER 2023</span><span class="tag">[ ALL-CITY · '23 ]</span></div><div class="frame-16x9" data-ph="NYC ALL-CITY CONCERT BAND"><video controls preload="none" poster="assets/img/video-posters/nycaccb-thumb.jpg" src="assets/video/2024 nycaccb.mov"></video></div><figcaption class="cap-bottom"><span class="title">NYC ALL-CITY CONCERT BAND WINTER</span><span class="note">GRAND STREET CAMPUS</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">WINTER 2024</span><span class="tag">[ MIDWOOD · '24 ]</span></div><div class="frame-16x9" data-ph="MIDWOOD WIND ENSEMBLE"><video controls preload="none" poster="assets/img/video-posters/mhswe-winter-0-02.jpg" src="assets/video/2023 mhswe.mov"></video></div><figcaption class="cap-bottom"><span class="title">MIDWOOD WIND ENSEMBLE WINTER</span><span class="note">MIDWOOD HIGH SCHOOL</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">SPRING 2023</span><span class="tag">[ MIDWOOD · '23 ]</span></div><div class="frame-16x9" data-ph="MIDWOOD WIND ENSEMBLE SPRING"><video controls preload="none" poster="assets/img/video-posters/mhswe-2023-spring.jpg" src="assets/video/2023-mhswe-spring.mov"></video></div><figcaption class="cap-bottom"><span class="title">MIDWOOD WIND ENSEMBLE SPRING</span><span class="note">MIDWOOD HIGH SCHOOL</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">SPRING 2022</span><span class="tag">[ MIDWOOD · '22 ]</span></div><div class="frame-16x9" data-ph="MIDWOOD SYMPHONIC BAND"><video controls preload="none" poster="assets/img/video-posters/mhssb-thumb.jpg" src="assets/video/2022 mhssb.mov"></video></div><figcaption class="cap-bottom"><span class="title">MIDWOOD SYMPHONIC BAND · BROOKLYN ARTS FESTIVAL</span><span class="note">BROOKLYN BOROUGH HALL</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">SPRING 2019</span><span class="tag">[ MS51 · '19 ]</span></div><div class="frame-16x9" data-ph="MS51 CONCERT BAND"><video controls preload="none" poster="assets/img/video-posters/ms51cb.jpg" src="assets/video/2018 ms51cb.mov"></video></div><figcaption class="cap-bottom"><span class="title">M.S. 51 WILLIAM ALEXANDER CONCERT BAND</span><span class="note">MS51 WILLIAM ALEXANDER</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">SPRING 2017</span><span class="tag">[ PS169 · '17 ]</span></div><div class="frame-16x9" data-ph="LITTLE KIDS ROCK CLUB"><video controls preload="none" poster="assets/img/video-posters/lkr-new.jpg" src="assets/video/2016 little kids rock.mov"></video></div><figcaption class="cap-bottom"><span class="title">LITTLE KIDS ROCK CLUB</span><span class="note">PS 169 SUNSET PARK SCHOOL · 2017</span></figcaption></figure>
+        </div>
+
+        <!-- // ADDITIONAL -->
+        <div class="sub-label major"><span class="tag lead"><span class="sl">//</span> ADDITIONAL</span><span class="tag">REHEARSAL · PRODUCTION · VOCALS</span></div>
+        <div class="grid grid-3 music-grid">
+          <div class="card music-audio-card" style="grid-column:1/-1;"><div class="cap-top"><span class="tag">RECORDINGS</span><span class="tag">[ AUDIO FILES ]</span></div><div class="audio-stack"><div class="audio-group"><span class="audio-group-title">REHEARSAL</span><div class="audio-row"><span class="tag">EMPERATA OVERTURE</span><audio controls preload="none" src="assets/audio/nycaccb-emperata-overture.mp3"></audio></div><div class="audio-row"><span class="tag">ARABESQUE</span><audio controls preload="none" src="assets/audio/nycaccb-arabesque.mp3"></audio></div></div><div class="audio-group"><span class="audio-group-title">PRODUCTION</span><div class="audio-row"><span class="tag">SOARING</span><audio controls preload="none" src="assets/video/drive-download-20260609T035415Z-3-001/soaring.mp3"></audio></div><div class="audio-row"><span class="tag">APRICITY</span><audio controls preload="none" src="assets/video/drive-download-20260609T035415Z-3-001/apricity.mp3"></audio></div></div><div class="audio-group"><span class="audio-group-title">VOCALS</span><div class="audio-row"><span class="tag">COFFEE BREATH</span><audio controls preload="none" src="assets/video/drive-download-20260609T035419Z-3-001/coffee%20breath%20cover.mp3"></audio></div><div class="audio-row"><span class="tag">THE CUTEST PAIR</span><audio controls preload="none" src="assets/video/drive-download-20260609T035419Z-3-001/the%20cutest%20pair%20cover.mp3"></audio></div></div></div></div>
+        </div>
+      </section>
+
+      <!-- ===================== 03 // FILM ===================== -->
+      <section class="pane" id="pane-film" role="tabpanel">
+        <div class="module-label"><span class="section-title">[ 03 ] FILM</span><span class="tag">PERSONAL&nbsp;ARCHIVE&nbsp;·&nbsp;CLIPS</span></div>
+        <div class="sub-label"><span class="tag lead"><span class="sl">//</span> STILLS</span><span class="tag">PLACES · PEOPLE</span></div>
+        <div class="stills-layout">
+          <div class="photo-wall">
+            <img src="assets/img/IMG_0252.jpg" alt="IMG 0252" loading="lazy">
+            <img src="assets/img/kbbq-dinner.jpg" alt="GOPCHANG STORY" loading="lazy">
+            <img src="assets/img/innovators-summit.jpg" alt="INSPIRING INNOVATOR SUMMIT" loading="lazy">
+            <img src="assets/img/green-room.jpg" alt="GREEN ROOM" loading="lazy">
+            <img src="assets/img/venue-gathering.jpg" alt="GAME CON" loading="lazy">
+            <img src="assets/img/film-set.jpg" alt="URBAN ARTS SPEAKER" loading="lazy">
+            <img src="assets/img/transit-crew.jpg" alt="LONG BEACH W/ FRIENDS" loading="lazy">
+            <img src="assets/img/coworking-session.jpg" alt="APEX FOR YOUTH" loading="lazy">
+            <img src="assets/img/civichall-workshop.jpg" alt="CIVIC HALL" loading="lazy">
+            <img src="assets/video/reading%20newspaper.png" alt="READING NEWSPAPER" loading="lazy">
+            <img src="assets/video/music%20performance.png" alt="MUSIC PERFORMANCE" loading="lazy">
+          </div>
+        </div>
+        <div class="sub-label"><span class="tag lead"><span class="sl">//</span> CLIPS</span><span class="tag">PERSONAL ARCHIVE</span></div>
+        <div class="grid grid-fluid">
+          <figure class="card"><div class="cap-top"><span class="tag">SUMMER 2024</span><span class="tag">[ NIAGARA FALLS · '24 ]</span></div><div class="frame-16x9" data-ph="FIREWORKS DISPLAY"><video controls preload="none" poster="assets/img/video-posters/fireworks-display.jpg" src="assets/video/fireworks%20display.mov"></video></div><figcaption class="cap-bottom"><span class="title">FIREWORKS DISPLAY</span><span class="note">NIAGARA FALLS, NY</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">SUMMER 2025</span><span class="tag">[ SENIOR YEAR · '25 ]</span></div><div class="frame-16x9" data-ph="POST-GRADUATION DAYS"><video controls preload="none" poster="assets/img/video-posters/montage-2025.jpg" src="assets/video/2025%20(1).mov"></video></div><figcaption class="cap-bottom"><span class="title">POST-GRADUATION DAYS</span><span class="note">NEW YORK, NY</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">WINTER 2024</span><span class="tag">[ JUNIOR YEAR · '24 ]</span></div><div class="frame-16x9" data-ph="APPLICATION SEASON"><video controls preload="none" poster="assets/img/video-posters/montage-2024.jpg" src="assets/video/2024%20(1).mov"></video></div><figcaption class="cap-bottom"><span class="title">APPLICATION SEASON</span><span class="note">NEW YORK, NY</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">OPEN SLOT</span><span class="tag">[ PRIVATE · '26 ]</span></div><div class="frame-16x9" data-ph="DROP_PRIVATE_CLIP // 03"></div><figcaption class="cap-bottom"><span class="title">PRIVATE CLIP_03</span></figcaption></figure>
+        </div>
+
+        <div class="sub-label major"><span class="tag lead"><span class="sl">//</span> MEDIA</span></div>
+        <div class="media-strip">
+          <a href="https://open.spotify.com/user/mkncw5j4rrzm42s2rzb8faky4?si=1d9e641e7bcc40f1" target="_blank" rel="noopener">SPOTIFY</a>
+          <a href="https://www.youtube.com/@peppermintinchai" target="_blank" rel="noopener">YOUTUBE</a>
+          <a href="https://www.instagram.com/peppermintinchai/" target="_blank" rel="noopener">INSTAGRAM</a>
+          <a href="https://letterboxd.com/dtofuu/films/" target="_blank" rel="noopener">LETTERBOXD</a>
+          <a href="https://myanimelist.net/profile/peppermintinchai" target="_blank" rel="noopener">MYANIMELIST</a>
+          <a href="https://mydramalist.com/profile/peppermintinchai" target="_blank" rel="noopener">MYDRAMALIST</a>
+          <a href="https://www.serializd.com/user/peppermintincha/profile" target="_blank" rel="noopener">SERIALIZD</a>
+        </div>
+        <div class="sub-label"><span class="tag lead"><span class="sl">//</span> FAVORITES</span><span class="tag">ANIME · DRAMAS · FILMS</span></div>
+        <div class="logset"><span class="ls-key">ANIME</span><div class="fav-list">91 DAYS • CRAYON SHIN-CHAN • DORAEMON • ERASED • MARCH COMES IN LIKE A LION • TOKYO REVENGERS • YOUR LIE IN APRIL</div></div>
+        <div class="logset"><span class="ls-key">DRAMAS</span><div class="fav-list">BOY HOOD • GO AHEAD • LOVE'S AMBITION • SILENT • THE FIRST FROST • WHERE DOES THE SEA BEGIN</div></div>
+        <div class="logset"><span class="ls-key">FILMS</span><div class="fav-list">ETERNAL SUNSHINE OF THE SPOTLESS MIND • INTERSTELLAR • NATHAN FOR YOU</div></div>
+      </section>
+
+      <!-- ===================== 05 // AVAILABILITY ===================== -->
+      <section class="pane" id="pane-availability" role="tabpanel">
+        <div class="module-label"><span class="section-title">[ 05 ] AVAILABILITY</span><span class="tag">SECURE&nbsp;ZONE&nbsp;//&nbsp;AUTH&nbsp;REQUIRED</span></div>
+        <div class="gate" id="gate">
+          <div class="gate-inner">
+            <div class="gate-head">
+              <div class="prompt">LOCKED // SCHEDULE<span class="cursor"></span></div>
+            </div>
+            <div class="gate-meta">AVAILABILITY AND PRIVATE SCHEDULE DETAILS ARE KEPT BEHIND AN ACCESS KEY.</div>
+            <div class="public-availability"><span class="pa-key">SUMMER FREE WINDOWS //</span> MOST WEEKENDS · MON JUL 20 OPEN · SELECT WEEKDAY AFTERNOONS</div>
+            <form class="gate-form" id="gate-form" autocomplete="off">
+              <input type="password" id="gate-input" placeholder="ACCESS KEY" aria-label="Access key" />
+              <button type="submit">OPEN</button>
+            </form>
+            <div class="msg" id="gate-msg">KEY REQUIRED</div>
+            <div style="margin-top:18px;"><button type="button" class="req-btn avail-open">REQUEST AVAILABILITY &rarr;</button></div>
+          </div>
+        </div>
+        <div class="locked" id="locked-zone">
+          <div class="sub-label schedule-label"><span class="tag lead"><span class="sl">//</span> SCHEDULE</span><span class="tag">2026 TIMELINE</span></div>
+          <div class="spec schedule-table">
+            <div class="schedule-month">June // pre-departure + arrival</div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">BIOECHO CHECK-IN</span><span class="xp-role">REMOTE</span><span class="xp-loc">MONDAYS · UNTIL JUN 22</span></div><div class="xp-r"><span class="xp-date">10:30 AM</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">BIOECHO CHECK-IN</span><span class="xp-role">REMOTE</span><span class="xp-loc">WEDNESDAYS · UNTIL JUN 24</span></div><div class="xp-r"><span class="xp-date">10:30 AM</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">APEX CLOSING DAY</span><span class="xp-role">ALUMNI VOLUNTEER · RIVERDALE COUNTRY SCHOOL</span><span class="xp-loc">SAT · JUN 20, 2026</span></div><div class="xp-r"><span class="xp-date">9:00 AM</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">APEX COTE</span><span class="xp-role">CELEBRATION · 550 MADISON AVE</span><span class="xp-loc">FRI · JUN 26, 2026</span></div><div class="xp-r"><span class="xp-date">12:00 PM</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">LONDON ARRIVAL</span><span class="xp-role">NYC → LONDON</span><span class="xp-loc">SAT · JUN 27, 2026</span></div><div class="xp-r"><span class="xp-date">8:55 PM</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">ORIENTATION</span><span class="xp-role">LONDON PROGRAM · MANDATORY TEAM ACTIVITY</span><span class="xp-loc">MON · JUN 29, 2026</span></div><div class="xp-r"><span class="xp-date">TBD</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">SS CLASS + SCIENCE MUSEUM</span><span class="xp-role">CLASS 9-11, 1-3 · MEET IN CLASSROOM, THEN MUSEUM VISIT</span><span class="xp-loc">TUE · JUN 30, 2026</span></div><div class="xp-r"><span class="xp-date">9:00 AM</span></div></div>
+            <div class="schedule-month">July // London program</div>
+            <div class="schedule-group">Classes</div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">CLASS BLOCK A</span><span class="xp-role">JUL 1, 3, 10, 15, 17, 22, 24, 29, 31, AUG 4 · WED/FRI SCHEDULE</span><span class="xp-loc">JUL 1-AUG 4</span></div><div class="xp-r"><span class="xp-date">11:00 AM</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">CLASS BLOCK B</span><span class="xp-role">JUL 2, 7, 9, 14, 16, 21, 23, 28, 30, AUG 3 · TUE/THU + AUG 3</span><span class="xp-loc">JUL 2-AUG 3</span></div><div class="xp-r"><span class="xp-date">9:00 AM</span></div></div>
+            <div class="schedule-group">Trips / tours / theatre</div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">KEW GARDENS</span><span class="xp-role">DAY TRIP · MANDATORY TEAM ACTIVITY</span><span class="xp-loc">MON · JUL 6, 2026</span></div><div class="xp-r"><span class="xp-date">TBD</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">EAST END TOUR</span><span class="xp-role">STREET ART + HISTORY WITH DUNCAN DUFF · JUL 8 OR JUL 9</span><span class="xp-loc">WED/THU · JUL 8-9, 2026</span></div><div class="xp-r"><span class="xp-date">6 OR 8 PM</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">BRIGHTON</span><span class="xp-role">DAY TRIP · MANDATORY TEAM ACTIVITY</span><span class="xp-loc">MON · JUL 13, 2026</span></div><div class="xp-r"><span class="xp-date">8:15 AM</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">WAR HORSE</span><span class="xp-role">NATIONAL THEATRE</span><span class="xp-loc">WED · JUL 15, 2026</span></div><div class="xp-r"><span class="xp-date">7:30 PM</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">IMPERIAL WAR MUSEUM</span><span class="xp-role">FOR RH · ON YOUR OWN THROUGH SUN JUL 20</span><span class="xp-loc">THU · JUL 16, 2026</span></div><div class="xp-r"><span class="xp-date">OPEN</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">PARLIAMENT TOUR</span><span class="xp-role">HALF TEAM · ONE VISIT REQUIRED</span><span class="xp-loc">FRI · JUL 17, 2026</span></div><div class="xp-r"><span class="xp-date">11:00 AM</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">ARCADIA</span><span class="xp-role">PLAY</span><span class="xp-loc">WED · JUL 22, 2026</span></div><div class="xp-r"><span class="xp-date">7:00 PM</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">PARLIAMENT TOUR</span><span class="xp-role">HALF TEAM · ONE VISIT REQUIRED</span><span class="xp-loc">FRI · JUL 24, 2026</span></div><div class="xp-r"><span class="xp-date">11:30 AM</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">CABARET</span><span class="xp-role">LONDON PROGRAM THEATRE</span><span class="xp-loc">MON · JUL 27, 2026</span></div><div class="xp-r"><span class="xp-date">6:00 PM</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">RISING VOICES AT V&amp;A</span><span class="xp-role">IN HU CLASS · CONTEMPORARY ART FROM ASIA, AUSTRALIA AND THE PACIFIC</span><span class="xp-loc">TUE/WED · JUL 28-29, 2026</span></div><div class="xp-r"><span class="xp-date">CLASS TIME</span></div></div>
+            <div class="schedule-month">August // wrap-up</div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">READING DAY</span><span class="xp-role">CONTINGENCY DAY · STAY IN LONDON</span><span class="xp-loc">WED · AUG 5, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">EXAM DAYS</span><span class="xp-role">LONDON PROGRAM FINALS</span><span class="xp-loc">THU-FRI · AUG 6-7, 2026</span></div><div class="xp-r"><span class="xp-date">TBD</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">LONDON RETURN</span><span class="xp-role">LONDON → NYC</span><span class="xp-loc">SAT · AUG 8, 2026</span></div><div class="xp-r"><span class="xp-date">12:30 PM</span></div></div>
+            <div class="schedule-month">September-December // fall semester</div>
+            <div class="schedule-group">Weekly class pattern · starts Sep 2</div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">FALL CLASSES</span><span class="xp-role">9:05 AM-1:10 PM · CALCULUS, COMPUTER SCIENCE, BIOLOGY // 4:30-6:15 PM · ELECTRONIC MUSIC</span><span class="xp-loc">MONDAYS</span></div><div class="xp-r"><span class="xp-date">WEEKLY</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">FALL CLASSES</span><span class="xp-role">8:00 AM-10:20 AM · AGENTS OF GLOBAL CHANGE // 11:30 AM-12:20 PM · COMPUTER SCIENCE LAB</span><span class="xp-loc">TUESDAYS</span></div><div class="xp-r"><span class="xp-date">WEEKLY</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">FALL CLASSES</span><span class="xp-role">9:05 AM-1:10 PM · CALCULUS, COMPUTER SCIENCE, BIOLOGY // 4:30-7:45 PM · CALC DIS + CS EVENING LEC</span><span class="xp-loc">WEDNESDAYS</span></div><div class="xp-r"><span class="xp-date">WEEKLY</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">FALL CLASSES</span><span class="xp-role">9:30-10:20 AM · GLOBAL CHANGE DIS // 12:30-3:15 PM · BIOLOGY LAB // 6:30-8:30 PM · CALCULUS</span><span class="xp-loc">THURSDAYS</span></div><div class="xp-r"><span class="xp-date">WEEKLY</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">FALL CLASSES</span><span class="xp-role">9:05 AM-1:10 PM · CALCULUS, COMPUTER SCIENCE, BIOLOGY</span><span class="xp-loc">FRIDAYS</span></div><div class="xp-r"><span class="xp-date">WEEKLY</span></div></div>
+            <div class="schedule-group">Academic dates</div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">CLASSES BEGIN</span><span class="xp-role">FALL 2026 SEMESTER</span><span class="xp-loc">WED · SEP 2, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">HOLIDAY</span><span class="xp-role">CLASSES SUSPENDED</span><span class="xp-loc">MON · SEP 7, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">INDIGENOUS PEOPLE'S DAY</span><span class="xp-role">CLASSES SUSPENDED</span><span class="xp-loc">MON · OCT 12, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">THANKSGIVING RECESS</span><span class="xp-role">NO CLASSES</span><span class="xp-loc">WED-SUN · NOV 25-29, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">LAST DAY OF CLASSES</span><span class="xp-role">FALL 2026 SEMESTER</span><span class="xp-loc">THU · DEC 10, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">STUDY PERIOD</span><span class="xp-role">FINAL PREP</span><span class="xp-loc">FRI-SUN · DEC 11-13, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">FINAL EXAMS</span><span class="xp-role">BEGIN DEC 14 · END DEC 18</span><span class="xp-loc">MON-FRI · DEC 14-18, 2026</span></div><div class="xp-r"><span class="xp-date">TBD</span></div></div>
+          </div>
+          <div class="sub-label" style="border-bottom:none;"><span class="tag">SCHEDULE // PRIVATE VIEW</span><button type="button" class="req-btn avail-open">REQUEST AVAILABILITY &rarr;</button></div>
+        </div>
+      </section>
+
+      <!-- ===================== 06 // CONTEXT ===================== -->
+    </div><!-- /panes -->
+
+    <footer>
+      <span class="tag">&copy;&nbsp;2026&nbsp;PEPPERMINTINCHAI</span>
+      <span class="tag">VAULT&nbsp;V3.1&nbsp;//&nbsp;ALL&nbsp;SYSTEMS&nbsp;NOMINAL<span class="blink"></span></span>
+    </footer>
+
+  </main>
+
+  <!-- ================= REQUEST CREDENTIALS MODAL ================= -->
+  <div id="cred-modal" class="req-modal credential-modal" role="dialog" aria-modal="true" aria-label="Request credentials">
+    <div class="req-box">
+      <div class="req-head"><span class="rh-t" id="cred-title">REQUEST CREDENTIALS & REFERENCES</span><button type="button" class="req-close" id="cred-close">CLOSE &times;</button></div>
+      <form id="cred-form" autocomplete="off">
+        <input type="hidden" id="cred-kind" name="request_type" value="credentials" />
+        <label class="req-label" for="cred-name">NAME</label>
+        <input class="req-input" id="cred-name" name="name" type="text" placeholder="your name" autocomplete="off" required />
+        <label class="req-label" for="cred-email">EMAIL ADDRESS</label>
+        <input class="req-input" id="cred-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
+        <span class="req-label">WHAT DO YOU NEED?</span>
+        <div class="choice-grid" role="group" aria-label="Credential request reasons">
+          <label class="choice-pill"><input type="checkbox" name="credential_reason" value="Certificates" />Certificates</label>
+          <label class="choice-pill"><input type="checkbox" name="credential_reason" value="References" />References</label>
+        </div>
+        <label class="req-label" for="cred-message">MESSAGE</label>
+        <textarea class="req-textarea chat-bubble-input" id="cred-message" name="message" placeholder="tell me what credentials or context would be helpful"></textarea>
+        <button type="submit" class="req-btn req-send" id="cred-send">SEND &rarr;</button>
+        <div class="req-status" id="cred-status"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= REQUEST AVAILABILITY MODAL ================= -->
+  <div id="avail-modal" class="req-modal availability-modal" role="dialog" aria-modal="true" aria-label="Request availability">
+    <div class="req-box">
+      <div class="req-head"><span class="rh-t">REQUEST AVAILABILITY</span><button type="button" class="req-close" id="avail-close">CLOSE &times;</button></div>
+      <form id="avail-form" autocomplete="off">
+        <input type="hidden" name="request_type" value="availability" />
+        <label class="req-label" for="avail-name">NAME</label>
+        <input class="req-input" id="avail-name" name="name" type="text" placeholder="your name" autocomplete="off" required />
+        <label class="req-label" for="avail-email">EMAIL ADDRESS</label>
+        <input class="req-input" id="avail-email" name="availability_email" type="email" placeholder="type email fresh" autocomplete="off" autocapitalize="none" spellcheck="false" data-lpignore="true" data-1p-ignore="true" required />
+        <span class="req-label">THINGS TO ASK ABOUT</span>
+        <div class="choice-grid" role="group" aria-label="Things to ask about">
+          <label class="choice-pill"><input type="checkbox" name="ask_about" value="Music" />Music</label>
+          <label class="choice-pill"><input type="checkbox" name="ask_about" value="Art" />Art</label>
+          <label class="choice-pill"><input type="checkbox" name="ask_about" value="Game Dev" />Game Dev</label>
+          <label class="choice-pill"><input type="checkbox" name="ask_about" value="Film" />Film</label>
+        </div>
+        <label class="req-label" for="avail-message">MESSAGE</label>
+        <textarea class="req-textarea chat-bubble-input" id="avail-message" name="message" placeholder="tell me a little more about what you want to connect on"></textarea>
+        <button type="submit" class="req-btn req-send" id="avail-send">SEND &rarr;</button>
+        <div class="req-status" id="avail-status"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= INTERNAL MEDIA WINDOWS ================= -->
+  <div id="media-desktop" class="media-desktop" aria-live="polite"></div>
+
+  <script>
+    /* UI SOUND — subtle Web Audio ticks on boot/menu interactions */
+    (function () {
+      var ctx;
+      function audioCtx() {
+        if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+        if (ctx.state === 'suspended') ctx.resume();
+        return ctx;
+      }
+      function tone(freq, start, dur, gain) {
+        var ac = audioCtx();
+        var osc = ac.createOscillator();
+        var vol = ac.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, ac.currentTime + start);
+        vol.gain.setValueAtTime(0.0001, ac.currentTime + start);
+        vol.gain.exponentialRampToValueAtTime(gain, ac.currentTime + start + 0.012);
+        vol.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime + start + dur);
+        osc.connect(vol).connect(ac.destination);
+        osc.start(ac.currentTime + start);
+        osc.stop(ac.currentTime + start + dur + 0.02);
+      }
+      window.vaultSound = {
+        menu: function () { try { tone(520, 0, 0.08, 0.022); tone(780, 0.055, 0.07, 0.014); } catch (e) {} },
+        open: function () { try { tone(360, 0, 0.09, 0.018); tone(640, 0.065, 0.1, 0.018); } catch (e) {} },
+        unlock: function () { try { tone(440, 0, 0.07, 0.018); tone(660, 0.055, 0.08, 0.02); tone(990, 0.13, 0.12, 0.016); } catch (e) {} },
+        deny: function () { try { tone(180, 0, 0.12, 0.02); } catch (e) {} }
+      };
+    })();
+    /* THEME */
+    (function () {
+      var saved = 'black-cherry';
+      var btns = Array.prototype.slice.call(document.querySelectorAll('.sw'));
+      function apply(t) { document.body.setAttribute('data-theme', t); btns.forEach(function (b) { b.classList.toggle('active', b.dataset.themeSet === t); }); try { localStorage.setItem('vault-theme', t); } catch (e) {} }
+      apply(saved);
+      btns.forEach(function (b) { b.addEventListener('click', function () { if (window.vaultSound) window.vaultSound.menu(); apply(b.dataset.themeSet); }); });
+    })();
+    /* BOOT */
+    (function () {
+      var boot = document.getElementById('boot'), ack = document.getElementById('boot-ack');
+      ack.addEventListener('click', function () { if (window.vaultSound) window.vaultSound.open(); boot.classList.add('done'); document.body.classList.remove('booting'); setTimeout(function () { boot.style.display = 'none'; }, 450); });
+    })();
+    /* TABS */
+    (function () {
+      var tabs = Array.prototype.slice.call(document.querySelectorAll('.tab'));
+      var panes = Array.prototype.slice.call(document.querySelectorAll('.pane'));
+      function stopMedia() {
+        document.querySelectorAll('audio, video').forEach(function (m) { try { m.pause(); } catch (e) {} });
+        document.querySelectorAll('.frame-16x9 iframe').forEach(function (f) { f.src = f.src; });
+      }
+      function activate(id) {
+        stopMedia();
+        tabs.forEach(function (t) { t.classList.toggle('active', t.dataset.target === id); });
+        panes.forEach(function (p) { p.classList.toggle('active', p.id === id); });
+        var pc = document.querySelector('.panes');
+        if (pc) window.scrollTo({ top: pc.offsetTop - 4, behavior: 'smooth' });
+      }
+      tabs.forEach(function (t) { t.addEventListener('click', function () { if (window.vaultSound) window.vaultSound.menu(); activate(t.dataset.target); }); });
+    })();
+    /* REQUEST FORMS */
+    (function () {
+      var FORMSPREE = 'https://formspree.io/f/xrevkwaq';
+
+      var credModal = document.getElementById('cred-modal');
+      var credOpen = Array.prototype.slice.call(document.querySelectorAll('.cred-open'));
+      var credClose = document.getElementById('cred-close');
+      var credForm = document.getElementById('cred-form');
+      var credTitle = document.getElementById('cred-title');
+      var credKind = document.getElementById('cred-kind');
+      var credName = document.getElementById('cred-name');
+      var credEmail = document.getElementById('cred-email');
+      var credStatus = document.getElementById('cred-status');
+
+      var availModal = document.getElementById('avail-modal');
+      var availOpen = Array.prototype.slice.call(document.querySelectorAll('.avail-open'));
+      var availClose = document.getElementById('avail-close');
+      var availForm = document.getElementById('avail-form');
+      var availName = document.getElementById('avail-name');
+      var availEmail = document.getElementById('avail-email');
+      var availStatus = document.getElementById('avail-status');
+
+      function openModal(modal, status) {
+        if (window.vaultSound) window.vaultSound.open();
+        status.textContent = '';
+        status.className = 'req-status';
+        modal.classList.add('open');
+      }
+      function closeModal(modal) { modal.classList.remove('open'); }
+      function sendForm(form, status, onDone) {
+        status.textContent = 'SENDING...';
+        status.className = 'req-status';
+        fetch(FORMSPREE, { method: 'POST', headers: { 'Accept': 'application/json' }, body: new FormData(form) })
+          .then(function (r) {
+            if (!r.ok) throw new Error('bad');
+            status.textContent = 'SENT - THANK YOU';
+            status.className = 'req-status ok';
+            if (window.vaultSound) window.vaultSound.unlock();
+            form.reset();
+            if (onDone) window.setTimeout(onDone, 1400);
+          })
+          .catch(function () {
+            status.textContent = 'SEND FAILED - PLEASE TRY AGAIN';
+            status.className = 'req-status err';
+            if (window.vaultSound) window.vaultSound.deny();
+          });
+      }
+
+      credOpen.forEach(function (button) {
+        button.addEventListener('click', function () {
+          var kind = button.dataset.credentialKind || 'credentials';
+          credKind.value = kind;
+          credTitle.textContent = 'REQUEST CREDENTIALS & REFERENCES';
+          openModal(credModal, credStatus);
+          credName.value = '';
+          credEmail.value = '';
+          credName.focus();
+        });
+      });
+      credClose.addEventListener('click', function () { closeModal(credModal); });
+      credModal.addEventListener('click', function (e) { if (e.target === credModal) closeModal(credModal); });
+      credForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var checked = credForm.querySelectorAll('input[name="credential_reason"]:checked');
+        if (!credName.value.trim()) { credStatus.textContent = 'NAME REQUIRED'; credStatus.className = 'req-status err'; return; }
+        if (!credEmail.value.trim()) { credStatus.textContent = 'EMAIL REQUIRED'; credStatus.className = 'req-status err'; return; }
+        if (!checked.length) { credStatus.textContent = 'SELECT AT LEAST ONE REASON'; credStatus.className = 'req-status err'; return; }
+        sendForm(credForm, credStatus, function () { closeModal(credModal); });
+      });
+
+      availOpen.forEach(function (button) {
+        button.addEventListener('click', function () {
+          openModal(availModal, availStatus);
+          availName.value = '';
+          availEmail.value = '';
+          availName.focus();
+        });
+      });
+      availClose.addEventListener('click', function () { closeModal(availModal); });
+      availModal.addEventListener('click', function (e) { if (e.target === availModal) closeModal(availModal); });
+      availForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var checked = availForm.querySelectorAll('input[name="ask_about"]:checked');
+        if (!availName.value.trim()) { availStatus.textContent = 'NAME REQUIRED'; availStatus.className = 'req-status err'; return; }
+        if (!availEmail.value.trim()) { availStatus.textContent = 'EMAIL REQUIRED'; availStatus.className = 'req-status err'; return; }
+        if (!checked.length) { availStatus.textContent = 'SELECT AT LEAST ONE TOPIC'; availStatus.className = 'req-status err'; return; }
+        sendForm(availForm, availStatus, function () { closeModal(availModal); });
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          closeModal(credModal);
+          closeModal(availModal);
+        }
+      });
+    })();
+
+    /* INTERNAL MEDIA WINDOWS */
+    (function () {
+      var desktop = document.getElementById('media-desktop');
+      if (!desktop) return;
+      var stack = 1121;
+      var count = 0;
+
+      function titleFor(frame) {
+        var figure = frame.closest('figure');
+        var label = figure ? figure.querySelector('.title') : null;
+        return label ? label.textContent.trim() : 'MEDIA';
+      }
+
+      function focusWindow(win) {
+        stack += 1;
+        win.style.zIndex = stack;
+      }
+      function isTextEntry(el) {
+        if (!el) return false;
+        var tag = el.tagName;
+        return el.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || tag === 'BUTTON';
+      }
+      function topMediaVideo() {
+        var videos = Array.prototype.slice.call(desktop.querySelectorAll('.media-window video'));
+        if (!videos.length) return null;
+        videos.sort(function (a, b) {
+          var wa = a.closest('.media-window');
+          var wb = b.closest('.media-window');
+          var za = parseInt(wa ? wa.style.zIndex : 0, 10);
+          var zb = parseInt(wb ? wb.style.zIndex : 0, 10);
+          return zb - za;
+        });
+        return videos[0];
+      }
+      function activePageVideo() {
+        var videos = Array.prototype.slice.call(document.querySelectorAll('video'));
+        return videos.find(function (video) { return !video.paused && !video.ended; }) || null;
+      }
+      function toggleVideo(video) {
+        if (!video) return;
+        if (video.paused || video.ended) video.play().catch(function () {});
+        else video.pause();
+      }
+      function seekVideo(video, seconds) {
+        if (!video || !isFinite(video.duration)) return;
+        video.currentTime = Math.max(0, Math.min(video.duration, video.currentTime + seconds));
+      }
+      function toggleFullscreen(video) {
+        if (!video) return;
+        var target = video.closest('.media-window') || video;
+        if (document.fullscreenElement) {
+          document.exitFullscreen().catch(function () {});
+        } else if (target.requestFullscreen) {
+          target.requestFullscreen().catch(function () {});
+        }
+      }
+
+      function makeDraggable(win, handle) {
+        handle.addEventListener('pointerdown', function (e) {
+          if (e.button !== 0) return;
+          focusWindow(win);
+          var rect = win.getBoundingClientRect();
+          var startX = e.clientX;
+          var startY = e.clientY;
+          var startLeft = rect.left;
+          var startTop = rect.top;
+          handle.setPointerCapture(e.pointerId);
+
+          function move(ev) {
+            var nextLeft = startLeft + ev.clientX - startX;
+            var nextTop = startTop + ev.clientY - startY;
+            nextLeft = Math.max(8, Math.min(window.innerWidth - 80, nextLeft));
+            nextTop = Math.max(8, Math.min(window.innerHeight - 42, nextTop));
+            win.style.left = nextLeft + 'px';
+            win.style.top = nextTop + 'px';
+          }
+          function up() {
+            handle.removeEventListener('pointermove', move);
+            handle.removeEventListener('pointerup', up);
+            handle.removeEventListener('pointercancel', up);
+          }
+          handle.addEventListener('pointermove', move);
+          handle.addEventListener('pointerup', up);
+          handle.addEventListener('pointercancel', up);
+        });
+      }
+
+      function makeResizable(win) {
+        var dirs = ['n', 'e', 's', 'w', 'ne', 'nw', 'se', 'sw'];
+        dirs.forEach(function (dir) {
+          var handle = document.createElement('span');
+          handle.className = 'resize-handle resize-' + dir;
+          handle.setAttribute('aria-hidden', 'true');
+          win.appendChild(handle);
+          handle.addEventListener('pointerdown', function (e) {
+            if (e.button !== 0) return;
+            e.preventDefault();
+            e.stopPropagation();
+            focusWindow(win);
+            var rect = win.getBoundingClientRect();
+            var startX = e.clientX;
+            var startY = e.clientY;
+            var minW = 260;
+            var minH = 190;
+            var maxW = window.innerWidth - 18;
+            var maxH = window.innerHeight - 18;
+            handle.setPointerCapture(e.pointerId);
+
+            function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
+            function move(ev) {
+              var dx = ev.clientX - startX;
+              var dy = ev.clientY - startY;
+              var left = rect.left;
+              var top = rect.top;
+              var width = rect.width;
+              var height = rect.height;
+
+              if (dir.indexOf('e') !== -1) width = clamp(rect.width + dx, minW, maxW - rect.left);
+              if (dir.indexOf('s') !== -1) height = clamp(rect.height + dy, minH, maxH - rect.top);
+              if (dir.indexOf('w') !== -1) {
+                width = clamp(rect.width - dx, minW, rect.right - 8);
+                left = rect.right - width;
+              }
+              if (dir.indexOf('n') !== -1) {
+                height = clamp(rect.height - dy, minH, rect.bottom - 8);
+                top = rect.bottom - height;
+              }
+
+              win.style.left = left + 'px';
+              win.style.top = top + 'px';
+              win.style.width = width + 'px';
+              win.style.height = height + 'px';
+            }
+            function up() {
+              handle.removeEventListener('pointermove', move);
+              handle.removeEventListener('pointerup', up);
+              handle.removeEventListener('pointercancel', up);
+            }
+            handle.addEventListener('pointermove', move);
+            handle.addEventListener('pointerup', up);
+            handle.addEventListener('pointercancel', up);
+          });
+        });
+      }
+
+      function openWindow(frame) {
+        var sourceVideo = frame.querySelector('video');
+        var sourceIframe = frame.querySelector('iframe');
+        if (!sourceVideo && !sourceIframe) return;
+        count += 1;
+        if (window.vaultSound) window.vaultSound.open();
+
+        var win = document.createElement('section');
+        var portrait = frame.classList.contains('frame-portrait') || frame.dataset.popout === 'portrait';
+        win.className = 'media-window' + (portrait ? ' portrait' : '');
+        win.setAttribute('role', 'dialog');
+        win.setAttribute('aria-label', titleFor(frame));
+        var targetW = portrait ? Math.min(390, window.innerWidth - 28) : Math.min(920, window.innerWidth - 28);
+        var targetH = portrait ? Math.min(610, window.innerHeight - 28) : Math.min(550, window.innerHeight - 28);
+        var offset = Math.min(count - 1, 3) * 18;
+        win.style.width = Math.max(280, targetW) + 'px';
+        win.style.height = Math.max(220, targetH) + 'px';
+        win.style.left = Math.max(9, Math.min((window.innerWidth - targetW) / 2 + offset, window.innerWidth - targetW - 9)) + 'px';
+        win.style.top = Math.max(54, Math.min((window.innerHeight - targetH) / 2 + offset, window.innerHeight - targetH - 9)) + 'px';
+        focusWindow(win);
+
+        var head = document.createElement('div');
+        head.className = 'media-head';
+        var title = document.createElement('span');
+        title.className = 'media-title';
+        title.textContent = titleFor(frame);
+        var actions = document.createElement('span');
+        actions.className = 'media-actions';
+        var close = document.createElement('button');
+        close.type = 'button';
+        close.className = 'media-close';
+        close.setAttribute('aria-label', 'Close media window');
+        close.innerHTML = '&times;';
+        actions.appendChild(close);
+        head.appendChild(title);
+        head.appendChild(actions);
+
+        var stage = document.createElement('div');
+        stage.className = 'media-stage';
+
+        if (sourceVideo) {
+          var video = document.createElement('video');
+          video.src = sourceVideo.currentSrc || sourceVideo.getAttribute('src');
+          video.poster = sourceVideo.getAttribute('poster') || '';
+          video.controls = true;
+          video.autoplay = true;
+          video.playsInline = true;
+          stage.appendChild(video);
+          video.play().catch(function () {});
+        } else if (sourceIframe) {
+          var iframe = document.createElement('iframe');
+          iframe.src = sourceIframe.getAttribute('src');
+          iframe.allow = sourceIframe.getAttribute('allow') || 'autoplay';
+          iframe.allowFullscreen = true;
+          iframe.loading = 'lazy';
+          stage.appendChild(iframe);
+        }
+
+        win.appendChild(head);
+        win.appendChild(stage);
+        desktop.appendChild(win);
+        makeDraggable(win, head);
+        makeResizable(win);
+        win.addEventListener('pointerdown', function () { focusWindow(win); });
+        close.addEventListener('click', function () { win.remove(); });
+      }
+
+      document.querySelectorAll('.frame-16x9').forEach(function (frame) {
+        if (!frame.querySelector('video, iframe')) return;
+        if (frame.querySelector('.media-pop-trigger')) return;
+        var video = frame.querySelector('video');
+        if (video) video.controls = false;
+        var button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'media-pop-trigger';
+        button.setAttribute('aria-label', 'Open floating media player');
+        button.innerHTML = '<span></span><em>PLAY</em>';
+        button.addEventListener('click', function () {
+          openWindow(frame);
+        });
+        frame.appendChild(button);
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+          var wins = desktop.querySelectorAll('.media-window');
+          if (wins.length) wins[wins.length - 1].remove();
+        } else if ((e.code === 'Space' || e.key === ' ') && !isTextEntry(document.activeElement)) {
+          var video = topMediaVideo() || activePageVideo();
+          if (video) {
+            e.preventDefault();
+            toggleVideo(video);
+          }
+        } else if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && !isTextEntry(document.activeElement)) {
+          var seekTarget = topMediaVideo() || activePageVideo();
+          if (seekTarget) {
+            e.preventDefault();
+            seekVideo(seekTarget, e.key === 'ArrowLeft' ? -15 : 15);
+          }
+        } else if ((e.key === 'f' || e.key === 'F') && !isTextEntry(document.activeElement)) {
+          var fullscreenTarget = topMediaVideo() || activePageVideo();
+          if (fullscreenTarget) {
+            e.preventDefault();
+            toggleFullscreen(fullscreenTarget);
+          }
+        }
+      });
+    })();
+
+    /* CUSTOM AUDIO ROWS */
+    (function () {
+      function fmt(seconds) {
+        if (!isFinite(seconds) || seconds < 0) return '0:00';
+        var m = Math.floor(seconds / 60);
+        var s = Math.floor(seconds % 60);
+        return m + ':' + String(s).padStart(2, '0');
+      }
+
+      document.querySelectorAll('.music-audio-card audio').forEach(function (audio) {
+        if (audio.classList.contains('enhanced')) return;
+        audio.classList.add('enhanced');
+        audio.controls = false;
+
+        var ui = document.createElement('div');
+        ui.className = 'audio-ui';
+        var play = document.createElement('button');
+        play.type = 'button';
+        play.className = 'audio-play';
+        play.setAttribute('aria-label', 'Play audio');
+        play.textContent = '▶';
+        var track = document.createElement('div');
+        track.className = 'audio-track';
+        var fill = document.createElement('span');
+        fill.className = 'audio-fill';
+        track.appendChild(fill);
+        var time = document.createElement('span');
+        time.className = 'audio-time';
+        time.textContent = '0:00';
+        ui.appendChild(play);
+        ui.appendChild(track);
+        ui.appendChild(time);
+        audio.insertAdjacentElement('afterend', ui);
+
+        play.addEventListener('click', function () {
+          document.querySelectorAll('.music-audio-card audio').forEach(function (other) {
+            if (other !== audio) other.pause();
+          });
+          if (audio.paused) audio.play().catch(function () {});
+          else audio.pause();
+        });
+        track.addEventListener('click', function (e) {
+          if (!audio.duration) return;
+          var rect = track.getBoundingClientRect();
+          audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+        });
+        audio.addEventListener('play', function () { play.textContent = 'Ⅱ'; });
+        audio.addEventListener('pause', function () { play.textContent = '▶'; });
+        audio.addEventListener('ended', function () { play.textContent = '▶'; });
+        audio.addEventListener('timeupdate', function () {
+          var pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+          fill.style.width = pct + '%';
+          time.textContent = fmt(audio.currentTime) + ' / ' + fmt(audio.duration);
+        });
+        audio.addEventListener('loadedmetadata', function () {
+          time.textContent = '0:00 / ' + fmt(audio.duration);
+        });
+      });
+    })();
+
+    /* VIDEO CONTROLS */
+    (function () {
+      function vfmt(seconds) {
+        if (!seconds || !isFinite(seconds)) return '0:00';
+        var m = Math.floor(seconds / 60);
+        var s = Math.floor(seconds % 60);
+        return m + ':' + String(s).padStart(2, '0');
+      }
+      document.querySelectorAll('.frame-16x9 video').forEach(function (video) {
+        if (video.dataset.enhanced) return;
+        video.dataset.enhanced = '1';
+        video.controls = false;
+
+        var ui = document.createElement('div');
+        ui.className = 'video-ui';
+        var play = document.createElement('button');
+        play.type = 'button';
+        play.className = 'video-play';
+        play.setAttribute('aria-label', 'Play video');
+        play.textContent = '▶';
+        var track = document.createElement('div');
+        track.className = 'video-track';
+        var fill = document.createElement('span');
+        fill.className = 'video-fill';
+        track.appendChild(fill);
+        var time = document.createElement('span');
+        time.className = 'video-time';
+        time.textContent = '0:00';
+        ui.appendChild(play);
+        ui.appendChild(track);
+        ui.appendChild(time);
+        video.insertAdjacentElement('afterend', ui);
+
+        function syncUI() {
+          play.textContent = video.paused ? '▶' : '⏸';
+          var pct = video.duration ? (video.currentTime / video.duration) * 100 : 0;
+          fill.style.width = pct + '%';
+          time.textContent = vfmt(video.currentTime) + ' / ' + vfmt(video.duration);
+          if (!video.paused) { ui.classList.add('playing'); } else { ui.classList.remove('playing'); }
+        }
+
+        function togglePlay() {
+          if (video.paused) {
+            document.querySelectorAll('.frame-16x9 video').forEach(function (other) {
+              if (other !== video) other.pause();
+            });
+            video.play().catch(function () {});
+          } else {
+            video.pause();
+          }
+        }
+
+        play.addEventListener('click', function (e) {
+          e.stopPropagation();
+          togglePlay();
+        });
+        track.addEventListener('click', function (e) {
+          e.stopPropagation();
+          if (!video.duration) return;
+          var rect = track.getBoundingClientRect();
+          video.currentTime = ((e.clientX - rect.left) / rect.width) * video.duration;
+        });
+        video.addEventListener('play', syncUI);
+        video.addEventListener('pause', syncUI);
+        video.addEventListener('ended', syncUI);
+        video.addEventListener('timeupdate', syncUI);
+        video.addEventListener('loadedmetadata', syncUI);
+
+        /* show controls on mouse move over frame, hide after 3s idle when playing */
+        var frame = video.closest('.frame-16x9');
+        if (frame) {
+          frame.style.cursor = 'pointer';
+          frame.addEventListener('click', function (e) { if (e.target === frame || e.target === video) togglePlay(); });
+          var hideTimer;
+          frame.addEventListener('mousemove', function () {
+            ui.classList.add('playing');
+            clearTimeout(hideTimer);
+            if (!video.paused) {
+              hideTimer = setTimeout(function () { ui.classList.remove('playing'); }, 3000);
+            }
+          });
+          frame.addEventListener('mouseleave', function () {
+            clearTimeout(hideTimer);
+            if (!video.paused) { setTimeout(function () { ui.classList.remove('playing'); }, 500); }
+          });
+          /* mobile: tap to toggle controls */
+          frame.addEventListener('touchstart', function () {
+            ui.classList.toggle('playing');
+            clearTimeout(hideTimer);
+            hideTimer = setTimeout(function () { if (!video.paused) ui.classList.remove('playing'); }, 4000);
+          }, { passive: true });
+        }
+      });
+    })();
+
+    /* MUSIC AUDIO — now open (gate removed) */
+
+    /* PROOF GATE (cosmetic only) */
+    (function () {
+      var form = document.getElementById('proof-gate-form'), input = document.getElementById('proof-gate-input'),
+          msg = document.getElementById('proof-gate-msg'), gate = document.getElementById('proof-gate'),
+          cards = Array.prototype.slice.call(document.querySelectorAll('.proof-secure')), KEY = 'KEKOUKOLA';
+      if (!form) return;
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if ((input.value || '').trim().toUpperCase() === KEY) {
+          if (window.vaultSound) window.vaultSound.unlock();
+          msg.textContent = 'ACCESS GRANTED'; msg.className = 'proof-msg granted';
+          cards.forEach(function (card) { card.classList.add('unlocked'); });
+          setTimeout(function () { gate.style.display = 'none'; }, 350);
+        } else {
+          if (window.vaultSound) window.vaultSound.deny();
+          msg.textContent = 'KEY NOT RECOGNIZED'; msg.className = 'proof-msg denied';
+          input.value = ''; void msg.offsetWidth;
+        }
+      });
+    })();
+
+    /* GATE (cosmetic only) */
+    (function () {
+      var form = document.getElementById('gate-form'), input = document.getElementById('gate-input'),
+          msg = document.getElementById('gate-msg'), zone = document.getElementById('locked-zone'),
+          gate = document.getElementById('gate'), KEY = 'KEKOUKOLA';
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if ((input.value || '').trim().toUpperCase() === KEY) {
+          if (window.vaultSound) window.vaultSound.unlock();
+          msg.textContent = 'ACCESS_GRANTED // DECRYPTING SCHEDULE'; msg.className = 'msg granted';
+          zone.classList.add('unlocked'); setTimeout(function () { gate.style.display = 'none'; }, 600);
+        } else { if (window.vaultSound) window.vaultSound.deny(); msg.textContent = 'ACCESS_DENIED // RE-AUTHENTICATE'; msg.className = 'msg denied'; input.value = ''; void msg.offsetWidth; }
+      });
+    })();
+  </script>
+</body>
+</html>
