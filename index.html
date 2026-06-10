@@ -1318,7 +1318,7 @@
         var frame = video.closest('.frame-16x9');
         if (frame) {
           frame.style.cursor = 'pointer';
-          frame.addEventListener('click', function (e) { if (e.target === frame || e.target === video) togglePlay(); });
+          frame.addEventListener('click', function () { togglePlay(); });
           var hideTimer;
           frame.addEventListener('mousemove', function () {
             ui.classList.add('playing');
