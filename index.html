@@ -1147,7 +1147,7 @@
       }
 
       document.querySelectorAll('.frame-16x9').forEach(function (frame) {
-        if (!frame.querySelector('video, iframe')) return;
+        if (!frame.querySelector('iframe')) return;
         if (frame.querySelector('.media-pop-trigger')) return;
         var button = document.createElement('button');
         button.type = 'button';
