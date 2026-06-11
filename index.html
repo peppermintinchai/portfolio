@@ -2380,9 +2380,29 @@
         var videos = Array.prototype.slice.call(document.querySelectorAll('video'));
         return videos.find(function (video) { return !video.paused && !video.ended; }) || null;
       }
+      function ensureVideoAudible(video) {
+        if (!video) return;
+        video.removeAttribute('muted');
+        video.defaultMuted = false;
+        video.muted = false;
+        video.playsInline = true;
+        video.setAttribute('playsinline', '');
+        try { video.volume = 1; } catch (e) {}
+      }
+      function playVideoAudibly(video) {
+        if (!video) return;
+        ensureVideoAudible(video);
+        var playAttempt = video.play();
+        if (playAttempt && typeof playAttempt.catch === 'function') {
+          playAttempt.catch(function () {
+            video.autoplay = false;
+            ensureVideoAudible(video);
+          });
+        }
+      }
       function toggleVideo(video) {
         if (!video) return;
-        if (video.paused || video.ended) video.play().catch(function () {});
+        if (video.paused || video.ended) playVideoAudibly(video);
         else video.pause();
       }
       function seekVideo(video, seconds) {
@@ -2534,14 +2554,13 @@
           video.poster = sourceVideo.getAttribute('poster') || '';
           video.controls = true;
           video.autoplay = true;
-          video.muted = false;
-          video.defaultMuted = false;
-          video.volume = 1;
-          video.playsInline = true;
+          video.preload = 'auto';
+          ensureVideoAudible(video);
+          video.addEventListener('loadedmetadata', function () { ensureVideoAudible(video); });
+          video.addEventListener('canplay', function () { ensureVideoAudible(video); }, { once: true });
+          video.addEventListener('play', function () { ensureVideoAudible(video); });
           stage.appendChild(video);
-          video.play().catch(function () {
-            video.autoplay = false;
-          });
+          playVideoAudibly(video);
         } else if (sourceIframe || sourceEmbed) {
           var iframe = document.createElement('iframe');
           iframe.src = sourceEmbed || sourceIframe.getAttribute('src');
@@ -2688,14 +2707,21 @@
 
     /* VIDEO CONTROLS */
     (function () {
+      function prepVideo(video) {
+        video.removeAttribute('muted');
+        video.defaultMuted = false;
+        video.muted = false;
+        video.playsInline = true;
+        video.setAttribute('playsinline', '');
+        try { video.volume = 1; } catch (e) {}
+      }
       document.querySelectorAll('.frame-16x9 video').forEach(function (video) {
         if (video.dataset.enhanced) return;
         video.dataset.enhanced = '1';
         video.controls = false;
-        video.muted = false;
-        video.defaultMuted = false;
-        video.volume = 1;
-        video.playsInline = true;
+        prepVideo(video);
+        video.addEventListener('loadedmetadata', function () { prepVideo(video); });
+        video.addEventListener('play', function () { prepVideo(video); });
       });
     })();
 
