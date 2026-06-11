@@ -24,36 +24,287 @@
   .accent-text { color: var(--accent); }
   .nowrap { white-space: nowrap; }
 
-  /* ---- BOOT ---- */
-  #boot { position: fixed; inset: 0; z-index: 1000; background: rgba(0,0,0,0.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; padding: 24px; transition: opacity .45s ease; }
+  /* ---- BOOT: PLANETBOOT ---- */
+  #boot { position: fixed; inset: 0; z-index: 1000; background: #000; display: flex; align-items: center; justify-content: center; padding: 24px; transition: opacity .45s ease; }
   #boot.done { opacity: 0; pointer-events: none; }
-  .boot-window { width: min(580px, 94vw); background: #000; border: 1px solid var(--accent); border-top: 3px solid var(--accent); box-shadow: 0 0 50px var(--accent-glow); padding: clamp(22px, 4vw, 36px); font-family: var(--mono); }
-  .boot-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; border-bottom: 1px solid var(--accent); padding-bottom: 14px; margin-bottom: 18px; }
-  .boot-head .bh-l { font-size: 11px; letter-spacing: var(--track); color: #fff; text-transform: uppercase; }
-  .boot-head .bh-r { font-size: 10px; letter-spacing: var(--track); color: var(--accent); text-transform: uppercase; }
-  .boot-title { font-size: clamp(12px, 1.6vw, 14px); letter-spacing: 0.08em; color: #fff; text-transform: uppercase; line-height: 1.6; margin-bottom: 18px; }
-  .boot-title .cursor { display:inline-block; width:9px; height:14px; background:var(--accent); margin-left:6px; transform:translateY(2px); animation: blink 1s steps(2,start) infinite; }
-  .diag { font-size: 11px; line-height: 2.0; letter-spacing: 0.04em; color: #888; margin-bottom: 18px; }
-  .diag .line { display: flex; justify-content: space-between; gap: 12px; opacity: 0; transform: translateX(-6px); animation: lineIn .35s ease forwards; text-transform: uppercase; white-space: nowrap; }
-  .diag .line span:first-child { overflow: hidden; text-overflow: ellipsis; }
-  .diag .ok { color: var(--accent); } .diag .lock { color: #fff; }
-  .diag .line:nth-child(1){animation-delay:.12s;} .diag .line:nth-child(2){animation-delay:.32s;}
-  .diag .line:nth-child(3){animation-delay:.52s;} .diag .line:nth-child(4){animation-delay:.72s;}
-  .diag .line:nth-child(5){animation-delay:.92s;} .diag .line:nth-child(6){animation-delay:1.12s;}
-  @keyframes lineIn { to { opacity: 1; transform: none; } }
-  .boot-bar { height: 4px; background: rgba(0,0,0,0.6); border: 1px solid var(--accent); margin-bottom: 22px; position: relative; overflow: hidden; }
-  .boot-bar::after { content:""; position:absolute; inset:0; width:0; background: var(--accent); animation: fill 1.35s ease forwards .18s; }
-  @keyframes fill { to { width: 100%; } }
-  .boot-btn { width: 100%; background: transparent; border: 1px solid var(--accent); color: #fff; font-family: var(--mono); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; padding: 16px; cursor: pointer; opacity: 0; animation: lineIn .32s ease forwards 1.45s; transition: background .2s ease, color .2s ease, box-shadow .2s ease; }
-  .boot-btn:hover { background: var(--accent); color: var(--on-accent); box-shadow: 0 0 24px var(--accent-glow); }
+  .boot-wrap { display: flex; flex-direction: column; align-items: center; gap: clamp(14px, 2vw, 20px); }
+
+  #planetboot-screen {
+    width: min(360px, 80vw);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(12px, 1.8vw, 18px);
+    text-align: center;
+  }
+
+  /* ---- PLANET ---- */
+  .planet-wrap {
+    position: relative;
+    width: clamp(110px, 16vw, 140px);
+    height: clamp(110px, 16vw, 140px);
+    cursor: pointer;
+    transition: transform .6s ease;
+  }
+  .planet-wrap:hover .planet-inner {
+    filter: brightness(0.55);
+  }
+  .planet-wrap.spinning {
+    animation: planetBounce .6s ease;
+  }
+  @keyframes planetBounce {
+    0%   { transform: translateY(0); }
+    25%  { transform: translateY(-28px) scale(0.96); }
+    50%  { transform: translateY(-14px) scale(1.02); }
+    75%  { transform: translateY(-5px) scale(0.99); }
+    100% { transform: translateY(0) scale(1); }
+  }
+
+  .planet {
+    width: 100%; height: 100%;
+    perspective: 800px;
+  }
+  .planet-inner {
+    width: 100%; height: 100%;
+    position: relative;
+    transform-style: preserve-3d;
+    filter: brightness(0.35);
+    transition: filter .7s ease, transform .55s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Orbital ring (outside 3D rotation) */
+  .planet-ring {
+    position: absolute;
+    width: 130%; height: 50%;
+    top: 25%; left: -15%;
+    border: 1px solid rgba(255,255,255,0.04);
+    border-radius: 50%;
+    transform: rotateX(65deg);
+    pointer-events: none;
+    z-index: 0;
+    box-shadow: 0 0 20px rgba(255,255,255,0.015);
+  }
+  .planet-ring::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.02);
+  }
+
+  /* Shared face styles */
+  .planet-day, .planet-night {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    backface-visibility: hidden;
+    overflow: hidden;
+  }
+
+  /* Day side — craters & atmosphere */
+  .planet-day {
+    background-image:
+      radial-gradient(circle at 72% 22%, rgba(0,0,0,0.08) 0%, transparent 14%),
+      radial-gradient(circle at 22% 55%, rgba(0,0,0,0.06) 0%, transparent 9%),
+      radial-gradient(circle at 65% 72%, rgba(0,0,0,0.05) 0%, transparent 6%),
+      radial-gradient(circle at 40% 12%, rgba(0,0,0,0.04) 0%, transparent 3.5%),
+      radial-gradient(circle at 50% 48%, rgba(0,0,0,0.03) 0%, transparent 2.5%),
+      radial-gradient(ellipse at 30% 20%, rgba(255,255,255,0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 80%, rgba(255,255,255,0.03) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(201,31,50,0.03) 0%, transparent 70%);
+    background-color: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.06);
+    box-shadow:
+      inset 6px -4px 16px rgba(0,0,0,0.15),
+      inset -3px 3px 8px rgba(255,255,255,0.03);
+  }
+  .planet-day::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle at 20% 25%, rgba(255,255,255,0.04) 0%, transparent 35%);
+    pointer-events: none;
+  }
+
+  /* Night side — crescent shadow */
+  .planet-night {
+    transform: rotateY(180deg);
+    background-image:
+      radial-gradient(circle at 25% 50%, rgba(255,255,255,0.05) 0%, transparent 40%),
+      radial-gradient(circle at 20% 15%, rgba(255,255,255,0.06) 1px, transparent 1px),
+      radial-gradient(circle at 75% 30%, rgba(255,255,255,0.04) 0.5px, transparent 0.5px),
+      radial-gradient(circle at 80% 70%, rgba(255,255,255,0.03) 0.8px, transparent 0.8px),
+      radial-gradient(circle at 35% 80%, rgba(255,255,255,0.05) 0.6px, transparent 0.6px),
+      rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.03);
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.2);
+  }
+
+  /* Atmospheric glow overlay */
+  .planet-glow {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    pointer-events: none;
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      rgba(201,31,50,0.015) 60deg,
+      rgba(255,255,255,0.02) 120deg,
+      rgba(201,31,50,0.015) 180deg,
+      transparent 240deg,
+      transparent 360deg
+    );
+    z-index: 2;
+    transition: opacity .4s ease;
+  }
+  .planet-wrap:hover .planet-glow {
+    opacity: 0.6;
+  }
+
+  /* Idle gentle rotation */
+  .planet-inner.idle {
+    animation: planetIdle 6s ease-in-out infinite;
+  }
+  @keyframes planetIdle {
+    0%, 100% { transform: rotateY(0deg); }
+    25% { transform: rotateY(8deg); }
+    75% { transform: rotateY(-8deg); }
+  }
+
+  /* Spin states */
+  .planet-inner.spin-day {
+    transform: rotateY(1080deg);
+  }
+  .planet-inner.spin-night {
+    transform: rotateY(1260deg);
+  }
+
+  /* Spin float */
+  .spin-float {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: clamp(18px, 2.6vw, 24px);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 3;
+  }
+  .spin-float.send {
+    animation: spinUp .7s ease forwards;
+  }
+  @keyframes spinUp {
+    0% { opacity: 1; transform: translate(-50%, -50%) scale(0.5); }
+    40% { opacity: 1; transform: translate(-50%, calc(-50% - 18px)) scale(1.15); }
+    100% { opacity: 0; transform: translate(-50%, calc(-50% - 36px)) scale(0.6); }
+  }
+
+  /* Particles */
+  .planet-particle {
+    position: absolute;
+    pointer-events: none;
+    width: 2px; height: 2px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: partBurst .6s ease forwards;
+  }
+  @keyframes partBurst {
+    0% { opacity: 1; transform: translate(0,0) scale(1); }
+    100% { opacity: 0; transform: translate(var(--dx),var(--dy)) scale(0); }
+  }
+
+  /* ---- LABELS ---- */
+  .planet-label {
+    font-family: var(--mono);
+    font-size: clamp(10px, 1vw, 12px);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    min-height: 1.5em;
+    transition: color .4s ease;
+  }
+  .planet-label.highlight { color: var(--accent); }
+
+  .planet-counter {
+    font-family: var(--mono);
+    font-size: clamp(9px, 0.9vw, 11px);
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.08);
+    min-height: 1.5em;
+    transition: color .3s ease;
+  }
+  .planet-counter.pop { animation: cntPop .35s ease; }
+  @keyframes cntPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); color: var(--accent); }
+    100% { transform: scale(1); }
+  }
+
+  /* Hint */
+  .planet-hint {
+    font-family: var(--mono);
+    font-size: clamp(6.5px, 0.65vw, 7px);
+    color: rgba(255,255,255,0.06);
+    text-align: center;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color .4s ease;
+    min-height: 1em;
+  }
+  .planet-hint:hover { color: rgba(255,255,255,0.14); }
+
+  /* -- SHARED CONTROLS -- */
+  .ritual-action {
+    font-family: var(--mono);
+    font-size: clamp(14px, 1.4vw, 17px);
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.25);
+    min-height: 1.5em;
+    transition: color .3s ease;
+  }
+  .ritual-action.highlight { color: var(--accent); }
+  .ritual-prompt {
+    font-family: var(--mono);
+    font-size: clamp(10px, 0.9vw, 11px);
+    letter-spacing: 0.15em;
+    color: rgba(255,255,255,0.1);
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color .2s ease;
+  }
+  .ritual-prompt:hover { color: rgba(255,255,255,0.25); }
+  .ritual-enter {
+    display: none;
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: clamp(13px, 1.3vw, 15px);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 12px 0;
+    cursor: pointer;
+    text-align: center;
+    margin-top: 4px;
+  }
+  .ritual-enter.show { display: block; animation: enterFade .4s ease forwards; }
+  @keyframes enterFade {
+    0% { opacity: 0; transform: translateY(4px); }
+    100% { opacity: 1; transform: none; }
+  }
+  .ritual-enter:hover { text-decoration: underline; text-underline-offset: 5px; }
+
+  @keyframes blink { 50% { opacity: 0; } }
   body.booting { overflow: hidden; }
-  .frame { transition: filter .5s ease, opacity .5s ease, transform .5s ease; }
   body.booting .frame { filter: blur(7px); opacity: .35; transform: scale(0.992); pointer-events: none; }
 
   /* ---- FRAME / HEADER ---- */
   .frame { border-left: 1px solid var(--line); border-right: 1px solid var(--line); max-width: 1600px; margin: 0 auto; min-height: 100vh; }
   header.masthead { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 16px; padding: var(--pad); border-bottom: 1px solid var(--line); }
   .masthead .wordmark { text-transform: uppercase; letter-spacing: var(--track); font-weight: 600; font-size: clamp(15px, 2.2vw, 22px); white-space: nowrap; }
+  .masthead .wordmark .slash { color: var(--accent); margin: 0 0.4em; }
   .masthead .wordmark .slash { color: var(--accent); margin: 0 0.4em; }
   .masthead .meta { text-align: right; line-height: 1.85; }
   .masthead .meta .reg { color: var(--accent); }
@@ -123,10 +374,14 @@
   .cap-bottom { flex-direction: column; }
   .cap-bottom .title { font-size: 11px; letter-spacing: var(--track); text-transform: uppercase; color: var(--fg); overflow-wrap: anywhere; min-width: 0; }
   .cap-bottom .note { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); line-height: 1.5; }
+  .card { position: relative; }
+  .card .memo { position: absolute; top: 50%; left: calc(100% + 12px); transform: translateY(-50%); font-size: 10px; letter-spacing: 0.03em; color: rgba(201,31,50,0.75); line-height: 1.6; font-style: italic; text-transform: none; background: rgba(0,0,0,0.85); padding: 10px 14px; border: 1px solid rgba(201,31,50,0.3); border-radius: 4px; max-width: 220px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease; z-index: 100; white-space: normal; }
+  .card:hover .memo { opacity: 1; }
+  @media (max-width: 760px) { .card .memo { left: 0; top: calc(100% + 8px); transform: none; max-width: 100%; } }
   .desc { font-size: 12px; color: var(--dim); line-height: 1.65; letter-spacing: 0.03em; }
-  .frame-16x9 { position: relative; width: 100%; overflow: hidden; aspect-ratio: 16 / 9; background: linear-gradient(135deg, rgba(255,255,255,0.035), transparent 34%), repeating-linear-gradient(90deg, rgba(255,255,255,0.025) 0, rgba(255,255,255,0.025) 1px, transparent 1px, transparent 12px), var(--frame-b); border: 1px solid rgba(150,150,150,0.18); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.018); }
+  .frame-16x9 { position: relative; width: 100%; overflow: hidden; aspect-ratio: 16 / 9; background: repeating-linear-gradient(45deg,var(--frame-a) 0,var(--frame-a) 1px,transparent 1px,transparent 7px), var(--frame-b); border: 1px solid var(--line); }
   .frame-portrait { aspect-ratio: 9 / 16; width: min(100%, 240px); align-self: center; margin-inline: auto; }
-  .frame-16x9:hover { border-color: rgba(201,31,50,0.48); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02), 0 0 18px rgba(201,31,50,0.10); }
+  .frame-16x9:hover { border-color: var(--accent); }
   .frame-16x9 video, .frame-16x9 img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 1; object-fit: cover; background: #000; }
   .frame-16x9::before { content: attr(data-ph); position: absolute; inset: 0; z-index: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; letter-spacing: var(--track); color: var(--muted); text-transform: uppercase; text-align: center; padding: 12px; }
   .audio-row { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
@@ -134,20 +389,12 @@
   .audio-stack { display: flex; flex-direction: column; gap: 14px; margin-top: 2px; }
   .card audio { width: 100%; height: 34px; }
   .music-audio-card audio.enhanced { display: none; }
-  .audio-ui { position: relative; display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: 10px; border: 1px solid rgba(150,150,150,0.18); background: linear-gradient(135deg, rgba(255,255,255,0.035), transparent 36%), repeating-linear-gradient(90deg, rgba(255,255,255,0.018) 0, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 12px), rgba(7,7,7,0.96); box-shadow: inset 2px 0 0 rgba(201,31,50,0.42), inset 0 0 0 1px rgba(255,255,255,0.018); padding: 9px; min-width: 0; }
-  .audio-ui::after { content: ""; position: absolute; left: 46px; right: 10px; bottom: 5px; height: 1px; background: linear-gradient(90deg, rgba(201,31,50,0.34), transparent); opacity: .6; }
-  .audio-play { width: 30px; height: 30px; border: 1px solid rgba(170,170,170,0.24); background: rgba(255,255,255,0.035); color: var(--accent); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; line-height: 1; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.018); transition: border-color .2s ease, background .2s ease, color .2s ease; }
-  .audio-play:hover { border-color: rgba(201,31,50,0.62); background: rgba(201,31,50,0.14); color: #fff; }
-  .audio-track { position: relative; height: 7px; background: rgba(255,255,255,0.055); overflow: hidden; cursor: pointer; border: 1px solid rgba(127,127,127,0.14); }
-  .audio-fill { position: absolute; inset: 0 auto 0 0; width: 0%; background: linear-gradient(90deg, rgba(201,31,50,0.78), rgba(201,31,50,0.38)); box-shadow: 0 0 10px rgba(201,31,50,0.24); }
-  .audio-time { font-family: var(--mono); color: rgba(255,255,255,0.58); font-size: 10px; letter-spacing: 0.04em; white-space: nowrap; }
-  .video-ui { position: absolute; bottom: 0; left: 0; right: 0; z-index: 2; display: grid; grid-template-columns: 30px 1fr auto; align-items: center; gap: 8px; padding: 8px 10px; background: linear-gradient(0deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 60%, transparent 100%); opacity: 0; transition: opacity .25s ease; pointer-events: none; }
-  .frame-16x9:hover .video-ui, .video-ui.playing { opacity: 1; pointer-events: auto; }
-  .video-play { width: 26px; height: 26px; border: 1px solid rgba(170,170,170,0.24); background: rgba(0,0,0,0.5); color: #fff; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 10px; line-height: 1; border-radius: 0; transition: border-color .2s ease, background .2s ease; flex-shrink: 0; }
-  .video-play:hover { border-color: rgba(201,31,50,0.62); background: rgba(201,31,50,0.18); color: #fff; }
-  .video-track { position: relative; height: 4px; background: rgba(255,255,255,0.1); overflow: hidden; cursor: pointer; min-width: 0; }
-  .video-fill { position: absolute; inset: 0 auto 0 0; width: 0%; background: var(--accent); box-shadow: 0 0 8px rgba(201,31,50,0.3); }
-  .video-time { font-family: var(--mono); color: rgba(255,255,255,0.6); font-size: 9px; letter-spacing: 0.04em; white-space: nowrap; flex-shrink: 0; }
+  .audio-ui { display: grid; grid-template-columns: 34px 1fr auto; align-items: center; gap: 10px; border: 1px solid rgba(127,127,127,0.18); background: linear-gradient(90deg, rgba(201,31,50,0.08), rgba(255,255,255,0.018)); padding: 8px; min-width: 0; }
+  .audio-play { width: 30px; height: 30px; border: 1px solid rgba(127,127,127,0.28); background: rgba(0,0,0,0.35); color: var(--accent); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; line-height: 1; transition: border-color .2s ease, background .2s ease; }
+  .audio-play:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .audio-track { position: relative; height: 6px; background: rgba(127,127,127,0.16); overflow: hidden; cursor: pointer; }
+  .audio-fill { position: absolute; inset: 0 auto 0 0; width: 0%; background: var(--accent); box-shadow: 0 0 12px var(--accent-glow); }
+  .audio-time { font-family: var(--mono); color: var(--dim); font-size: 10px; letter-spacing: 0.04em; white-space: nowrap; }
   .music-grid { gap: 10px; padding: 10px; background: rgba(127,127,127,0.025); border-bottom: 1px solid var(--line); }
   .music-grid .card { border: 1px solid rgba(127,127,127,0.13); background: rgba(255,255,255,0.018); padding: clamp(14px, 2vw, 24px); }
   .music-grid .card:nth-child(n) { border-right: 1px solid rgba(127,127,127,0.13); }
@@ -159,7 +406,7 @@
   .music-audio-card { grid-column: 1 / -1; }
   .music-audio-card .audio-stack { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px 18px; }
   .audio-group { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
-  .audio-group-title { font-size: 10px; letter-spacing: var(--track); color: var(--fg); text-transform: uppercase; padding-bottom: 7px; border-bottom: 1px solid rgba(201,31,50,0.26); text-shadow: 0 0 14px rgba(201,31,50,0.18); }
+  .audio-group-title { font-size: 10px; letter-spacing: var(--track); color: var(--accent); text-transform: uppercase; padding-bottom: 7px; border-bottom: 1px solid rgba(127,127,127,0.16); }
   .music-audio-card .audio-row { margin-top: 0; min-width: 0; padding-top: 10px; border-top: 1px solid rgba(127,127,127,0.12); }
   .audio-group .audio-row:first-of-type { border-top: none; padding-top: 0; }
   .music-audio-card audio { height: 30px; }
@@ -172,21 +419,21 @@
   .vid-link:hover .play::after { border-left-color: var(--accent); }
   .vid-link .open { font-size: 10px; letter-spacing: var(--track); color: var(--dim); text-transform: uppercase; }
   .frame-16x9 iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; z-index: 1; background: #000; }
-  .media-pop-trigger { position: absolute; inset: 0; z-index: 3; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.10); border: 0; cursor: pointer; opacity: 0; transition: opacity .2s ease, background .2s ease; }
-  .frame-16x9:hover .media-pop-trigger, .media-pop-trigger:focus-visible { opacity: 1; background: rgba(0,0,0,0.48); outline: none; }
-  .media-pop-trigger span { width: 42px; height: 42px; border: 1px solid rgba(170,170,170,0.42); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: rgba(7,7,7,0.78); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.025), 0 0 18px rgba(201,31,50,0.12); }
+  .media-pop-trigger { position: absolute; inset: 0; z-index: 3; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.16); border: 0; cursor: pointer; opacity: 0; transition: opacity .2s ease, background .2s ease; }
+  .frame-16x9:hover .media-pop-trigger, .media-pop-trigger:focus-visible { opacity: 1; background: rgba(0,0,0,0.42); outline: none; }
+  .media-pop-trigger span { width: 42px; height: 42px; border: 1px solid rgba(255,255,255,0.72); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.45); box-shadow: 0 0 22px rgba(201,31,50,0.22); }
   .media-pop-trigger span::before { content: ""; width: 0; height: 0; border-left: 11px solid var(--accent); border-top: 7px solid transparent; border-bottom: 7px solid transparent; margin-left: 3px; }
   .media-pop-trigger em { position: absolute; left: 12px; bottom: 10px; font-style: normal; font-size: 10px; letter-spacing: var(--track); color: var(--fg); text-transform: uppercase; }
   .media-desktop { position: fixed; inset: 0; z-index: 1120; pointer-events: none; }
-  .media-window { position: fixed; left: 50%; top: 50%; width: min(920px, calc(100vw - 28px)); height: min(550px, calc(100vh - 28px)); min-width: 320px; min-height: 230px; max-width: calc(100vw - 18px); max-height: calc(100vh - 18px); overflow: hidden; background: #000; border: 1px solid rgba(150,150,150,0.22); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.028), inset 3px 0 0 rgba(201,31,50,0.42), 0 18px 54px rgba(0,0,0,0.62), 0 0 16px rgba(201,31,50,0.08); pointer-events: auto; display: flex; flex-direction: column; animation: reveal .2s ease; }
-  .media-window.portrait { width: min(390px, calc(100vw - 28px)); height: min(610px, calc(100vh - 28px)); }
-  .media-head { height: 31px; flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1px solid rgba(160,160,160,0.18); padding: 0 7px 0 10px; background: linear-gradient(90deg, rgba(255,255,255,0.04), rgba(201,31,50,0.045), rgba(0,0,0,0.1)); cursor: move; user-select: none; touch-action: none; }
+  .media-window { position: fixed; left: 50%; top: 50%; width: min(620px, calc(100vw - 28px)); height: min(390px, calc(100vh - 28px)); min-width: 260px; min-height: 190px; max-width: calc(100vw - 18px); max-height: calc(100vh - 18px); overflow: hidden; background: #000; border: 1px solid rgba(160,160,160,0.24); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.035), inset 3px 0 0 rgba(201,31,50,0.62), 0 18px 54px rgba(0,0,0,0.62), 0 0 18px rgba(201,31,50,0.12); pointer-events: auto; display: flex; flex-direction: column; animation: reveal .2s ease; }
+  .media-window.portrait { width: min(360px, calc(100vw - 28px)); height: min(560px, calc(100vh - 28px)); }
+  .media-head { height: 31px; flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1px solid rgba(160,160,160,0.18); padding: 0 7px 0 10px; background: linear-gradient(90deg, rgba(201,31,50,0.10), rgba(255,255,255,0.025)); cursor: move; user-select: none; touch-action: none; }
   .media-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 9.5px; letter-spacing: var(--track); color: var(--dim); text-transform: uppercase; }
   .media-actions { display: inline-flex; gap: 5px; flex: 0 0 auto; }
   .media-close { width: 22px; height: 22px; background: transparent; border: 1px solid rgba(127,127,127,0.24); color: var(--dim); cursor: pointer; line-height: 1; font-size: 13px; }
   .media-close:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
   .media-stage { position: relative; flex: 1 1 auto; min-height: 0; background: #000; }
-  .media-stage video, .media-stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; object-fit: contain; }
+  .media-stage video, .media-stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; }
   .resize-handle { position: absolute; z-index: 4; opacity: 0; transition: opacity .18s ease, background .18s ease; }
   .media-window:hover .resize-handle { opacity: 1; }
   .resize-n, .resize-s { left: 10px; right: 10px; height: 7px; cursor: ns-resize; }
@@ -203,13 +450,13 @@
   .resize-n:hover, .resize-s:hover { background: rgba(201,31,50,0.16); }
   .resize-e:hover, .resize-w:hover { background: rgba(201,31,50,0.16); }
   @media (max-width: 560px) {
-    .media-window { left: 9px !important; top: 72px !important; width: calc(100vw - 18px) !important; height: min(420px, calc(100vh - 90px)); min-width: 0; }
+    .media-window { left: 9px !important; top: 72px !important; width: calc(100vw - 18px) !important; height: min(360px, calc(100vh - 90px)); }
   }
 
-  /* ---- photo wall (free-flowing stills) ---- */
-  .stills-layout { border-bottom: 1px solid var(--line); }
-  .photo-wall { display: flex; flex-wrap: wrap; gap: 6px; padding: clamp(12px, 2vw, 24px); }
-  .photo-wall img { height: 160px; width: auto; display: block; flex: 0 0 auto; }
+  /* ---- photo wall (compact still grid) ---- */
+  .photo-wall { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; padding: clamp(12px, 2vw, 22px); }
+  .photo-wall img { width: 100%; aspect-ratio: 4 / 3; height: 100%; display: block; object-fit: cover; border: 1px solid var(--line); transition: opacity .3s ease, border-color .2s ease; }
+  .photo-wall img:hover { opacity: .85; }
   /* compact media (lives in FILM) */
   .media-strip { display: flex; flex-wrap: wrap; gap: 8px 18px; padding: var(--pad); border-bottom: 1px solid var(--line); }
   .media-strip a { font-size: 11px; letter-spacing: var(--track); text-transform: uppercase; color: var(--dim); transition: color .2s ease; }
@@ -233,7 +480,9 @@
   @media (max-width: 680px) {
     .mini-gate-inner { max-width: none; }
   }
-  .clip-wall { grid-template-columns: repeat(auto-fit, minmax(220px, 320px)); justify-content: start; gap: 10px; padding: clamp(12px, 2vw, 22px); border-bottom: 1px solid var(--line); background: rgba(127,127,127,0.018); }
+  .private-montage { display: none; }
+  .private-montage.unlocked { display: grid; animation: reveal .5s ease; }
+  .clip-wall { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding: clamp(12px, 2vw, 22px); border-bottom: 1px solid var(--line); background: rgba(127,127,127,0.018); }
   .clip-wall .card { border: 1px solid rgba(127,127,127,0.12); padding: 10px; gap: 8px; background: rgba(255,255,255,0.012); }
   .clip-wall .card:nth-child(n) { grid-column: auto; }
   .clip-wall .cap-top { position: static; pointer-events: auto; }
@@ -244,7 +493,7 @@
   .clip-wall .cap-bottom .title { font-size: 10px; }
   .clip-wall .cap-bottom .note { font-size: 9px; }
   @media (max-width: 900px) {
-    .clip-wall { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+    .clip-wall { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .clip-wall .card:nth-child(n) { grid-column: auto; }
   }
   @media (max-width: 560px) {
@@ -291,10 +540,9 @@
   .xp-loc { grid-column: 1; grid-row: 2; justify-self: start; text-align: left; font-size: 10px; letter-spacing: var(--track); color: var(--muted); text-transform: uppercase; line-height: 1.7; }
   .xp-date { grid-column: 3; grid-row: 1; justify-self: end; text-align: right; font-size: 10px; letter-spacing: var(--track); color: var(--fg); text-transform: uppercase; white-space: nowrap; }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .xp-r .chips { grid-column: 3; grid-row: 2; flex-wrap: nowrap; justify-content: flex-end; justify-self: end; max-width: 100%; min-width: 0; }
-  /* chips wrap naturally */
+  .xp-r .chips { grid-column: 3; grid-row: 2; justify-content: flex-end; justify-self: end; max-width: 320px; }
   /* experience keyword tags — kept boxed but softened so they don't overwhelm */
-  .chip-sm { flex: 0 0 auto; border: 1px solid rgba(127,127,127,0.16); background: rgba(127,127,127,0.05); border-radius: 2px; padding: 5px 10px; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; color: var(--dim); }
+  .chip-sm { border: 1px solid rgba(127,127,127,0.16); background: rgba(127,127,127,0.05); border-radius: 2px; padding: 5px 10px; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--dim); }
   .more-block { border-bottom: 1px solid var(--line); }
   .more-block summary { list-style: none; cursor: pointer; padding: 14px var(--pad); display: flex; justify-content: space-between; align-items: center; gap: 14px; border-bottom: 1px solid var(--line); color: var(--accent); transition: background .2s ease; }
   .more-block summary:hover { background: var(--accent-soft); }
@@ -356,11 +604,8 @@
 
   /* ---- availability gate ---- */
   .gate { padding: clamp(28px, 6vw, 72px) var(--pad); border-bottom: 1px solid var(--line); }
-  .gate-inner { max-width: 860px; display: flex; flex-direction: column; gap: 10px; }
-  .gate-head { display: flex; align-items: flex-start; gap: 18px; }
+  .gate-inner { max-width: 620px; display: flex; flex-direction: column; gap: 10px; }
   .gate .prompt { font-family: var(--font); font-size: 12px; letter-spacing: var(--track); color: var(--fg); text-transform: uppercase; }
-  .public-availability { max-width: 760px; border-left: 1px solid rgba(201,31,50,0.42); padding-left: 12px; font-size: 9.5px; letter-spacing: 0.075em; color: var(--dim); text-transform: uppercase; line-height: 1.65; }
-  .public-availability .pa-key { color: var(--accent); }
   .gate .gate-meta { font-size: 10px; letter-spacing: 0.08em; color: var(--dim); text-transform: uppercase; line-height: 1.6; }
   .gate .prompt .cursor { display:inline-block; width:8px; height:14px; background:var(--accent); margin-left:6px; transform:translateY(2px); animation: blink 1.1s steps(2,start) infinite; }
   .gate-form { display: flex; width: min(100%, 460px); border: 1px solid rgba(127,127,127,0.24); background: rgba(127,127,127,0.035); }
@@ -371,35 +616,21 @@
   .gate .msg { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; min-height: 14px; text-transform: uppercase; color: var(--muted); }
   .gate .msg.denied { color: var(--accent); animation: flash 0.45s steps(2,start) 3; }
   .gate .msg.granted { color: var(--accent); }
-  @media (max-width: 680px) {
-    .gate-head { flex-direction: column; gap: 8px; }
-    .public-availability { max-width: none; }
-  }
   @keyframes flash { to { opacity: 0.25; } }
   .locked { display: none; }
   .locked.unlocked { display: block; animation: reveal .5s ease; }
-  .schedule-label { background: rgba(255,255,255,0.025); border-top: 1px solid rgba(127,127,127,0.16); }
-  .schedule-label .lead { color: var(--fg); }
-  .schedule-label > .tag:last-child { color: var(--accent); }
-  .schedule-table { border-bottom: 1px solid var(--line); }
-  .schedule-table .xp { grid-template-columns: minmax(140px, 0.45fr) minmax(220px, 0.82fr) minmax(260px, 1fr); gap: 4px clamp(16px, 2vw, 26px); padding-block: 11px; }
-  .schedule-table .xp:hover { background: rgba(201,31,50,0.08); }
-  .schedule-table .xp-l, .schedule-table .xp-r { display: contents; }
-  .schedule-table .xp-loc { grid-column: 1; grid-row: 1; justify-self: start; text-align: left; font-size: 10px; letter-spacing: 0.12em; color: rgba(255,255,255,0.82); opacity: .95; }
-  .schedule-table .xp-date { grid-column: 1; grid-row: 2; justify-self: start; text-align: left; font-size: 10px; letter-spacing: 0.1em; color: var(--muted); }
-  .schedule-table .xp-co { grid-column: 2; grid-row: 1 / span 2; align-self: start; font-size: clamp(13px, 1.4vw, 15px); letter-spacing: 0.06em; line-height: 1.45; color: rgba(255,255,255,0.74); font-weight: 500; }
-  .schedule-table .xp-role { grid-column: 3; grid-row: 1 / span 2; max-width: none; font-size: 11px; letter-spacing: 0.04em; line-height: 1.55; color: var(--dim); }
-  .schedule-month { padding: 18px var(--pad) 8px; border-top: 1px solid rgba(201,31,50,0.28); border-bottom: 1px solid rgba(201,31,50,0.2); background: rgba(201,31,50,0.07); font-size: clamp(12px, 1.3vw, 15px); letter-spacing: var(--track); color: var(--accent); text-transform: uppercase; }
-  .schedule-month:first-child { padding-top: 12px; }
-  .schedule-group { padding: 12px var(--pad) 6px; font-size: 10px; letter-spacing: 0.13em; color: var(--muted); text-transform: uppercase; border-bottom: 1px solid rgba(127,127,127,0.08); background: rgba(255,255,255,0.012); }
-  @media (max-width: 680px) {
-    .schedule-table .xp { grid-template-columns: 1fr; }
-    .schedule-table .xp-l, .schedule-table .xp-r { display: flex; }
-    .schedule-table .xp-l { flex-direction: column; gap: 6px; }
-    .schedule-table .xp-r { align-items: flex-start; }
-    .schedule-table .xp-co, .schedule-table .xp-role, .schedule-table .xp-loc, .schedule-table .xp-date { grid-column: auto; grid-row: auto; justify-self: auto; text-align: left; }
-  }
   @keyframes reveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .cal { display: grid; grid-template-columns: repeat(6, 1fr); }
+  @media (max-width: 900px) { .cal { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 480px) { .cal { grid-template-columns: repeat(2, 1fr); } }
+  .cal-cell { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 20px var(--pad); min-height: 130px; display: flex; flex-direction: column; justify-content: space-between; gap: 14px; }
+  .cal-cell:nth-child(6n) { border-right: none; }
+  @media (max-width: 900px) { .cal-cell:nth-child(6n){border-right:1px solid var(--line);} .cal-cell:nth-child(3n){border-right:none;} }
+  @media (max-width: 480px) { .cal-cell:nth-child(3n){border-right:1px solid var(--line);} .cal-cell:nth-child(2n){border-right:none;} }
+  .cal-cell .mo { font-size: 12px; letter-spacing: var(--track); text-transform: uppercase; color: var(--fg); }
+  .cal-cell .blk { font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; line-height: 1.7; color: var(--accent); }
+  .cal-cell .blk .dot { display:inline-block; width:6px; height:6px; margin-right:7px; transform: translateY(-1px); background: var(--accent); }
+
   /* ---- context ---- */
   .blurb { padding: clamp(42px, 7vw, 88px) var(--pad); display: flex; flex-direction: column; align-items: flex-start; text-align: left; }
   .context-layout { width: 100%; display: grid; grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.92fr); gap: clamp(28px, 6vw, 86px); align-items: center; }
@@ -410,13 +641,10 @@
   .map-core .sub { display: block; margin-top: 6px; color: var(--dim); font-size: 10px; letter-spacing: 0.08em; }
   .map-branches { position: relative; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; padding-top: 18px; }
   .map-branches::before { content: ""; position: absolute; top: 0; left: 18%; right: 18%; height: 1px; background: rgba(201,31,50,0.42); }
-  .map-branches.compact { grid-template-columns: 1fr; max-width: 560px; margin: 0 auto; }
-  .map-branches.compact::before { left: 50%; right: auto; width: 1px; height: 18px; }
   .map-node { position: relative; min-height: 86px; border: 1px solid rgba(127,127,127,0.16); background: rgba(255,255,255,0.018); padding: 12px; display: flex; flex-direction: column; gap: 8px; }
   .map-node::before { content: ""; position: absolute; top: -18px; left: 50%; height: 18px; border-left: 1px solid rgba(201,31,50,0.34); }
   .map-node .k { color: var(--accent); font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; }
   .map-node .v { color: var(--dim); font-size: 11px; letter-spacing: 0.06em; line-height: 1.6; text-transform: uppercase; }
-  .map-branches.compact .map-node { align-items: center; text-align: center; }
   @media (max-width: 900px) {
     .context-layout { grid-template-columns: 1fr; align-items: start; }
     .blurb p { max-width: 100%; }
@@ -425,14 +653,14 @@
     .map-branches { grid-template-columns: 1fr; }
     .map-branches::before, .map-node::before { display: none; }
   }
-  .proof-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); border-top: 1px solid var(--line); }
+  .proof-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
   .proof-card { padding: clamp(18px, 3vw, 30px) var(--pad); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; min-height: 128px; }
   .proof-card:last-child { border-right: none; }
   .proof-card.proof-locked { color: var(--dim); background: rgba(127,127,127,0.025); }
   .proof-card .proof-title { font-size: 12px; letter-spacing: var(--track); color: var(--fg); text-transform: uppercase; }
   .proof-card .proof-meta { font-size: 10px; letter-spacing: 0.08em; color: var(--dim); text-transform: uppercase; line-height: 1.6; }
   .proof-card a, .proof-card button { align-self: flex-start; margin-top: auto; }
-  .download-link { display: inline-flex; align-items: center; border: 1px solid var(--accent); color: var(--accent); padding: 9px 14px; font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; font-family: inherit; cursor: pointer; background: transparent; }
+  .download-link { display: inline-flex; align-items: center; border: 1px solid var(--accent); color: var(--accent); padding: 9px 14px; font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; }
   .download-link:hover { background: var(--accent); color: var(--on-accent); }
   .proof-gate { grid-column: span 2; }
   .proof-secure { display: none; }
@@ -453,21 +681,33 @@
 </head>
 <body class="booting" data-theme="black-cherry">
 
-  <!-- ================= BOOT ================= -->
   <div id="boot">
-    <div class="boot-window" role="dialog" aria-label="System initialization">
-      <div class="boot-head"><span class="bh-l">TIFFANY.DONG_VAULT</span><span class="bh-r">V3.1 // SECURE</span></div>
-      <div class="boot-title">BOOT_SEQUENCE: INITIALIZING TIFFANY.DONG_VAULT_V3.0...<span class="cursor"></span></div>
-      <div class="diag">
-        <div class="line"><span>&gt; MOUNTING VAULT PARTITIONS</span><span class="ok">[ OK ]</span></div>
-        <div class="line"><span>&gt; DECRYPTING ARCHIVE INDEX</span><span class="ok">[ OK ]</span></div>
-        <div class="line"><span>&gt; CALIBRATING GAME DEV · ART · MUSIC</span><span class="ok">[ OK ]</span></div>
-        <div class="line"><span>&gt; LINKING MEDIA</span><span class="ok">[ OK ]</span></div>
-        <div class="line"><span>&gt; AUTH MODULE // AVAILABILITY</span><span class="lock">[ LOCKED ]</span></div>
-        <div class="line"><span>&gt; SYSTEM READY</span><span class="ok">[ 100% ]</span></div>
+    <div class="boot-wrap">
+
+      <!-- PLANETBOOT -->
+      <div id="planetboot-screen">
+        <div class="planet-wrap" id="planet-wrap">
+          <div class="planet" id="planet">
+            <div class="planet-inner" id="planet-inner">
+              <div class="planet-day"></div>
+              <div class="planet-night"></div>
+            </div>
+            <div class="planet-ring"></div>
+            <div class="planet-glow"></div>
+          </div>
+          <div class="spin-float" id="spin-float"></div>
+        </div>
+
+        <div class="planet-label" id="planet-label">✦ spin the planet ✦</div>
+        <div class="planet-counter" id="planet-counter"></div>
+        <div class="planet-hint" id="planet-hint">click to skip</div>
       </div>
-      <div class="boot-bar"></div>
-      <button class="boot-btn" id="boot-ack">[ ACKNOWLEDGE // ACCESS SYSTEM ]</button>
+
+      <!-- Controls -->
+      <div class="ritual-action" id="ritual-action"></div>
+      <div class="ritual-prompt" id="ritual-prompt">click to skip</div>
+      <button class="ritual-enter" id="ritual-enter">enter →</button>
+
     </div>
   </div>
 
@@ -489,8 +729,8 @@
 
     <!-- ================= TABS ================= -->
     <nav class="tabs" role="tablist" aria-label="Archive navigation">
-      <button class="tab active" data-target="pane-projects" role="tab"><span class="t-idx">01</span><span class="t-name">GAME DEV</span></button>
-      <button class="tab" data-target="pane-film" role="tab"><span class="t-idx">02</span><span class="t-name">FILM</span></button>
+      <button class="tab active" data-target="pane-film" role="tab"><span class="t-idx">01</span><span class="t-name">FILM</span></button>
+      <button class="tab" data-target="pane-projects" role="tab"><span class="t-idx">02</span><span class="t-name">GAME DEV</span></button>
       <button class="tab" data-target="pane-music" role="tab"><span class="t-idx">03</span><span class="t-name">MUSIC</span></button>
       <button class="tab" data-target="pane-art" role="tab"><span class="t-idx">04</span><span class="t-name">ART</span></button>
       <button class="tab" data-target="pane-resume" role="tab"><span class="t-idx">05</span><span class="t-name">RESUME</span></button>
@@ -506,36 +746,32 @@
 
         <div class="sub-label major"><span class="tag lead"><span class="sl">//</span> EDUCATION</span></div>
         <div class="spec">
-          <div class="xp"><div class="xp-l"><span class="xp-co">BOSTON UNIVERSITY</span><span class="xp-role">B.A. COMPUTER SCIENCE & <span class="nowrap">LOCKING IN 🔒</span></span><span class="xp-loc">BOSTON, MASSACHUSETTS</span></div><div class="xp-r"><span class="xp-date">EXPECTED MAY 2029</span><div class="chips"><span class="chip-sm">LONDON STUDY ABROAD</span><span class="chip-sm">CONCERT BAND</span><span class="chip-sm">GAMING CLUB</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">BOSTON UNIVERSITY</span><span class="xp-role">B.A. COMPUTER SCIENCE & <span class="nowrap">LOCKING IN 🔒</span></span><span class="xp-loc">BOSTON, MASSACHUSETTS</span></div><div class="xp-r"><span class="xp-date">EXPECTED MAY 2029</span><div class="chips"><span class="chip-sm">LONDON STUDY ABROAD</span><span class="chip-sm">CONCERT BAND</span><span class="chip-sm">BU GAMING</span></div></div></div>
           <div class="xp"><div class="xp-l"><span class="xp-co">COLUMBIA UNIVERSITY</span><span class="xp-role">PRE-COLLEGE · BIG DATA, MACHINE LEARNING & APPLIED ANALYTICS</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">2024 – 2025</span><div class="chips"><span class="chip-sm">PYTHON</span><span class="chip-sm">NASA EXOPLANETS</span><span class="chip-sm">PREDICTIVE MODELS</span></div></div></div>
-          <div class="xp"><div class="xp-l"><span class="xp-co">CUNY COLLEGE NOW</span><span class="xp-role">BARUCH COLLEGE · BROOKLYN COLLEGE · JOHN JAY COLLEGE</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">2023 – 2025</span><div class="chips"><span class="chip-sm">HED 1911</span><span class="chip-sm">HNSC 1200</span><span class="chip-sm">PSY 101</span><span class="chip-sm">ENG 101</span></div></div></div>
-          <div class="xp"><div class="xp-l"><span class="xp-co">MIDWOOD HIGH SCHOOL</span><span class="xp-role">HIGH SCHOOL DIPLOMA · MEDICAL SCIENCE</span><span class="xp-loc">BROOKLYN, NEW YORK</span></div><div class="xp-r"><span class="xp-date">2021 – 2025</span><div class="chips"><span class="chip-sm">NATIONAL HONOR SOCIETY</span><span class="chip-sm">WIND ENSEMBLE</span><span class="chip-sm">ARGUS</span><span class="chip-sm">PATTERNS</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">CUNY COLLEGE NOW</span><span class="xp-role">DUAL ENROLLMENT COURSEWORK</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">2023 – 2025</span><div class="chips"><span class="chip-sm">BARUCH COLLEGE</span><span class="chip-sm">BROOKLYN COLLEGE</span><span class="chip-sm">JOHN JAY COLLEGE</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">MIDWOOD HIGH SCHOOL</span><span class="xp-role">HIGH SCHOOL DIPLOMA · MEDICAL SCIENCE INSTITUTE</span><span class="xp-loc">BROOKLYN, NEW YORK</span></div><div class="xp-r"><span class="xp-date">2021 – 2025</span><div class="chips"><span class="chip-sm">SECTION LEADER</span><span class="chip-sm">COPY EDITOR</span><span class="chip-sm">LITERARY DIRECTOR</span></div></div></div>
         </div>
 
         <div class="sub-label major"><span class="tag lead"><span class="sl">//</span> EXPERIENCE</span></div>
         <div class="spec">
-          <div class="xp"><div class="xp-l"><span class="xp-co">BIOECHO LIFE SCIENCES</span><span class="xp-role">LEAD GEN & MARKET RESEARCH INTERN</span><span class="xp-loc">COLOGNE, GERMANY · REMOTE</span></div><div class="xp-r"><span class="xp-date">APR 2026 – NOW</span><div class="chips"><span class="chip-sm">CRM SEGMENTATION</span><span class="chip-sm">MARKET RESEARCH</span><span class="chip-sm">B2B OUTREACH</span></div></div></div>
-          <div class="xp"><div class="xp-l"><span class="xp-co">URBAN ARTS PARTNERSHIP</span><span class="xp-role">ALUMNI AMBASSADOR</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">OCT 2025 – NOW</span><div class="chips"><span class="chip-sm">STAKEHOLDER COMMS</span><span class="chip-sm">DONOR ENGAGEMENT</span><span class="chip-sm">SITE VISITS</span><span class="chip-sm">INNOVATOR SUMMIT</span></div></div></div>
-          <div class="xp"><div class="xp-l"><span class="xp-co">UNIQLO USA</span><span class="xp-role">SALES RETAIL ASSOCIATE</span><span class="xp-loc">BOSTON, MASSACHUSETTS</span></div><div class="xp-r"><span class="xp-date">FEB 2026 – MAR 2026</span><div class="chips"><span class="chip-sm">CUSTOMER SERVICE</span><span class="chip-sm">INVENTORY CONTROL</span><span class="chip-sm">STORE OPS</span></div></div></div>
-          <div class="xp"><div class="xp-l"><span class="xp-co">PROJECT DESTINED</span><span class="xp-role">REAL ESTATE PRIVATE EQUITY INTERN</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">DEC 2025 – FEB 2026</span><div class="chips"><span class="chip-sm">FINANCIAL MODELING</span><span class="chip-sm">INVESTMENT ANALYSIS</span><span class="chip-sm">RISK ASSESSMENT</span></div></div></div>
-          <div class="xp"><div class="xp-l"><span class="xp-co">BROOKLYN CONSERVATORY OF MUSIC</span><span class="xp-role">EVENTS VOLUNTEER</span><span class="xp-loc">BROOKLYN, NEW YORK</span></div><div class="xp-r"><span class="xp-date">OCT 2025 – DEC 2025</span><div class="chips"><span class="chip-sm">EVENT OPERATIONS</span><span class="chip-sm">GUEST CHECK-IN</span><span class="chip-sm">LOGISTICS</span></div></div></div>
-          <div class="xp"><div class="xp-l"><span class="xp-co">EXTREME KIDS & CREW</span><span class="xp-role">MARKETING INTERN</span><span class="xp-loc">BROOKLYN, NEW YORK</span></div><div class="xp-r"><span class="xp-date">JUL 2025 – AUG 2025</span><div class="chips"><span class="chip-sm">CONTENT STRATEGY</span><span class="chip-sm">NEWSLETTERS</span><span class="chip-sm">YOUTH OUTREACH</span></div></div></div>
-          <div class="xp"><div class="xp-l"><span class="xp-co">MYPY CODING</span><span class="xp-role">PYTHON & SCRATCH INSTRUCTOR</span><span class="xp-loc">WASHINGTON, D.C. · REMOTE</span></div><div class="xp-r"><span class="xp-date">FEB 2025 – AUG 2025</span><div class="chips"><span class="chip-sm">PYTHON INSTRUCTION</span><span class="chip-sm">SCRATCH CURRICULUM</span><span class="chip-sm">1:1 MENTORING</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">BIOECHO LIFE SCIENCES</span><span class="xp-role">LEAD GEN & MARKET RESEARCH INTERN</span><span class="xp-loc">COLOGNE, GERMANY · REMOTE</span></div><div class="xp-r"><span class="xp-date">APR 2026 – NOW</span><div class="chips"><span class="chip-sm">HUBSPOT CRM</span><span class="chip-sm">SEGMENTATION</span><span class="chip-sm">OUTREACH</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">URBAN ARTS PARTNERSHIP</span><span class="xp-role">ALUMNI AMBASSADOR</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">OCT 2025 – NOW</span><div class="chips"><span class="chip-sm">DONOR ENGAGEMENT</span><span class="chip-sm">PARTNERSHIPS</span><span class="chip-sm">SOUND BOOTH</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">UNIQLO USA</span><span class="xp-role">SALES RETAIL ASSOCIATE</span><span class="xp-loc">BOSTON, MASSACHUSETTS</span></div><div class="xp-r"><span class="xp-date">FEB 2026 – MAR 2026</span><div class="chips"><span class="chip-sm">MERCHANDISING</span><span class="chip-sm">INVENTORY</span><span class="chip-sm">POS SYSTEM</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">PROJECT DESTINED</span><span class="xp-role">REAL ESTATE PRIVATE EQUITY INTERN</span><span class="xp-loc">NEW YORK, NEW YORK · REMOTE</span></div><div class="xp-r"><span class="xp-date">DEC 2025 – FEB 2026</span><div class="chips"><span class="chip-sm">DEAL MODELING</span><span class="chip-sm">RETURNS & RISK</span><span class="chip-sm">CASE STUDY</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">BROOKLYN CONSERVATORY OF MUSIC</span><span class="xp-role">EVENTS VOLUNTEER</span><span class="xp-loc">BROOKLYN, NEW YORK</span></div><div class="xp-r"><span class="xp-date">OCT 2025 – DEC 2025</span><div class="chips"><span class="chip-sm">EVENT SETUP</span><span class="chip-sm">CHECK-IN</span><span class="chip-sm">LOGISTICS</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">EXTREME KIDS & CREW</span><span class="xp-role">MARKETING INTERN</span><span class="xp-loc">BROOKLYN, NEW YORK</span></div><div class="xp-r"><span class="xp-date">JUL 2025 – AUG 2025</span><div class="chips"><span class="chip-sm">PHOTOGRAPHY</span><span class="chip-sm">NEWSLETTERS</span><span class="chip-sm">YOUTH PROGRAMS</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">MYPY CODING</span><span class="xp-role">PYTHON & SCRATCH INSTRUCTOR</span><span class="xp-loc">WASHINGTON, D.C. · REMOTE</span></div><div class="xp-r"><span class="xp-date">FEB 2025 – AUG 2025</span><div class="chips"><span class="chip-sm">PYTHON</span><span class="chip-sm">SCRATCH</span><span class="chip-sm">50+ HRS 1:1</span></div></div></div>
           <details class="more-block">
             <summary><span class="tag lead"><span class="sl">//</span> ADDITIONAL EXPERIENCE</span></summary>
             <div class="spec">
-              <div class="xp"><div class="xp-l"><span class="xp-co">NYC DEPT FOR THE AGING</span><span class="xp-role">GENERAL & ADMINISTRATIVE SERVICES INTERN</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">JUL 2024 – AUG 2024</span><div class="chips"><span class="chip-sm">ADMIN OPERATIONS</span><span class="chip-sm">DATA DIGITIZATION</span><span class="chip-sm">PROCESS SUPPORT</span></div></div></div>
-              <div class="xp"><div class="xp-l"><span class="xp-co">KODE WITH KLOSSY</span><span class="xp-role">DATA SCIENCE PROGRAM PARTICIPANT</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">MAY 2024 – JUN 2024</span><div class="chips"><span class="chip-sm">DATA VISUALIZATION</span><span class="chip-sm">AI CHATBOT</span><span class="chip-sm">LOOKER STUDIO</span></div></div></div>
-              <div class="xp"><div class="xp-l"><span class="xp-co">ADOBE × HE3AT</span><span class="xp-role">DIGITAL MEDIA INTERN</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">DEC 2023 – JUN 2024</span><div class="chips"><span class="chip-sm">ADOBE CREATIVE SUITE</span><span class="chip-sm">WEB MEDIA</span><span class="chip-sm">WEB MAINTENANCE</span></div></div></div>
-              <div class="xp"><div class="xp-l"><span class="xp-co">PUPILPREP</span><span class="xp-role">PROGRAM COORDINATOR</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">SEP 2023 – DEC 2025</span><div class="chips"><span class="chip-sm">MENTOR TRAINING</span><span class="chip-sm">PROGRAM OPS</span><span class="chip-sm">STUDENT OUTREACH</span></div></div></div>
-              <div class="xp"><div class="xp-l"><span class="xp-co">NYC ALL-CITY CONCERT BAND</span><span class="xp-role">CLARINETIST</span><span class="xp-loc">BROOKLYN, NEW YORK</span></div><div class="xp-r"><span class="xp-date">SEP 2023 – JUN 2024</span><div class="chips"><span class="chip-sm">ENSEMBLE PERFORMANCE</span><span class="chip-sm">NY PHIL MENTORSHIP</span><span class="chip-sm">LIVE CONCERTS</span></div></div></div>
-              <div class="xp"><div class="xp-l"><span class="xp-co">AGAINST ALL ODDS</span><span class="xp-role">CANCER RESEARCHER</span><span class="xp-loc">ROCKAWAY, NEW JERSEY · REMOTE</span></div><div class="xp-r"><span class="xp-date">SEP 2023 – JAN 2024</span><div class="chips"><span class="chip-sm">RESEARCH SYNTHESIS</span><span class="chip-sm">CANCER AWARENESS</span><span class="chip-sm">PUBLIC AWARENESS</span></div></div></div>
-              <div class="xp"><div class="xp-l"><span class="xp-co">SHESCI</span><span class="xp-role">RESEARCH HEAD</span><span class="xp-loc">HOUSTON, TEXAS · REMOTE</span></div><div class="xp-r"><span class="xp-date">SEP 2023 – JAN 2024</span><div class="chips"><span class="chip-sm">RESEARCH CURATION</span><span class="chip-sm">STEM EQUITY</span><span class="chip-sm">PARTNERSHIPS</span></div></div></div>
-              <div class="xp"><div class="xp-l"><span class="xp-co">ISO @ THIRD STREET MUSIC SCHOOL</span><span class="xp-role">CLARINETIST</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">SEP 2023 – NOV 2023</span><div class="chips"><span class="chip-sm">ORCHESTRAL PERFORMANCE</span><span class="chip-sm">MASTER CLASSES</span><span class="chip-sm">NEW MUSIC</span></div></div></div>
-              <div class="xp"><div class="xp-l"><span class="xp-co">GIRLS WHO CODE</span><span class="xp-role">SELF-PACED PARTICIPANT</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">JUL 2023 – AUG 2023</span><div class="chips"><span class="chip-sm">WEB DEVELOPMENT</span><span class="chip-sm">JAVASCRIPT</span><span class="chip-sm">DATA ANALYTICS</span></div></div></div>
-              <div class="xp"><div class="xp-l"><span class="xp-co">ENCODE JUSTICE</span><span class="xp-role">NY OUTREACH DIRECTOR</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">MAY 2023 – JUN 2025</span><div class="chips"><span class="chip-sm">AI POLICY</span><span class="chip-sm">COMMUNITY ORGANIZING</span><span class="chip-sm">ADVOCACY</span></div></div></div>
-              <div class="xp"><div class="xp-l"><span class="xp-co">MEE NOODLE SHOP</span><span class="xp-role">FRONT OF HOUSE</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">JUN 2022 – AUG 2022</span><div class="chips"><span class="chip-sm">CUSTOMER SERVICE</span><span class="chip-sm">POS SYSTEMS</span><span class="chip-sm">FAST-PACED OPS</span></div></div></div>
-              <div class="xp"><div class="xp-l"><span class="xp-co">PARENT CHILD ASSOCIATION</span><span class="xp-role">COMMUNITY VOLUNTEER</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">JUN 2022 – AUG 2022</span><div class="chips"><span class="chip-sm">COMMUNITY SERVICE</span><span class="chip-sm">EVENT SUPPORT</span><span class="chip-sm">NEIGHBORHOOD CLEANUP</span></div></div></div>
+              <div class="xp"><div class="xp-l"><span class="xp-co">NYC DEPT FOR THE AGING</span><span class="xp-role">GENERAL & ADMINISTRATIVE SERVICES INTERN</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">JUL 2024 – AUG 2024</span><div class="chips"><span class="chip-sm">OFFICE OPS</span><span class="chip-sm">RELOCATION</span><span class="chip-sm">DIGITIZATION</span></div></div></div>
+              <div class="xp"><div class="xp-l"><span class="xp-co">ADOBE × HE3AT</span><span class="xp-role">DIGITAL MEDIA INTERN</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">DEC 2023 – JUN 2024</span><div class="chips"><span class="chip-sm">ADOBE CC</span><span class="chip-sm">MALWARE MITIGATION</span><span class="chip-sm">WEB + VIDEO</span></div></div></div>
+              <div class="xp"><div class="xp-l"><span class="xp-co">PUPILPREP</span><span class="xp-role">PROGRAM COORDINATOR</span><span class="xp-loc">NEW YORK, NEW YORK · REMOTE</span></div><div class="xp-r"><span class="xp-date">SEP 2023 – DEC 2025</span><div class="chips"><span class="chip-sm">MENTOR TRAINING</span><span class="chip-sm">200+ HRS 1:1</span><span class="chip-sm">OUTREACH</span></div></div></div>
+              <div class="xp"><div class="xp-l"><span class="xp-co">NYC ALL-CITY CONCERT BAND</span><span class="xp-role">CLARINETIST</span><span class="xp-loc">BROOKLYN, NEW YORK</span></div><div class="xp-r"><span class="xp-date">SEP 2023 – JUN 2024</span><div class="chips"><span class="chip-sm">CLARINET</span><span class="chip-sm">NY PHIL MENTORSHIP</span><span class="chip-sm">ENSEMBLE PERFORMANCE</span></div></div></div>
+              <div class="xp"><div class="xp-l"><span class="xp-co">ISO @ THIRD STREET MUSIC SCHOOL</span><span class="xp-role">CLARINETIST</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">SEP 2023 – NOV 2023</span><div class="chips"><span class="chip-sm">CLARINET</span><span class="chip-sm">MASTER CLASSES</span><span class="chip-sm">PREMIERES</span></div></div></div>
+              <div class="xp"><div class="xp-l"><span class="xp-co">ENCODE JUSTICE</span><span class="xp-role">NY OUTREACH DIRECTOR</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">MAY 2023 – JUN 2025</span><div class="chips"><span class="chip-sm">ALGORITHMIC JUSTICE</span><span class="chip-sm">HACKATHONS</span><span class="chip-sm">ADVOCACY</span></div></div></div>
+              <div class="xp"><div class="xp-l"><span class="xp-co">MEE NOODLE SHOP</span><span class="xp-role">FRONT OF HOUSE</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">JUN 2022 – AUG 2022</span><div class="chips"><span class="chip-sm">INVENTORY</span><span class="chip-sm">CUSTOMER FLOW</span><span class="chip-sm">POS</span></div></div></div>
+              <div class="xp"><div class="xp-l"><span class="xp-co">PARENT CHILD ASSOCIATION</span><span class="xp-role">COMMUNITY VOLUNTEER</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">JUN 2022 – AUG 2022</span><div class="chips"><span class="chip-sm">PARK CLEANUP</span><span class="chip-sm">EVENTS</span><span class="chip-sm">COMMUNITY</span></div></div></div>
             </div>
           </details>
         </div>
@@ -546,24 +782,25 @@
           <div class="skill-row"><span class="skill-key">LIBRARIES</span><span class="skill-val">NUMPY • SCIPY • PANDAS • SEABORN • MATPLOTLIB</span></div>
           <div class="skill-row"><span class="skill-key">TOOLS</span><span class="skill-val">UNITY • VS CODE • JUPYTER • ADOBE CC • MS OFFICE</span></div>
           <div class="skill-row"><span class="skill-key">LANGUAGES</span><span class="skill-val">ENGLISH • MANDARIN • FUZHOUNESE • SPANISH • JAPANESE</span></div>
-          <div class="skill-row"><span class="skill-key">CERTIFICATIONS</span><span class="skill-val">UNITY CERTIFIED PROGRAMMER • W3SCHOOLS JS • CERTIFICATE ARCHIVE</span></div>
+          <div class="skill-row"><span class="skill-key">CERTIFICATIONS</span><span class="skill-val">UNITY CERTIFIED PROGRAMMER • W3SCHOOLS JS</span></div>
         </div>
 
         <div class="sub-label major"><span class="tag lead"><span class="sl">//</span> AWARDS</span></div>
         <div class="spec">
-          <div class="xp"><div class="xp-l"><span class="xp-co">APEX FOR YOUTH COLLEGE SUCCESS SCHOLARSHIP</span><span class="xp-role">MERIT SCHOLARSHIP RECIPIENT · COLLEGE ACCESS PROGRAM ALUMNI</span></div><div class="xp-r"><span class="xp-date">2025</span><div class="chips"><span class="chip-sm">$10K / YEAR</span><span class="chip-sm">4 YEARS</span></div></div></div>
-          <div class="xp"><div class="xp-l"><span class="xp-co">NEW YORK ACADEMY OF SCIENCES PROJECT OF DISTINCTION</span><span class="xp-role">COGNITIVE CLASSROOM CHALLENGE · ENLEARNING · <a href="assets/docs/enlearning-final-presentation.pdf" target="_blank" rel="noopener" class="accent-text">PROJECT PDF</a></span></div><div class="xp-r"><span class="xp-date"><a href="assets/docs/resourcing-polyethylene-biochemistry.pdf" target="_blank" rel="noopener" class="accent-text">ADDITIONAL PROJECT PDF</a> · 2023</span><div class="chips"><span class="chip-sm">BRIDGING LANGUAGE GAPS</span><span class="chip-sm">APP PROTOTYPE</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">APEX FOR YOUTH COLLEGE SUCCESS SCHOLARSHIP</span><span class="xp-role">APEX COLLEGE ACCESS PROGRAM ALUMNI · PREVIOUS JT TAI INTERN</span></div><div class="xp-r"><span class="xp-date">2025</span><div class="chips"><span class="chip-sm">AWARDED $10K/YEAR</span><span class="chip-sm">4 YEARS</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">NEW YORK ACADEMY OF SCIENCES PROJECT OF DISTINCTION</span><span class="xp-role">COGNITIVE CLASSROOM — ENLEARNING</span></div><div class="xp-r"><span class="xp-date">2023</span><div class="chips"><span class="chip-sm">BRIDGING LANGUAGE GAPS</span><span class="chip-sm">APP PROTOTYPE</span></div></div></div>
         </div>
         <div class="sub-label"><span class="tag">CONTACT // <span class="accent-text">TDONG4@BU.EDU</span></span><a href="https://linkedin.com/in/tdong4" target="_blank" rel="noopener" class="tag accent-text">LINKEDIN.COM/IN/TDONG4 &rarr;</a></div>
         <div class="proof-grid" aria-label="Resume documents">
           <div class="proof-card"><span class="proof-title">FULL PDF RESUME</span><span class="proof-meta">UPDATED PDF COPY FOR DOWNLOAD.</span><a class="download-link" href="assets/docs/Tiffany_Dong_Resume.pdf" download>DOWNLOAD PDF</a></div>
-          <div class="proof-card"><span class="proof-title">CERTIFICATE ARCHIVE</span><span class="proof-meta">SELECTED CERTIFICATES, INCLUDING UNITY CERTIFIED PROGRAMMER AND W3SCHOOLS JAVASCRIPT.</span><button type="button" class="download-link cred-open" data-credential-kind="certificates">REQUEST &rarr;</button></div>
+          <div class="proof-card"><span class="proof-title">CREDENTIALS</span><span class="proof-meta">CERTIFICATES, PROGRAM COMPLETIONS, AND SUPPORTING CREDENTIALS AVAILABLE UPON REQUEST.</span><button type="button" class="req-btn cred-open" data-credential-kind="credentials">REQUEST CREDENTIALS &rarr;</button></div>
+          <div class="proof-card"><span class="proof-title">REFERENCES</span><span class="proof-meta">LETTERS OF RECOMMENDATION AND REFERENCES ARE AVAILABLE FOR DIRECT REQUESTS.</span><button type="button" class="req-btn cred-open" data-credential-kind="references">REQUEST REFERENCES &rarr;</button></div>
         </div>
       </section>
 
-      <!-- ===================== 01 // GAME DEV ===================== -->
-      <section class="pane active" id="pane-projects" role="tabpanel">
-        <div class="module-label"><span class="section-title">[ 01 ] GAME DEV</span><span class="tag">UNITY&nbsp;·&nbsp;INTERACTIVE</span></div>
+      <!-- ===================== 02 // GAME DEV ===================== -->
+      <section class="pane" id="pane-projects" role="tabpanel">
+        <div class="module-label"><span class="section-title">[ 02 ] GAME DEV</span><span class="tag">UNITY&nbsp;·&nbsp;INTERACTIVE</span></div>
         <a class="project-feature" href="https://flyinqr.itch.io/cries-of-the-wild" target="_blank" rel="noopener" aria-label="Play Cries of the Wild on itch.io">
           <div class="pf-media"><img class="pf-img" src="assets/img/cries-of-the-wild.png" alt="Cries of the Wild"></div>
           <div class="pf-info">
@@ -575,27 +812,28 @@
         </a>
       </section>
 
-      <!-- ===================== 02 // MUSIC ===================== -->
+      <!-- ===================== 03 // MUSIC ===================== -->
       <section class="pane" id="pane-music" role="tabpanel">
-        <div class="module-label"><span class="section-title">[ 02 ] MUSIC</span><span class="tag">PERFORMANCE&nbsp;·&nbsp;AUDIO</span></div>
+        <div class="module-label"><span class="section-title">[ 03 ] MUSIC</span><span class="tag">PERFORMANCE&nbsp;·&nbsp;AUDIO</span></div>
         <div class="sub-label"><span class="tag lead"><span class="sl">//</span> CONCERT BAND</span><span class="tag">CURRENT ARCHIVE</span></div>
+        <p class="music-note">Recent ensemble recordings and performance documentation, kept sparse so the clips can breathe.</p>
         <div class="grid grid-3 music-grid">
-           <figure class="card"><div class="cap-top"><span class="tag">2026</span><span class="tag">[ BU ]</span></div><div class="frame-16x9" data-ph="BU CONCERT BAND SPRING 2"><video controls preload="none" poster="assets/img/video-posters/bucbs2.jpg" src="assets/video/2026-bucbs2.mov"></video></div><figcaption class="cap-bottom"><span class="title">BU CONCERT BAND SPRING 2</span></figcaption></figure>
-           <figure class="card"><div class="cap-top"><span class="tag">2026</span><span class="tag">[ BU ]</span></div><div class="frame-16x9" data-ph="BU CONCERT BAND SPRING 1"><video controls preload="none" poster="assets/img/video-posters/bucbs1.jpg" src="assets/video/2026 bucbs1-005.mov"></video></div><figcaption class="cap-bottom"><span class="title">BU CONCERT BAND SPRING 1</span></figcaption></figure>
-          <figure class="card"><div class="cap-top"><span class="tag">2024</span><span class="tag">[ ALL-CITY ]</span></div><div class="frame-16x9"><video controls preload="none" poster="assets/img/video-posters/nycaccb-2024.jpg" src="assets/video/2024 nycaccb.mov"></video></div><figcaption class="cap-bottom"><span class="title">NYC ALL-CITY CONCERT BAND WINTER</span></figcaption></figure>
-          <figure class="card"><div class="cap-top"><span class="tag">2024</span><span class="tag">[ ALL-CITY ]</span></div><div class="frame-16x9"><video controls preload="none" poster="assets/img/video-posters/nycaccb-emperata-overture.jpg" src="assets/video/2024-nycaccb-002.mov"></video></div><figcaption class="cap-bottom"><span class="title">NYC ALL-CITY WIND ENSEMBLE SPRING</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">2026</span><span class="tag">[ BU ]</span></div><div class="frame-16x9"><iframe src="https://drive.google.com/file/d/1Rib4S3ZbJa1mNscl2BKPX_DiWJKvca-u/preview" allow="autoplay" allowfullscreen loading="lazy"></iframe></div><figcaption class="cap-bottom"><span class="title">BU CONCERT BAND SPRING 2</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">2026</span><span class="tag">[ BU ]</span></div><div class="frame-16x9"><iframe src="https://drive.google.com/file/d/1LZY4tWo7v2Bl9IRS6xDJBYBDaQWUVQiN/preview" allow="autoplay" allowfullscreen loading="lazy"></iframe></div><figcaption class="cap-bottom"><span class="title">BU CONCERT BAND SPRING 1</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">2024</span><span class="tag">[ ALL-CITY ]</span></div><div class="frame-16x9"><video controls preload="none" poster="assets/img/video-posters/nycaccb-2024.jpg" src="assets/video/nycaccb-arabesque.mov"></video></div><figcaption class="cap-bottom"><span class="title">NYC ALL-CITY CONCERT BAND WINTER</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">2024</span><span class="tag">[ ALL-CITY ]</span></div><div class="frame-16x9"><video controls preload="none" poster="assets/img/video-posters/nycaccb-emperata-overture.jpg" src="assets/video/nycaccb-emperata-overture.mov"></video></div><figcaption class="cap-bottom"><span class="title">NYC ALL-CITY WIND ENSEMBLE SPRING</span></figcaption></figure>
         </div>
         <div class="sub-label"><span class="tag lead"><span class="sl">//</span> EARLY ARCHIVE</span><span class="tag">SCHOOL YEARS</span></div>
         <div class="grid grid-3 music-grid">
-          <figure class="card"><div class="cap-top"><span class="tag">2023</span><span class="tag">[ MIDWOOD ]</span></div><div class="frame-16x9"><video controls preload="none" poster="assets/img/video-posters/mhswe-2023-winter.jpg" src="assets/video/2023 mhswe.mov"></video></div><figcaption class="cap-bottom"><span class="title">MIDWOOD WIND ENSEMBLE WINTER</span></figcaption></figure>
-          <figure class="card"><div class="cap-top"><span class="tag">2023</span><span class="tag">[ MIDWOOD ]</span></div><div class="frame-16x9"><video controls preload="none" poster="assets/img/video-posters/mhswe-2023-spring.jpg" src="assets/video/2023-mhswe-spring.mov"></video></div><figcaption class="cap-bottom"><span class="title">MIDWOOD WIND ENSEMBLE SPRING</span></figcaption></figure>
-          <figure class="card"><div class="cap-top"><span class="tag">2022</span><span class="tag">[ MIDWOOD ]</span></div><div class="frame-16x9"><video controls preload="none" poster="assets/img/video-posters/mhssb-2022.jpg" src="assets/video/2022 mhssb.mov"></video></div><figcaption class="cap-bottom"><span class="title">MIDWOOD SYMPHONIC BAND & BROOKLYN ARTS FESTIVAL</span></figcaption></figure>
-           <figure class="card"><div class="cap-top"><span class="tag">2018</span><span class="tag">[ MS51 ]</span></div><div class="frame-16x9" data-ph="MS51 CONCERT BAND"><video controls preload="none" poster="assets/img/video-posters/ms51cb.jpg" src="assets/video/2018 ms51cb.mov"></video></div><figcaption class="cap-bottom"><span class="title">MS51 CONCERT BAND</span></figcaption></figure>
-           <figure class="card"><div class="cap-top"><span class="tag">2016</span><span class="tag">[ LKR ]</span></div><div class="frame-16x9" data-ph="LITTLE KIDS ROCK"><video controls preload="none" poster="assets/img/video-posters/lkr.jpg" src="assets/video/2016 little kids rock.mov"></video></div><figcaption class="cap-bottom"><span class="title">LITTLE KIDS ROCK</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">2023</span><span class="tag">[ MIDWOOD ]</span></div><div class="frame-16x9"><img src="assets/img/video-posters/mhswe-2023-winter.jpg" alt="Midwood Wind Ensemble Winter"></div><figcaption class="cap-bottom"><span class="title">MIDWOOD WIND ENSEMBLE WINTER</span><span class="note">VIDEO ATTACHMENT PENDING</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">2023</span><span class="tag">[ MIDWOOD ]</span></div><div class="frame-16x9"><img src="assets/img/video-posters/mhswe-2023-spring.jpg" alt="Midwood Wind Ensemble Spring"></div><figcaption class="cap-bottom"><span class="title">MIDWOOD WIND ENSEMBLE SPRING</span><span class="note">VIDEO ATTACHMENT PENDING</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">2022</span><span class="tag">[ MIDWOOD ]</span></div><div class="frame-16x9"><img src="assets/img/video-posters/mhssb-2022.jpg" alt="Midwood Symphonic Band and Brooklyn Arts Festival"></div><figcaption class="cap-bottom"><span class="title">MIDWOOD SYMPHONIC BAND & BROOKLYN ARTS FESTIVAL</span><span class="note">VIDEO ATTACHMENT PENDING</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">2018</span><span class="tag">[ MS51 ]</span></div><div class="frame-16x9"><iframe src="https://drive.google.com/file/d/16aEfoaOJPiSAGo6gPUBdFnvHCX8TV-zw/preview" allow="autoplay" allowfullscreen loading="lazy"></iframe></div><figcaption class="cap-bottom"><span class="title">MS51 CONCERT BAND</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">2016</span><span class="tag">[ LKR ]</span></div><div class="frame-16x9"><iframe src="https://drive.google.com/file/d/17T-sWDlN7P5uH9LIs0lYJQVc5M8POHrJ/preview" allow="autoplay" allowfullscreen loading="lazy"></iframe></div><figcaption class="cap-bottom"><span class="title">LITTLE KIDS ROCK</span></figcaption></figure>
         </div>
         <div class="sub-label"><span class="tag lead"><span class="sl">//</span> ADDITIONAL AUDIO</span><span class="tag">KEYED ACCESS</span></div>
         <div class="grid grid-3 music-grid">
-          <div class="card music-audio-card mini-gate" id="music-audio-gate"><div class="mini-gate-inner"><div class="prompt">LOCKED // ADDITIONAL AUDIO</div>        <div class="gate-meta">REHEARSALS, PRODUCTIONS, AND VOCAL FILES ARE KEPT BEHIND AN ACCESS KEY.</div><form class="mini-gate-form" id="music-audio-gate-form" autocomplete="off"><input type="password" id="music-audio-gate-input" placeholder="ACCESS KEY" aria-label="Music audio access key" /><button type="submit">OPEN</button></form><div class="msg" id="music-audio-gate-msg">KEY REQUIRED</div></div></div>
+          <div class="card music-audio-card mini-gate" id="music-audio-gate"><div class="mini-gate-inner"><div class="prompt">LOCKED // ADDITIONAL AUDIO</div><div class="gate-meta">REHEARSALS, PRODUCTIONS, AND VOCAL FILES ARE KEPT BEHIND AN ACCESS KEY.</div><form class="mini-gate-form" id="music-audio-gate-form" autocomplete="off"><input type="password" id="music-audio-gate-input" placeholder="ACCESS KEY" aria-label="Music audio access key" /><button type="submit">OPEN</button></form><div class="msg" id="music-audio-gate-msg">KEY REQUIRED</div></div></div>
           <figure class="card music-audio-card locked-audio" id="music-audio-zone"><div class="cap-top"><span class="tag">ADDITIONAL</span><span class="tag">[ AUDIO FILES ]</span></div><div class="audio-stack"><div class="audio-group"><span class="audio-group-title">REHEARSAL</span><div class="audio-row"><span class="tag">EMPERATA OVERTURE</span><audio controls preload="none" src="assets/audio/nycaccb-emperata-overture.mp3"></audio></div><div class="audio-row"><span class="tag">ARABESQUE</span><audio controls preload="none" src="assets/audio/nycaccb-arabesque.mp3"></audio></div></div><div class="audio-group"><span class="audio-group-title">PRODUCTION</span><div class="audio-row"><span class="tag">SOARING</span><audio controls preload="none" src="assets/video/drive-download-20260609T035415Z-3-001/soaring.mp3"></audio></div><div class="audio-row"><span class="tag">APRICITY</span><audio controls preload="none" src="assets/video/drive-download-20260609T035415Z-3-001/apricity.mp3"></audio></div></div><div class="audio-group"><span class="audio-group-title">VOCALS</span><div class="audio-row"><span class="tag">COFFEE BREATH</span><audio controls preload="none" src="assets/video/drive-download-20260609T035419Z-3-001/coffee%20breath%20cover.mp3"></audio></div><div class="audio-row"><span class="tag">THE CUTEST PAIR</span><audio controls preload="none" src="assets/video/drive-download-20260609T035419Z-3-001/the%20cutest%20pair%20cover.mp3"></audio></div></div></div></figure>
         </div>
       </section>
@@ -606,31 +844,41 @@
         <div class="empty">ART<span class="accent-text">// IN PROGRESS</span></div>
       </section>
 
-      <!-- ===================== 03 // FILM ===================== -->
-      <section class="pane" id="pane-film" role="tabpanel">
-        <div class="module-label"><span class="section-title">[ 03 ] FILM</span><span class="tag">PERSONAL&nbsp;ARCHIVE&nbsp;·&nbsp;CLIPS</span></div>
-        <div class="sub-label"><span class="tag lead"><span class="sl">//</span> STILLS</span><span class="tag">PLACES · PEOPLE</span></div>
-        <div class="stills-layout">
-          <div class="photo-wall">
-            <img src="assets/img/IMG_0252.jpg" alt="IMG 0252" loading="lazy">
-            <img src="assets/img/kbbq-dinner.jpg" alt="GOPCHANG STORY" loading="lazy">
-            <img src="assets/img/innovators-summit.jpg" alt="INSPIRING INNOVATOR SUMMIT" loading="lazy">
-            <img src="assets/img/green-room.jpg" alt="GOBBER THE BLECH" loading="lazy">
-            <img src="assets/img/venue-gathering.jpg" alt="GAME CON" loading="lazy">
-            <img src="assets/img/film-set.jpg" alt="URBAN ARTS SPEAKER" loading="lazy">
-            <img src="assets/img/transit-crew.jpg" alt="LONG BEACH W/ FRIENDS" loading="lazy">
-            <img src="assets/img/coworking-session.jpg" alt="APEX FOR YOUTH" loading="lazy">
-            <img src="assets/img/civichall-workshop.jpg" alt="CIVIC HALL" loading="lazy">
-            <img src="assets/video/reading%20newspaper.png" alt="READING NEWSPAPER" loading="lazy">
-            <img src="assets/video/music%20performance.png" alt="MUSIC PERFORMANCE" loading="lazy">
+      <!-- ===================== 01 // FILM ===================== -->
+      <section class="pane active" id="pane-film" role="tabpanel">
+        <div class="module-label"><span class="section-title">[ 01 ] FILM</span><span class="tag">STILLS&nbsp;·&nbsp;PRIVATE&nbsp;CLIPS</span></div>
+        <div class="sub-label"><span class="tag lead"><span class="sl">//</span> STILLS</span><span class="tag">COLOR</span></div>
+        <div class="photo-wall">
+          <img src="assets/img/IMG_0252.jpg" alt="IMG 0252" loading="lazy">
+          <img src="assets/img/kbbq-dinner.jpg" alt="GOPCHANG STORY" loading="lazy">
+          <img src="assets/img/innovators-summit.jpg" alt="INSPIRING INNOVATOR SUMMIT" loading="lazy">
+          <img src="assets/img/green-room.jpg" alt="GOBBER THE BLECH" loading="lazy">
+          <img src="assets/img/venue-gathering.jpg" alt="GAME CON" loading="lazy">
+          <img src="assets/img/film-set.jpg" alt="URBAN ARTS SPEAKER" loading="lazy">
+          <img src="assets/img/transit-crew.jpg" alt="LONG BEACH W/ FRIENDS" loading="lazy">
+          <img src="assets/img/coworking-session.jpg" alt="APEX FOR YOUTH" loading="lazy">
+          <img src="assets/img/civichall-workshop.jpg" alt="CIVIC HALL" loading="lazy">
+          <img src="assets/video/reading%20newspaper.png" alt="READING NEWSPAPER" loading="lazy">
+          <img src="assets/video/music%20performance.png" alt="MUSIC PERFORMANCE" loading="lazy">
+        </div>
+        <div class="sub-label"><span class="tag lead"><span class="sl">//</span> PRIVATE CLIPS</span><span class="tag">KEYED ACCESS</span></div>
+        <div class="mini-gate" id="montage-gate">
+          <div class="mini-gate-inner">
+            <div class="prompt">LOCKED // PRIVATE CLIPS</div>
+            <div class="gate-meta">PERSONAL CLIPS ARE KEPT BEHIND AN ACCESS KEY.</div>
+            <form class="mini-gate-form" id="montage-gate-form" autocomplete="off">
+              <input type="password" id="montage-gate-input" placeholder="ACCESS KEY" aria-label="Montage access key" />
+              <button type="submit">OPEN</button>
+            </form>
+            <div class="msg" id="montage-gate-msg">KEY REQUIRED</div>
           </div>
         </div>
-        <div class="sub-label"><span class="tag lead"><span class="sl">//</span> CLIPS</span><span class="tag">PERSONAL ARCHIVE</span></div>
-        <div class="grid clip-wall">
-          <figure class="card"><div class="cap-top"><span class="tag">SUMMER 2024</span><span class="tag">[ NIAGARA FALLS ]</span></div><div class="frame-16x9"><video controls preload="none" poster="assets/img/video-posters/fireworks-display.jpg" src="assets/video/fireworks%20display.mov"></video></div><figcaption class="cap-bottom"><span class="title">FIREWORKS DISPLAY</span><span class="note">CANADA · NIAGARA FALLS</span></figcaption></figure>
-          <figure class="card"><div class="cap-top"><span class="tag">SUMMER 2025</span><span class="tag">[ POST-GRAD ]</span></div><div class="frame-16x9"><video controls preload="none" poster="assets/img/video-posters/montage-2025.jpg" src="assets/video/2025%20(1).mov"></video></div><figcaption class="cap-bottom"><span class="title">POST-GRADUATION DAYS</span><span class="note">TRAVELING W/ MOM · SUMMER AFTER GRADUATION</span></figcaption></figure>
-          <figure class="card"><div class="cap-top"><span class="tag">WINTER 2024</span><span class="tag">[ JUNIOR YEAR ]</span></div><div class="frame-16x9"><video controls preload="none" poster="assets/img/video-posters/montage-2024.jpg" src="assets/video/2024%20(1).mov"></video></div><figcaption class="cap-bottom"><span class="title">APPLICATION SEASON</span><span class="note">JUNIOR YEAR ARCHIVE</span></figcaption></figure>
+        <div class="grid clip-wall private-montage" id="private-montage">
           <figure class="card"><div class="cap-top"><span class="tag">OPEN SLOT</span><span class="tag">[ PRIVATE CLIP ]</span></div><div class="frame-16x9" data-ph="DROP_PRIVATE_CLIP // 03"></div><figcaption class="cap-bottom"><span class="title">PRIVATE CLIP_03</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">WINTER 2024</span><span class="tag">[ JUNIOR YEAR ]</span></div><div class="frame-16x9"><video controls preload="none" poster="assets/img/video-posters/montage-2024.jpg" src="assets/video/2024%20(1).mov"></video></div><div class="memo">all the aps · all the regents · but falling asleep on the bus · waking up fulfilled · no thoughts · just happy</div><figcaption class="cap-bottom"><span class="title">APPLICATION SEASON</span><span class="note">JUNIOR YEAR ARCHIVE</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">SUMMER 2024</span><span class="tag">[ NIAGARA FALLS ]</span></div><div class="frame-16x9"><video controls preload="none" poster="assets/img/video-posters/fireworks-display.jpg" src="assets/video/fireworks%20display.mov"></video></div><figcaption class="cap-bottom"><span class="title">FIREWORKS DISPLAY</span><span class="note">CANADA · NIAGARA FALLS</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">SUMMER 2024</span><span class="tag">[ CANADA ]</span></div><div class="frame-16x9"><video controls preload="none" poster="assets/img/video-posters/canada-nights.jpg" src="assets/video/canada%20nights.mov"></video></div><figcaption class="cap-bottom"><span class="title">CANADA NIGHTS</span><span class="note">3-DAY TRIP W/ MOM</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">SUMMER 2025</span><span class="tag">[ POST-GRAD ]</span></div><div class="frame-16x9"><video controls preload="none" poster="assets/img/video-posters/montage-2025.jpg" src="assets/video/2025%20(1).mov"></video></div><figcaption class="cap-bottom"><span class="title">POST-GRADUATION DAYS</span><span class="note">TRAVELING W/ MOM · SUMMER AFTER GRADUATION</span></figcaption></figure>
         </div>
 
         <div class="sub-label major"><span class="tag lead"><span class="sl">//</span> MEDIA</span></div>
@@ -653,11 +901,8 @@
         <div class="module-label"><span class="section-title">[ 07 ] AVAILABILITY</span><span class="tag">SECURE&nbsp;ZONE&nbsp;//&nbsp;AUTH&nbsp;REQUIRED</span></div>
         <div class="gate" id="gate">
           <div class="gate-inner">
-            <div class="gate-head">
-              <div class="prompt">LOCKED // SCHEDULE<span class="cursor"></span></div>
-            </div>
+            <div class="prompt">LOCKED // SCHEDULE<span class="cursor"></span></div>
             <div class="gate-meta">AVAILABILITY AND PRIVATE SCHEDULE DETAILS ARE KEPT BEHIND AN ACCESS KEY.</div>
-            <div class="public-availability"><span class="pa-key">SUMMER FREE WINDOWS //</span> MOST WEEKENDS · MON JUL 20 OPEN · SELECT WEEKDAY AFTERNOONS</div>
             <form class="gate-form" id="gate-form" autocomplete="off">
               <input type="password" id="gate-input" placeholder="ACCESS KEY" aria-label="Access key" />
               <button type="submit">OPEN</button>
@@ -667,50 +912,14 @@
           </div>
         </div>
         <div class="locked" id="locked-zone">
-          <div class="sub-label schedule-label"><span class="tag lead"><span class="sl">//</span> SCHEDULE</span><span class="tag">2026 TIMELINE</span></div>
-          <div class="spec schedule-table">
-            <div class="schedule-month">June // pre-departure + arrival</div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">BIOECHO CHECK-IN</span><span class="xp-role">REMOTE</span><span class="xp-loc">MONDAYS · UNTIL JUN 22</span></div><div class="xp-r"><span class="xp-date">10:30 AM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">BIOECHO CHECK-IN</span><span class="xp-role">REMOTE</span><span class="xp-loc">WEDNESDAYS · UNTIL JUN 24</span></div><div class="xp-r"><span class="xp-date">10:30 AM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">APEX CLOSING DAY</span><span class="xp-role">ALUMNI VOLUNTEER · RIVERDALE COUNTRY SCHOOL</span><span class="xp-loc">SAT · JUN 20, 2026</span></div><div class="xp-r"><span class="xp-date">9:00 AM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">APEX COTE</span><span class="xp-role">CELEBRATION · 550 MADISON AVE</span><span class="xp-loc">FRI · JUN 26, 2026</span></div><div class="xp-r"><span class="xp-date">12:00 PM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">LONDON ARRIVAL</span><span class="xp-role">NYC → LONDON</span><span class="xp-loc">SAT · JUN 27, 2026</span></div><div class="xp-r"><span class="xp-date">8:55 PM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">ORIENTATION</span><span class="xp-role">LONDON PROGRAM · MANDATORY TEAM ACTIVITY</span><span class="xp-loc">MON · JUN 29, 2026</span></div><div class="xp-r"><span class="xp-date">TBD</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">SS CLASS + SCIENCE MUSEUM</span><span class="xp-role">CLASS 9-11, 1-3 · MEET IN CLASSROOM, THEN MUSEUM VISIT</span><span class="xp-loc">TUE · JUN 30, 2026</span></div><div class="xp-r"><span class="xp-date">9:00 AM</span></div></div>
-            <div class="schedule-month">July // London program</div>
-            <div class="schedule-group">Classes</div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">CLASS BLOCK A</span><span class="xp-role">JUL 1, 3, 10, 15, 17, 22, 24, 29, 31, AUG 4 · WED/FRI SCHEDULE</span><span class="xp-loc">JUL 1-AUG 4</span></div><div class="xp-r"><span class="xp-date">11:00 AM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">CLASS BLOCK B</span><span class="xp-role">JUL 2, 7, 9, 14, 16, 21, 23, 28, 30, AUG 3 · TUE/THU + AUG 3</span><span class="xp-loc">JUL 2-AUG 3</span></div><div class="xp-r"><span class="xp-date">9:00 AM</span></div></div>
-            <div class="schedule-group">Trips / tours / theatre</div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">KEW GARDENS</span><span class="xp-role">DAY TRIP · MANDATORY TEAM ACTIVITY</span><span class="xp-loc">MON · JUL 6, 2026</span></div><div class="xp-r"><span class="xp-date">TBD</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">EAST END TOUR</span><span class="xp-role">STREET ART + HISTORY WITH DUNCAN DUFF · JUL 8 OR JUL 9</span><span class="xp-loc">WED/THU · JUL 8-9, 2026</span></div><div class="xp-r"><span class="xp-date">6 OR 8 PM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">BRIGHTON</span><span class="xp-role">DAY TRIP · MANDATORY TEAM ACTIVITY</span><span class="xp-loc">MON · JUL 13, 2026</span></div><div class="xp-r"><span class="xp-date">8:15 AM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">WAR HORSE</span><span class="xp-role">NATIONAL THEATRE</span><span class="xp-loc">WED · JUL 15, 2026</span></div><div class="xp-r"><span class="xp-date">7:30 PM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">IMPERIAL WAR MUSEUM</span><span class="xp-role">FOR RH · ON YOUR OWN THROUGH SUN JUL 20</span><span class="xp-loc">THU · JUL 16, 2026</span></div><div class="xp-r"><span class="xp-date">OPEN</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">PARLIAMENT TOUR</span><span class="xp-role">HALF TEAM · ONE VISIT REQUIRED</span><span class="xp-loc">FRI · JUL 17, 2026</span></div><div class="xp-r"><span class="xp-date">11:00 AM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">ARCADIA</span><span class="xp-role">PLAY</span><span class="xp-loc">WED · JUL 22, 2026</span></div><div class="xp-r"><span class="xp-date">7:00 PM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">PARLIAMENT TOUR</span><span class="xp-role">HALF TEAM · ONE VISIT REQUIRED</span><span class="xp-loc">FRI · JUL 24, 2026</span></div><div class="xp-r"><span class="xp-date">11:30 AM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">CABARET</span><span class="xp-role">LONDON PROGRAM THEATRE</span><span class="xp-loc">MON · JUL 27, 2026</span></div><div class="xp-r"><span class="xp-date">6:00 PM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">RISING VOICES AT V&amp;A</span><span class="xp-role">IN HU CLASS · CONTEMPORARY ART FROM ASIA, AUSTRALIA AND THE PACIFIC</span><span class="xp-loc">TUE/WED · JUL 28-29, 2026</span></div><div class="xp-r"><span class="xp-date">CLASS TIME</span></div></div>
-            <div class="schedule-month">August // wrap-up</div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">READING DAY</span><span class="xp-role">CONTINGENCY DAY · STAY IN LONDON</span><span class="xp-loc">WED · AUG 5, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">EXAM DAYS</span><span class="xp-role">LONDON PROGRAM FINALS</span><span class="xp-loc">THU-FRI · AUG 6-7, 2026</span></div><div class="xp-r"><span class="xp-date">TBD</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">LONDON RETURN</span><span class="xp-role">LONDON → NYC</span><span class="xp-loc">SAT · AUG 8, 2026</span></div><div class="xp-r"><span class="xp-date">12:30 PM</span></div></div>
-            <div class="schedule-month">September-December // fall semester</div>
-            <div class="schedule-group">Weekly class pattern · starts Sep 2</div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">FALL CLASSES</span><span class="xp-role">9:05 AM-1:10 PM · CALCULUS, COMPUTER SCIENCE, BIOLOGY // 4:30-6:15 PM · ELECTRONIC MUSIC</span><span class="xp-loc">MONDAYS</span></div><div class="xp-r"><span class="xp-date">WEEKLY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">FALL CLASSES</span><span class="xp-role">8:00 AM-10:20 AM · AGENTS OF GLOBAL CHANGE // 11:30 AM-12:20 PM · COMPUTER SCIENCE LAB</span><span class="xp-loc">TUESDAYS</span></div><div class="xp-r"><span class="xp-date">WEEKLY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">FALL CLASSES</span><span class="xp-role">9:05 AM-1:10 PM · CALCULUS, COMPUTER SCIENCE, BIOLOGY // 4:30-7:45 PM · CALC DIS + CS EVENING LEC</span><span class="xp-loc">WEDNESDAYS</span></div><div class="xp-r"><span class="xp-date">WEEKLY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">FALL CLASSES</span><span class="xp-role">9:30-10:20 AM · GLOBAL CHANGE DIS // 12:30-3:15 PM · BIOLOGY LAB // 6:30-8:30 PM · CALCULUS</span><span class="xp-loc">THURSDAYS</span></div><div class="xp-r"><span class="xp-date">WEEKLY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">FALL CLASSES</span><span class="xp-role">9:05 AM-1:10 PM · CALCULUS, COMPUTER SCIENCE, BIOLOGY</span><span class="xp-loc">FRIDAYS</span></div><div class="xp-r"><span class="xp-date">WEEKLY</span></div></div>
-            <div class="schedule-group">Academic dates</div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">CLASSES BEGIN</span><span class="xp-role">FALL 2026 SEMESTER</span><span class="xp-loc">WED · SEP 2, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">HOLIDAY</span><span class="xp-role">CLASSES SUSPENDED</span><span class="xp-loc">MON · SEP 7, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">INDIGENOUS PEOPLE'S DAY</span><span class="xp-role">CLASSES SUSPENDED</span><span class="xp-loc">MON · OCT 12, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">THANKSGIVING RECESS</span><span class="xp-role">NO CLASSES</span><span class="xp-loc">WED-SUN · NOV 25-29, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">LAST DAY OF CLASSES</span><span class="xp-role">FALL 2026 SEMESTER</span><span class="xp-loc">THU · DEC 10, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">STUDY PERIOD</span><span class="xp-role">FINAL PREP</span><span class="xp-loc">FRI-SUN · DEC 11-13, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">FINAL EXAMS</span><span class="xp-role">BEGIN DEC 14 · END DEC 18</span><span class="xp-loc">MON-FRI · DEC 14-18, 2026</span></div><div class="xp-r"><span class="xp-date">TBD</span></div></div>
+          <div class="sub-label"><span class="tag lead"><span class="sl">//</span> SCHEDULE</span><span class="tag">2026 TIMELINE</span></div>
+          <div class="spec">
+            <div class="xp"><div class="xp-l"><span class="xp-co">BIOECHO LIFE SCIENCES</span><span class="xp-role">RECURRING · EVERY MONDAY</span><span class="xp-loc">UNTIL JUN 22, 2026</span></div><div class="xp-r"><span class="xp-date">10:30 AM</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">BIOECHO LIFE SCIENCES</span><span class="xp-role">RECURRING · EVERY WEDNESDAY</span><span class="xp-loc">UNTIL JUN 24, 2026</span></div><div class="xp-r"><span class="xp-date">10:30 AM</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">APEX FOR YOUTH MANHATTAN CLOSING DAY</span><span class="xp-role">ALUMNI VOLUNTEER · RIVERDALE COUNTRY SCHOOL</span><span class="xp-loc">SAT · JUN 20, 2026</span></div><div class="xp-r"><span class="xp-date">9:00 AM</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">APEX FOR YOUTH COTE CELEBRATION</span><span class="xp-role">COTE 550 · 550 MADISON AVE, NEW YORK, NY 10022</span><span class="xp-loc">FRI · JUN 26, 2026</span></div><div class="xp-r"><span class="xp-date">12:00 PM</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">LONDON FLIGHT — DEPARTURE</span><span class="xp-role">NYC → LONDON</span><span class="xp-loc">SAT · JUN 27, 2026</span></div><div class="xp-r"><span class="xp-date">8:55 PM</span></div></div>
+            <div class="xp"><div class="xp-l"><span class="xp-co">LONDON FLIGHT — RETURN</span><span class="xp-role">LONDON → NYC</span><span class="xp-loc">SAT · AUG 8, 2026</span></div><div class="xp-r"><span class="xp-date">12:30 PM</span></div></div>
           </div>
           <div class="sub-label" style="border-bottom:none;"><span class="tag">SCHEDULE // PRIVATE VIEW</span><button type="button" class="req-btn avail-open">REQUEST AVAILABILITY &rarr;</button></div>
         </div>
@@ -721,17 +930,18 @@
         <div class="module-label"><span class="section-title">[ 06 ] CONTEXT</span><span class="tag">OPERATOR&nbsp;FILE</span></div>
         <div class="blurb">
           <div class="context-layout">
-            <p>COMPUTER SCIENCE STUDENT MOVING BETWEEN <span class="q">CODE</span>, RESEARCH, MEDIA, AND <span class="q">CREATIVE&nbsp;PROJECTS</span>.<br><br>
-            I BUILD WITH PYTHON, JAVA, JAVASCRIPT, C#, AND UNITY, THEN BRING THE SAME ATTENTION
-            TO <span class="q">MUSIC, FILM, VISUAL ART, FASHION DESIGN</span>, WRITING, AND COMMUNITY&nbsp;WORK.<br><br>
-            THIS ARCHIVE HOLDS <span class="q">PROJECTS BUILT</span>, ROLES HELD, SOUNDS RECORDED,
-            VISUALS COLLECTED, AND WORK UNDER ACTIVE DEVELOPMENT.</p>
+            <p>COMPUTER SCIENCE STUDENT DRAWN TO WORK THAT TURNS <span class="q">STRUCTURE</span> INTO SOMETHING PEOPLE CAN USE, WATCH, PLAY, OR REMEMBER.<br><br>
+            I MOVE BETWEEN TECHNICAL PROBLEM-SOLVING AND <span class="q">CREATIVE DOCUMENTATION</span>, WITH A PRACTICAL BIAS TOWARD BUILDING, TESTING, AND MAKING THINGS PUBLIC-FACING.<br><br>
+            THIS ARCHIVE IS A CURATED VIEW OF <span class="q">WORK IN PROGRESS</span>, SELECTED EXPERIENCES, AND THE THREADS I KEEP DEVELOPING OVER TIME.</p>
             <div class="mind-map" aria-label="Context mind map">
-              <div class="map-core">TIFFANY_DONG<span class="sub">CORE DRIVE</span></div>
-              <div class="map-branches compact">
-                <div class="map-node"><span class="k">EXECUTION</span><span class="v">Build it, test it, document it, ship it.</span></div>
-                <div class="map-node"><span class="k">ANALYSIS</span><span class="v">Use data to cut through noise and make better decisions.</span></div>
-                <div class="map-node"><span class="k">SYNTHESIS</span><span class="v">Connect technical skill, creative work, and community impact.</span></div>
+              <div class="map-core">TIFFANY_DONG<span class="sub">PUBLIC CONTEXT</span></div>
+              <div class="map-branches">
+                <div class="map-node"><span class="k">BUILDING MODE</span><span class="v">Hands-on projects, small systems, and practical experiments that turn ideas into usable work.</span></div>
+                <div class="map-node"><span class="k">ANALYTIC LENS</span><span class="v">Pattern-finding, research habits, and data-backed thinking brought into technical and creative work.</span></div>
+                <div class="map-node"><span class="k">VISUAL MEMORY</span><span class="v">A habit of collecting moments, performances, and process as part of the final work.</span></div>
+                <div class="map-node"><span class="k">COMMUNITY ROOTS</span><span class="v">Apex for Youth, Urban Arts, mentoring, volunteering, and collaborative spaces.</span></div>
+                <div class="map-node"><span class="k">RANGE</span><span class="v">Comfort moving across technical, cultural, and creative spaces without treating them as separate lives.</span></div>
+                <div class="map-node"><span class="k">PUBLIC THREAD</span><span class="v">A portfolio shaped around evidence, curiosity, and the work still becoming clearer over time.</span></div>
               </div>
             </div>
           </div>
@@ -751,20 +961,11 @@
   <!-- ================= REQUEST CREDENTIALS MODAL ================= -->
   <div id="cred-modal" class="req-modal credential-modal" role="dialog" aria-modal="true" aria-label="Request credentials">
     <div class="req-box">
-      <div class="req-head"><span class="rh-t" id="cred-title">REQUEST CREDENTIALS & REFERENCES</span><button type="button" class="req-close" id="cred-close">CLOSE &times;</button></div>
+      <div class="req-head"><span class="rh-t" id="cred-title">REQUEST CREDENTIALS</span><button type="button" class="req-close" id="cred-close">CLOSE &times;</button></div>
       <form id="cred-form" autocomplete="off">
         <input type="hidden" id="cred-kind" name="request_type" value="credentials" />
-        <label class="req-label" for="cred-name">NAME</label>
-        <input class="req-input" id="cred-name" name="name" type="text" placeholder="your name" autocomplete="off" required />
         <label class="req-label" for="cred-email">EMAIL ADDRESS</label>
         <input class="req-input" id="cred-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
-        <span class="req-label">WHAT DO YOU NEED?</span>
-        <div class="choice-grid" role="group" aria-label="Credential request reasons">
-          <label class="choice-pill"><input type="checkbox" name="credential_reason" value="Certificates" />Certificates</label>
-          <label class="choice-pill"><input type="checkbox" name="credential_reason" value="References" />References</label>
-        </div>
-        <label class="req-label" for="cred-message">MESSAGE</label>
-        <textarea class="req-textarea chat-bubble-input" id="cred-message" name="message" placeholder="tell me what credentials or context would be helpful"></textarea>
         <button type="submit" class="req-btn req-send" id="cred-send">SEND &rarr;</button>
         <div class="req-status" id="cred-status"></div>
       </form>
@@ -836,10 +1037,135 @@
       apply(saved);
       btns.forEach(function (b) { b.addEventListener('click', function () { if (window.vaultSound) window.vaultSound.menu(); apply(b.dataset.themeSet); }); });
     })();
-    /* BOOT */
+    /* BOOT — PLANETBOOT */
     (function () {
-      var boot = document.getElementById('boot'), ack = document.getElementById('boot-ack');
-      ack.addEventListener('click', function () { if (window.vaultSound) window.vaultSound.open(); boot.classList.add('done'); document.body.classList.remove('booting'); setTimeout(function () { boot.style.display = 'none'; }, 450); });
+      var boot = document.getElementById('boot');
+      var planetWrap = document.getElementById('planet-wrap');
+      var planetInner = document.getElementById('planet-inner');
+      var spinFloat = document.getElementById('spin-float');
+      var planetLabel = document.getElementById('planet-label');
+      var planetCounter = document.getElementById('planet-counter');
+      var planetHint = document.getElementById('planet-hint');
+      var actionEl = document.getElementById('ritual-action');
+      var promptEl = document.getElementById('ritual-prompt');
+      var enterEl = document.getElementById('ritual-enter');
+
+      var spun = false;
+      var timer = null;
+      var locked = false;
+
+      /* ---- VISIT COUNT ---- */
+      var visits = 0;
+      try { visits = parseInt(localStorage.getItem('planetboot-visits') || '0', 10); } catch(e) {}
+      visits = isNaN(visits) ? 0 : visits;
+
+      function updateGlow() {
+        var bright = Math.min(0.35 + visits * 0.045, 1);
+        var shadow = Math.min(4 + visits * 1.8, 26);
+        planetInner.style.filter = 'brightness(' + bright + ') drop-shadow(0 0 ' + shadow + 'px rgba(201,31,50,0.4))';
+        planetCounter.textContent = visits + (visits === 1 ? ' spin' : ' spins');
+      }
+
+      function saveVisits() {
+        try { localStorage.setItem('planetboot-visits', '' + visits); } catch(e) {}
+      }
+
+      updateGlow();
+
+      /* ---- PARTICLES ---- */
+      function emitParticles() {
+        for (var si = 0; si < 8; si++) {
+          (function() {
+            var sp = document.createElement('span');
+            sp.className = 'planet-particle';
+            var angle = Math.random() * Math.PI * 2;
+            var dist = 14 + Math.random() * 28;
+            sp.style.setProperty('--dx', Math.cos(angle) * dist + 'px');
+            sp.style.setProperty('--dy', Math.sin(angle) * dist + 'px');
+            sp.style.left = (50 + (Math.random() - 0.5) * 28) + '%';
+            sp.style.top = (50 + (Math.random() - 0.5) * 28) + '%';
+            planetWrap.appendChild(sp);
+            setTimeout(function() { if (sp.parentNode) sp.parentNode.removeChild(sp); }, 650);
+          })();
+        }
+      }
+
+      /* ---- SPIN ---- */
+      function handleSpin() {
+        if (spun || locked) return;
+        if (timer) { clearTimeout(timer); timer = null; }
+
+        locked = true;
+
+        planetInner.classList.remove('idle', 'spin-day', 'spin-night');
+        void planetInner.offsetWidth;
+
+        var isDay = Math.random() < 0.5;
+        planetInner.classList.add(isDay ? 'spin-day' : 'spin-night');
+
+        planetWrap.classList.remove('spinning');
+        void planetWrap.offsetWidth;
+        planetWrap.classList.add('spinning');
+
+        spinFloat.textContent = isDay ? '☀' : '🌙';
+        spinFloat.classList.remove('send');
+        void spinFloat.offsetWidth;
+        spinFloat.classList.add('send');
+
+        visits++;
+        saveVisits();
+        updateGlow();
+        planetCounter.classList.remove('pop');
+        void planetCounter.offsetWidth;
+        planetCounter.classList.add('pop');
+
+        emitParticles();
+
+        planetLabel.textContent = '✦ +1 ✦';
+        planetLabel.classList.add('highlight');
+
+        spun = true;
+
+        timer = setTimeout(function() {
+          actionEl.textContent = '✦ enter ✦';
+          actionEl.classList.add('highlight');
+          enterEl.textContent = 'enter →';
+          enterEl.classList.add('show');
+          planetHint.textContent = '';
+          locked = false;
+        }, 700);
+      }
+
+      /* ---- SKIP ---- */
+      function skipAll() {
+        if (spun) return;
+        if (timer) { clearTimeout(timer); timer = null; }
+        spun = true;
+        actionEl.textContent = '✦ enter ✦';
+        actionEl.classList.add('highlight');
+        enterEl.textContent = 'enter →';
+        enterEl.classList.add('show');
+        planetHint.textContent = '';
+      }
+
+      /* ---- EVENTS ---- */
+      planetWrap.addEventListener('click', handleSpin);
+      promptEl.addEventListener('click', skipAll);
+      document.addEventListener('keydown', function(e) {
+        if (spun) return;
+        if (e.key === 'Escape' || e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          skipAll();
+        }
+      });
+      enterEl.addEventListener('click', function () {
+        boot.classList.add('done');
+        document.body.classList.remove('booting');
+        setTimeout(function () { if (boot.classList.contains('done')) boot.style.display = 'none'; }, 450);
+      });
+
+      /* ---- IDLE ---- */
+      setTimeout(function() { planetInner.classList.add('idle'); }, 100);
     })();
     /* TABS */
     (function () {
@@ -868,7 +1194,6 @@
       var credForm = document.getElementById('cred-form');
       var credTitle = document.getElementById('cred-title');
       var credKind = document.getElementById('cred-kind');
-      var credName = document.getElementById('cred-name');
       var credEmail = document.getElementById('cred-email');
       var credStatus = document.getElementById('cred-status');
 
@@ -910,21 +1235,16 @@
         button.addEventListener('click', function () {
           var kind = button.dataset.credentialKind || 'credentials';
           credKind.value = kind;
-          credTitle.textContent = 'REQUEST CREDENTIALS & REFERENCES';
+          credTitle.textContent = kind === 'references' ? 'REQUEST REFERENCES' : 'REQUEST CREDENTIALS';
           openModal(credModal, credStatus);
-          credName.value = '';
-          credEmail.value = '';
-          credName.focus();
+          credEmail.focus();
         });
       });
       credClose.addEventListener('click', function () { closeModal(credModal); });
       credModal.addEventListener('click', function (e) { if (e.target === credModal) closeModal(credModal); });
       credForm.addEventListener('submit', function (e) {
         e.preventDefault();
-        var checked = credForm.querySelectorAll('input[name="credential_reason"]:checked');
-        if (!credName.value.trim()) { credStatus.textContent = 'NAME REQUIRED'; credStatus.className = 'req-status err'; return; }
         if (!credEmail.value.trim()) { credStatus.textContent = 'EMAIL REQUIRED'; credStatus.className = 'req-status err'; return; }
-        if (!checked.length) { credStatus.textContent = 'SELECT AT LEAST ONE REASON'; credStatus.className = 'req-status err'; return; }
         sendForm(credForm, credStatus, function () { closeModal(credModal); });
       });
 
@@ -971,45 +1291,6 @@
       function focusWindow(win) {
         stack += 1;
         win.style.zIndex = stack;
-      }
-      function isTextEntry(el) {
-        if (!el) return false;
-        var tag = el.tagName;
-        return el.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || tag === 'BUTTON';
-      }
-      function topMediaVideo() {
-        var videos = Array.prototype.slice.call(desktop.querySelectorAll('.media-window video'));
-        if (!videos.length) return null;
-        videos.sort(function (a, b) {
-          var wa = a.closest('.media-window');
-          var wb = b.closest('.media-window');
-          var za = parseInt(wa ? wa.style.zIndex : 0, 10);
-          var zb = parseInt(wb ? wb.style.zIndex : 0, 10);
-          return zb - za;
-        });
-        return videos[0];
-      }
-      function activePageVideo() {
-        var videos = Array.prototype.slice.call(document.querySelectorAll('video'));
-        return videos.find(function (video) { return !video.paused && !video.ended; }) || null;
-      }
-      function toggleVideo(video) {
-        if (!video) return;
-        if (video.paused || video.ended) video.play().catch(function () {});
-        else video.pause();
-      }
-      function seekVideo(video, seconds) {
-        if (!video || !isFinite(video.duration)) return;
-        video.currentTime = Math.max(0, Math.min(video.duration, video.currentTime + seconds));
-      }
-      function toggleFullscreen(video) {
-        if (!video) return;
-        var target = video.closest('.media-window') || video;
-        if (document.fullscreenElement) {
-          document.exitFullscreen().catch(function () {});
-        } else if (target.requestFullscreen) {
-          target.requestFullscreen().catch(function () {});
-        }
       }
 
       function makeDraggable(win, handle) {
@@ -1108,17 +1389,12 @@
         if (window.vaultSound) window.vaultSound.open();
 
         var win = document.createElement('section');
-        var portrait = frame.classList.contains('frame-portrait') || frame.dataset.popout === 'portrait';
+        var portrait = frame.classList.contains('frame-portrait');
         win.className = 'media-window' + (portrait ? ' portrait' : '');
         win.setAttribute('role', 'dialog');
         win.setAttribute('aria-label', titleFor(frame));
-        var targetW = portrait ? Math.min(390, window.innerWidth - 28) : Math.min(920, window.innerWidth - 28);
-        var targetH = portrait ? Math.min(610, window.innerHeight - 28) : Math.min(550, window.innerHeight - 28);
-        var offset = Math.min(count - 1, 3) * 18;
-        win.style.width = Math.max(280, targetW) + 'px';
-        win.style.height = Math.max(220, targetH) + 'px';
-        win.style.left = Math.max(9, Math.min((window.innerWidth - targetW) / 2 + offset, window.innerWidth - targetW - 9)) + 'px';
-        win.style.top = Math.max(54, Math.min((window.innerHeight - targetH) / 2 + offset, window.innerHeight - targetH - 9)) + 'px';
+        win.style.left = Math.min(36 + count * 28, window.innerWidth - 300) + 'px';
+        win.style.top = Math.min(82 + count * 24, window.innerHeight - 230) + 'px';
         focusWindow(win);
 
         var head = document.createElement('div');
@@ -1187,24 +1463,6 @@
         if (e.key === 'Escape') {
           var wins = desktop.querySelectorAll('.media-window');
           if (wins.length) wins[wins.length - 1].remove();
-        } else if ((e.code === 'Space' || e.key === ' ') && !isTextEntry(document.activeElement)) {
-          var video = topMediaVideo() || activePageVideo();
-          if (video) {
-            e.preventDefault();
-            toggleVideo(video);
-          }
-        } else if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && !isTextEntry(document.activeElement)) {
-          var seekTarget = topMediaVideo() || activePageVideo();
-          if (seekTarget) {
-            e.preventDefault();
-            seekVideo(seekTarget, e.key === 'ArrowLeft' ? -15 : 15);
-          }
-        } else if ((e.key === 'f' || e.key === 'F') && !isTextEntry(document.activeElement)) {
-          var fullscreenTarget = topMediaVideo() || activePageVideo();
-          if (fullscreenTarget) {
-            e.preventDefault();
-            toggleFullscreen(fullscreenTarget);
-          }
         }
       });
     })();
@@ -1269,101 +1527,6 @@
       });
     })();
 
-    /* VIDEO CONTROLS */
-    (function () {
-      function vfmt(seconds) {
-        if (!seconds || !isFinite(seconds)) return '0:00';
-        var m = Math.floor(seconds / 60);
-        var s = Math.floor(seconds % 60);
-        return m + ':' + String(s).padStart(2, '0');
-      }
-      document.querySelectorAll('.frame-16x9 video').forEach(function (video) {
-        if (video.dataset.enhanced) return;
-        video.dataset.enhanced = '1';
-        video.controls = false;
-
-        var ui = document.createElement('div');
-        ui.className = 'video-ui';
-        var play = document.createElement('button');
-        play.type = 'button';
-        play.className = 'video-play';
-        play.setAttribute('aria-label', 'Play video');
-        play.textContent = '▶';
-        var track = document.createElement('div');
-        track.className = 'video-track';
-        var fill = document.createElement('span');
-        fill.className = 'video-fill';
-        track.appendChild(fill);
-        var time = document.createElement('span');
-        time.className = 'video-time';
-        time.textContent = '0:00';
-        ui.appendChild(play);
-        ui.appendChild(track);
-        ui.appendChild(time);
-        video.insertAdjacentElement('afterend', ui);
-
-        function syncUI() {
-          play.textContent = video.paused ? '▶' : '⏸';
-          var pct = video.duration ? (video.currentTime / video.duration) * 100 : 0;
-          fill.style.width = pct + '%';
-          time.textContent = vfmt(video.currentTime) + ' / ' + vfmt(video.duration);
-          if (!video.paused) { ui.classList.add('playing'); } else { ui.classList.remove('playing'); }
-        }
-
-        function togglePlay() {
-          if (video.paused) {
-            document.querySelectorAll('.frame-16x9 video').forEach(function (other) {
-              if (other !== video) other.pause();
-            });
-            video.play().catch(function () {});
-          } else {
-            video.pause();
-          }
-        }
-
-        play.addEventListener('click', function (e) {
-          e.stopPropagation();
-          togglePlay();
-        });
-        track.addEventListener('click', function (e) {
-          e.stopPropagation();
-          if (!video.duration) return;
-          var rect = track.getBoundingClientRect();
-          video.currentTime = ((e.clientX - rect.left) / rect.width) * video.duration;
-        });
-        video.addEventListener('play', syncUI);
-        video.addEventListener('pause', syncUI);
-        video.addEventListener('ended', syncUI);
-        video.addEventListener('timeupdate', syncUI);
-        video.addEventListener('loadedmetadata', syncUI);
-
-        /* show controls on mouse move over frame, hide after 3s idle when playing */
-        var frame = video.closest('.frame-16x9');
-        if (frame) {
-          frame.style.cursor = 'pointer';
-          frame.addEventListener('click', function (e) { if (e.target === frame || e.target === video) togglePlay(); });
-          var hideTimer;
-          frame.addEventListener('mousemove', function () {
-            ui.classList.add('playing');
-            clearTimeout(hideTimer);
-            if (!video.paused) {
-              hideTimer = setTimeout(function () { ui.classList.remove('playing'); }, 3000);
-            }
-          });
-          frame.addEventListener('mouseleave', function () {
-            clearTimeout(hideTimer);
-            if (!video.paused) { setTimeout(function () { ui.classList.remove('playing'); }, 500); }
-          });
-          /* mobile: tap to toggle controls */
-          frame.addEventListener('touchstart', function () {
-            ui.classList.toggle('playing');
-            clearTimeout(hideTimer);
-            hideTimer = setTimeout(function () { if (!video.paused) ui.classList.remove('playing'); }, 4000);
-          }, { passive: true });
-        }
-      });
-    })();
-
     /* MUSIC AUDIO GATE (cosmetic only) */
     (function () {
       var form = document.getElementById('music-audio-gate-form'), input = document.getElementById('music-audio-gate-input'),
@@ -1402,6 +1565,22 @@
           msg.textContent = 'KEY NOT RECOGNIZED'; msg.className = 'proof-msg denied';
           input.value = ''; void msg.offsetWidth;
         }
+      });
+    })();
+
+    /* MONTAGE GATE (cosmetic only) */
+    (function () {
+      var form = document.getElementById('montage-gate-form'), input = document.getElementById('montage-gate-input'),
+          msg = document.getElementById('montage-gate-msg'), zone = document.getElementById('private-montage'),
+          gate = document.getElementById('montage-gate'), KEY = 'KEKOUKOLA';
+      if (!form) return;
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if ((input.value || '').trim().toUpperCase() === KEY) {
+          if (window.vaultSound) window.vaultSound.unlock();
+          msg.textContent = 'OPENING PRIVATE CLIPS'; msg.className = 'msg granted';
+          zone.classList.add('unlocked'); setTimeout(function () { gate.style.display = 'none'; }, 450);
+        } else { if (window.vaultSound) window.vaultSound.deny(); msg.textContent = 'KEY NOT RECOGNIZED'; msg.className = 'msg denied'; input.value = ''; void msg.offsetWidth; }
       });
     })();
 

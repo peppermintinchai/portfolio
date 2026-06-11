@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Tiffany Dong Portfolio Preview</title>
+  <desc id="desc">Minimal black and red social preview card for Tiffany Dong's portfolio archive.</desc>
+  <rect width="1200" height="630" fill="#050505"/>
+  <path d="M0 90h1200M0 540h1200M112 0v630M1088 0v630" stroke="#222" stroke-width="1"/>
+  <path d="M112 90h976v450H112z" fill="#080808" stroke="#2a2a2a"/>
+  <path d="M112 90h976" stroke="#c91f32" stroke-width="4"/>
+  <text x="156" y="178" fill="#8f8f8f" font-family="Helvetica Neue, Arial, sans-serif" font-size="24" letter-spacing="6">PORTFOLIO ARCHIVE</text>
+  <text x="152" y="292" fill="#ffffff" font-family="Helvetica Neue, Arial, sans-serif" font-size="86" font-weight="600" letter-spacing="1">tiffany dong</text>
+  <text x="156" y="368" fill="#c91f32" font-family="Menlo, Consolas, monospace" font-size="28" letter-spacing="2">computer science / music / games / writing</text>
+  <text x="156" y="478" fill="#9a9a9a" font-family="Menlo, Consolas, monospace" font-size="22" letter-spacing="2">nyc to boston · online</text>
+  <circle cx="1010" cy="466" r="8" fill="#c91f32"/>
+  <path d="M900 466h90" stroke="#c91f32" stroke-width="2"/>
+</svg>
