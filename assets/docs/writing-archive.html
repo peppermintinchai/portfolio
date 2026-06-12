@@ -86,11 +86,11 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      min-height: 34px;
+      min-height: 44px;
       border: 1px solid var(--accent);
       color: var(--accent);
       background: transparent;
-      padding: 8px 12px;
+      padding: 10px 14px;
       font-size: 10px;
       letter-spacing: var(--track);
       text-transform: uppercase;
@@ -103,6 +103,12 @@
       .title, .actions { grid-column: 2; }
       .actions { justify-content: flex-start; }
       .top { align-items: flex-start; flex-direction: column; }
+    }
+    @media (max-width: 520px) {
+      .section-label { flex-direction: column; gap: 5px; }
+      .item { grid-template-columns: 1fr; gap: 8px; }
+      .meta, .title, .actions { grid-column: 1; }
+      .btn { width: 100%; }
     }
   </style>
 </head>
@@ -136,14 +142,14 @@
 
     <div class="section-label"><strong>Essays</strong><span>ENG 101 + personal narrative</span></div>
     <section class="index" aria-label="Essays and personal narrative writing">
-      <article class="item"><span class="year">2024</span><div class="meta">Personal Narrative</div><div class="title">Reflective Narratives</div><div class="actions"><a class="btn" href="reflective-narratives.pdf" target="_blank" rel="noopener">PDF ↗</a></div></article>
-      <article class="item"><span class="year">2024</span><div class="meta">Essay</div><div class="title">Neglect on Child Development</div><div class="actions"><a class="btn" href="neglect-child-development.pdf" target="_blank" rel="noopener">PDF ↗</a></div></article>
+      <article class="item"><span class="year">2024</span><div class="meta">PDF</div><div class="title">ENLearning Final Presentation</div><div class="actions"><a class="btn" href="enlearning-final-presentation.pdf" target="_blank" rel="noopener">PDF ↗</a></div></article>
+      <article class="item"><span class="year">2024</span><div class="meta">PDF</div><div class="title">Resourcing Polyethylene Biochemistry</div><div class="actions"><a class="btn" href="resourcing-polyethylene-biochemistry.pdf" target="_blank" rel="noopener">PDF ↗</a></div></article>
     </section>
 
     <div class="section-label"><strong>Research</strong><span>Midwood · AP Capstone</span></div>
     <section class="index" aria-label="Selected research">
-      <article class="item"><span class="year">2025</span><div class="meta">Midwood · AP Capstone</div><div class="title">Coffee Consumption on High School Academic Performance and Productivity</div><div class="actions"><a class="btn" href="coffee-consumption-academic-success.pdf" target="_blank" rel="noopener">PDF ↗</a></div></article>
-      <article class="item"><span class="year">2021-2025</span><div class="meta">Packet</div><div class="title">Published Journalism PDF</div><div class="actions"><a class="btn secondary" href="published-journalism.pdf" target="_blank" rel="noopener">PDF ↗</a></div></article>
+      <article class="item"><span class="year">2025</span><div class="meta">PDF</div><div class="title">Resume PDF</div><div class="actions"><a class="btn" href="Tiffany_Dong_Resume.pdf" target="_blank" rel="noopener">PDF ↗</a></div></article>
+      <article class="item"><span class="year">2021-2025</span><div class="meta">PDF</div><div class="title">Portfolio Resume Archive</div><div class="actions"><a class="btn secondary" href="Tiffany_Dong_Resume.pdf" target="_blank" rel="noopener">PDF ↗</a></div></article>
     </section>
   </main>
 </body>

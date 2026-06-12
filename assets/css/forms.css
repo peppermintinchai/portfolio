@@ -1,0 +1,36 @@
+  /* ---- request-slot modal ---- */
+  .req-modal { position: fixed; inset: 0; z-index: 2000; background: rgba(0,0,0,0.9); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; padding: 24px; overflow-y: auto; }
+  .req-modal.open { display: flex; animation: reveal .3s ease; }
+  .req-box { width: min(520px, 94vw); max-height: calc(100vh - 48px); overflow-y: auto; background: var(--bg); border: 1px solid var(--accent); border-top: 3px solid var(--accent); box-shadow: 0 0 50px var(--accent-glow); padding: clamp(22px, 4vw, 34px); }
+  .req-head { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--accent); padding-bottom: 14px; margin-bottom: 6px; }
+  .req-head .rh-t { min-width: 0; font-size: 13px; letter-spacing: var(--track); text-transform: uppercase; color: var(--fg); font-weight: 600; line-height: 1.35; }
+  .req-close { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 10px; margin: -10px -10px -10px 0; background: transparent; border: none; color: var(--dim); font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; cursor: pointer; }
+  .req-close:hover { color: var(--accent); }
+  .req-label { display: block; font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; color: var(--accent); margin: 16px 0 6px; }
+  .req-input, .req-textarea { width: 100%; background: transparent; border: 1px solid var(--line); color: var(--fg); font-family: var(--font); font-size: 12px; letter-spacing: 0.04em; padding: 11px 12px; }
+  .req-input:focus, .req-textarea:focus { outline: none; border-color: var(--accent); }
+  .req-textarea { resize: vertical; min-height: 90px; line-height: 1.6; }
+  .chat-bubble-input { border-radius: 0 10px 10px 10px; background: rgba(255,255,255,0.025); min-height: 110px; }
+  .req-send { margin-top: 22px; width: 100%; justify-content: center; }
+  .req-send:disabled { opacity: 0.35; cursor: not-allowed; }
+  .req-send:disabled:hover { background: transparent; color: var(--accent); }
+  .req-status { font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; color: var(--dim); margin-top: 14px; min-height: 14px; }
+  .req-status.ok { color: var(--accent); }
+  .req-status.err { color: var(--accent); }
+  .credential-modal .req-box { border-color: var(--accent); box-shadow: 0 0 42px rgba(201,31,50,0.28); }
+  .availability-modal .req-box { border-color: rgba(127,127,127,0.36); border-top-color: var(--fg); box-shadow: 0 0 42px rgba(255,255,255,0.07); }
+  .choice-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 8px; }
+  .choice-pill { display: flex; align-items: center; gap: 9px; min-height: 44px; border: 1px solid rgba(127,127,127,0.2); background: rgba(127,127,127,0.035); color: var(--dim); padding: 10px 11px; font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; cursor: pointer; transition: border-color .2s ease, color .2s ease, background .2s ease; }
+  .choice-pill:hover { border-color: var(--accent); color: var(--fg); background: var(--accent-soft); }
+  .choice-pill input { width: 18px; height: 18px; flex: 0 0 auto; accent-color: var(--accent); }
+  .choice-pill span, .choice-pill { min-width: 0; overflow-wrap: anywhere; }
+  @media (max-width: 520px) {
+    .req-modal { align-items: flex-start; padding: 12px; }
+    .req-box { width: 100%; max-height: calc(100vh - 24px); padding: 20px 16px; }
+    @supports (height: 100dvh) {
+      .req-box { max-height: calc(100dvh - 24px); }
+    }
+    .req-head { align-items: flex-start; gap: 12px; }
+    .req-head .rh-t { font-size: 12px; }
+    .choice-grid { grid-template-columns: 1fr; }
+  }
