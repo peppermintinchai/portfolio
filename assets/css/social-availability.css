@@ -14,54 +14,18 @@
   .logset .ls-key { font-size: 10px; letter-spacing: var(--track); color: var(--accent); text-transform: uppercase; padding-top: 6px; }
   .chip { border: 1px solid var(--line); padding: 6px 11px; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--dim); }
 
-  /* ---- availability gate ---- */
+  /* ---- availability request ---- */
   .gate { padding: clamp(28px, 6vw, 72px) var(--pad); border-bottom: 1px solid var(--line); }
   .gate-inner { max-width: 860px; display: flex; flex-direction: column; gap: 10px; }
   .gate-head { display: flex; align-items: flex-start; gap: 18px; }
   .gate .prompt { font-family: var(--font); font-size: 12px; letter-spacing: var(--track); color: var(--fg); text-transform: uppercase; }
   .public-availability { max-width: 760px; border-left: 1px solid rgba(201,31,50,0.42); padding-left: 12px; font-size: 9.5px; letter-spacing: 0.075em; color: var(--dim); text-transform: uppercase; line-height: 1.65; }
   .public-availability .pa-key { color: var(--accent); }
+
   .gate .gate-meta { font-size: 10px; letter-spacing: 0.08em; color: var(--dim); text-transform: uppercase; line-height: 1.6; }
   .gate .prompt .cursor { display:inline-block; width:8px; height:14px; background:var(--accent); margin-left:6px; transform:translateY(2px); animation: blink 1.1s steps(2,start) infinite; }
-  .gate-form { display: flex; width: min(100%, 460px); border: 1px solid rgba(127,127,127,0.24); background: rgba(127,127,127,0.035); }
-  .gate-form input { flex: 1; min-width: 0; background: transparent; border: none; outline: none; color: var(--fg); font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; padding: 12px; text-transform: uppercase; min-height: 44px; }
-  .gate-form input::placeholder { color: var(--muted); letter-spacing: 0.12em; }
-  .gate-form button { background: transparent; border: none; border-left: 1px solid rgba(127,127,127,0.2); color: var(--dim); font-family: var(--font); font-size: 11px; letter-spacing: var(--track); text-transform: uppercase; padding: 0 16px; cursor: pointer; transition: background .2s ease, color .2s ease; min-height: 44px; }
-  @media (hover: hover) {
-    .gate-form button:hover { background: var(--accent-soft); color: var(--accent); }
-  }
-  .gate .msg { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; min-height: 14px; text-transform: uppercase; color: var(--muted); }
-  .gate .msg.denied { color: var(--accent); animation: flash 0.45s steps(2,start) 3; }
-  .gate .msg.granted { color: var(--accent); }
   @media (max-width: 680px) {
     .gate-head { flex-direction: column; gap: 8px; }
     .public-availability { max-width: none; }
-    .gate-form { width: 100%; }
-  }
-  @keyframes flash { to { opacity: 0.25; } }
-  .locked { display: none; }
-  .locked.unlocked { display: block; animation: reveal .5s ease; }
-  .schedule-label { background: rgba(255,255,255,0.025); border-top: 1px solid rgba(127,127,127,0.16); }
-  .schedule-label .lead { color: var(--fg); }
-  .schedule-label > .tag:last-child { color: var(--accent); }
-  .schedule-table { border-bottom: 1px solid var(--line); }
-  .schedule-table .xp { grid-template-columns: minmax(140px, 0.45fr) minmax(220px, 0.82fr) minmax(260px, 1fr); gap: 4px clamp(16px, 2vw, 26px); padding-block: 11px; }
-  @media (hover: hover) {
-    .schedule-table .xp:hover { background: rgba(201,31,50,0.08); }
-  }
-  .schedule-table .xp-l, .schedule-table .xp-r { display: contents; }
-  .schedule-table .xp-loc { grid-column: 1; grid-row: 1; justify-self: start; text-align: left; font-size: 10px; letter-spacing: 0.12em; color: rgba(255,255,255,0.82); opacity: .95; }
-  .schedule-table .xp-date { grid-column: 1; grid-row: 2; justify-self: start; text-align: left; font-size: 10px; letter-spacing: 0.1em; color: var(--muted); }
-  .schedule-table .xp-co { grid-column: 2; grid-row: 1 / span 2; align-self: start; font-size: clamp(13px, 1.4vw, 15px); letter-spacing: 0.06em; line-height: 1.45; color: rgba(255,255,255,0.74); font-weight: 500; }
-  .schedule-table .xp-role { grid-column: 3; grid-row: 1 / span 2; max-width: none; font-size: 11px; letter-spacing: 0.04em; line-height: 1.55; color: var(--dim); }
-  .schedule-month { padding: 18px var(--pad) 8px; border-top: 1px solid rgba(201,31,50,0.28); border-bottom: 1px solid rgba(201,31,50,0.2); background: rgba(201,31,50,0.07); font-size: clamp(12px, 1.3vw, 15px); letter-spacing: var(--track); color: var(--accent); text-transform: uppercase; }
-  .schedule-month:first-child { padding-top: 12px; }
-  .schedule-group { padding: 12px var(--pad) 6px; font-size: 10px; letter-spacing: 0.13em; color: var(--muted); text-transform: uppercase; border-bottom: 1px solid rgba(127,127,127,0.08); background: rgba(255,255,255,0.012); }
-  @media (max-width: 680px) {
-    .schedule-table .xp { grid-template-columns: 1fr; }
-    .schedule-table .xp-l, .schedule-table .xp-r { display: flex; }
-    .schedule-table .xp-l { flex-direction: column; gap: 6px; }
-    .schedule-table .xp-r { align-items: flex-start; }
-    .schedule-table .xp-co, .schedule-table .xp-role, .schedule-table .xp-loc, .schedule-table .xp-date { grid-column: auto; grid-row: auto; justify-self: auto; text-align: left; }
   }
   @keyframes reveal { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }

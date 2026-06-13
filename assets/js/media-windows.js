@@ -15,6 +15,10 @@
       function focusWindow(win) {
         stack += 1;
         win.style.zIndex = stack;
+        if (typeof win.focus === 'function') {
+          try { win.focus({ preventScroll: true }); }
+          catch (e) { win.focus(); }
+        }
       }
       function topMediaWindow() {
         var wins = utils.qsa('.media-window', desktop);
@@ -37,6 +41,24 @@
           return zb - za;
         });
         return videos[0];
+      }
+      function keyFor(frame) {
+        var sourceVideo = frame.querySelector('video');
+        var sourceIframe = frame.querySelector('iframe');
+        return sourceVideo ? (sourceVideo.currentSrc || sourceVideo.getAttribute('src')) : frame.dataset.embedSrc || (sourceIframe && sourceIframe.getAttribute('src')) || titleFor(frame);
+      }
+      function existingWindowFor(frame) {
+        var key = keyFor(frame);
+        return utils.qsa('.media-window', desktop).find(function (win) {
+          return win.dataset.sourceKey === key;
+        }) || null;
+      }
+      function closeWindow(win) {
+        if (!win) return;
+        utils.qsa('audio, video', win).forEach(function (media) {
+          try { media.pause(); } catch (e) {}
+        });
+        win.remove();
       }
       function activePageVideo() {
         var videos = utils.qsa('video');
@@ -159,14 +181,21 @@
         var sourceIframe = frame.querySelector('iframe');
         var sourceEmbed = frame.dataset.embedSrc;
         if (!sourceVideo && !sourceIframe && !sourceEmbed) return;
+        var existing = existingWindowFor(frame);
+        if (existing) {
+          focusWindow(existing);
+          return;
+        }
         count += 1;
         if (window.vaultSound) window.vaultSound.open();
 
         var win = document.createElement('section');
         var portrait = frame.classList.contains('frame-portrait') || frame.dataset.popout === 'portrait';
         win.className = 'media-window' + (portrait ? ' portrait' : '');
+        win.dataset.sourceKey = keyFor(frame);
         win.setAttribute('role', 'dialog');
         win.setAttribute('aria-label', titleFor(frame));
+        win.setAttribute('tabindex', '-1');
         if (!isMobileViewport()) {
           var targetW = portrait ? Math.min(390, window.innerWidth - 28) : Math.min(920, window.innerWidth - 28);
           var targetH = portrait ? Math.min(610, window.innerHeight - 28) : Math.min(550, window.innerHeight - 28);
@@ -189,7 +218,7 @@
         close.type = 'button';
         close.className = 'media-close';
         close.setAttribute('aria-label', 'Close media window');
-        close.innerHTML = '&times;';
+        close.textContent = '×';
         actions.appendChild(close);
         head.appendChild(title);
         head.appendChild(actions);
@@ -223,6 +252,7 @@
         win.appendChild(head);
         win.appendChild(stage);
         desktop.appendChild(win);
+        focusWindow(win);
         makeDraggable(win, head);
         makeResizable(win);
         win.addEventListener('pointerdown', function () { focusWindow(win); });
@@ -232,7 +262,7 @@
         close.addEventListener('click', function (e) {
           e.preventDefault();
           e.stopPropagation();
-          win.remove();
+          closeWindow(win);
         });
       }
 
@@ -243,8 +273,13 @@
         var button = document.createElement('button');
         button.type = 'button';
         button.className = 'media-pop-trigger';
-        button.setAttribute('aria-label', 'Open floating media player');
-        button.innerHTML = '<span></span><em>PLAY</em>';
+        button.setAttribute('aria-label', 'Open ' + titleFor(frame) + ' in floating media player');
+        var icon = document.createElement('span');
+        icon.setAttribute('aria-hidden', 'true');
+        var label = document.createElement('em');
+        label.textContent = 'PLAY';
+        button.appendChild(icon);
+        button.appendChild(label);
         button.addEventListener('click', function (e) {
           e.stopPropagation();
           openWindow(frame);
@@ -274,7 +309,7 @@
         if (document.body.classList.contains('modal-open')) return;
         if (e.key === 'Escape') {
           var win = topMediaWindow();
-          if (win) win.remove();
+          if (win) closeWindow(win);
         } else if ((e.code === 'Space' || e.key === ' ') && !utils.isTextEntry(document.activeElement)) {
           var video = topMediaVideo() || activePageVideo();
           if (video) {

@@ -26,7 +26,6 @@
   .proof-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); border-top: 1px solid var(--line); }
   .proof-card { padding: clamp(18px, 3vw, 30px) var(--pad); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 10px; min-height: 128px; }
   .proof-card:last-child { border-right: none; }
-  .proof-card.proof-locked { color: var(--dim); background: rgba(127,127,127,0.025); }
   .proof-card .proof-title { font-size: 12px; letter-spacing: var(--track); color: var(--fg); text-transform: uppercase; }
   .proof-card .proof-meta { font-size: 10px; letter-spacing: 0.08em; color: var(--dim); text-transform: uppercase; line-height: 1.6; }
   .proof-card a, .proof-card button { align-self: flex-start; margin-top: auto; }
@@ -34,22 +33,9 @@
   @media (hover: hover) {
     .download-link:hover { background: var(--accent); color: var(--on-accent); }
   }
-  .proof-gate { grid-column: span 2; }
-  .proof-secure { display: none; }
-  .proof-secure.unlocked { display: flex; animation: reveal .45s ease; }
-  .proof-form { display: flex; width: min(100%, 460px); border: 1px solid rgba(127,127,127,0.24); background: rgba(127,127,127,0.035); margin-top: auto; }
-  .proof-form input { flex: 1; min-width: 0; background: transparent; border: none; outline: none; color: var(--fg); font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; padding: 10px 12px; text-transform: uppercase; }
-  .proof-form input::placeholder { color: var(--muted); }
-  .proof-form button { margin-top: 0; background: transparent; border: none; border-left: 1px solid rgba(127,127,127,0.2); color: var(--dim); font-family: var(--font); font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; padding: 0 14px; cursor: pointer; transition: color .2s ease, background .2s ease; }
-  @media (hover: hover) {
-    .proof-form button:hover { background: var(--accent-soft); color: var(--accent); }
-  }
-  .proof-msg { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; min-height: 14px; text-transform: uppercase; color: var(--muted); }
-  .proof-msg.denied { color: var(--accent); animation: flash 0.45s steps(2,start) 3; }
-  .proof-msg.granted { color: var(--accent); }
   @media (max-width: 760px) {
     .proof-grid { grid-template-columns: 1fr; }
-    .proof-card, .proof-gate { border-right: none; grid-column: auto; }
+    .proof-card { border-right: none; grid-column: auto; }
     .proof-card { padding: 20px var(--pad); }
     .proof-card .proof-title { font-size: 13px; }
     .proof-card .proof-meta { font-size: 11px; }

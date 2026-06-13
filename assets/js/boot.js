@@ -5,6 +5,7 @@
     (function () {
       var utils = window.portfolioUtils;
       var boot = document.getElementById('boot');
+      if (!boot) return;
       var panel = boot.querySelector('.boot-panel');
       var reopen = document.getElementById('boot-reopen');
       var planet = document.getElementById('planet-button');
@@ -74,7 +75,7 @@
       var sweetMin = 0, sweetMax = 0;
 
       /* --- helpers --- */
-      function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+      var clamp = utils.clamp;
 
       function getTier() {
         return Math.min(currentTier, MAX_TIER);

@@ -115,6 +115,7 @@
   }
   .tab:hover .t-idx { color: rgba(255,255,255,0.5); }
   .tab:hover .t-name { color: rgba(255,255,255,0.9); }
+  .tab:active { transform: translateY(1px); }
   .tab.active .t-idx { color: var(--accent); }
   .tab.active .t-name { color: var(--fg); }
   .tab.active::after { transform: scaleX(1); }

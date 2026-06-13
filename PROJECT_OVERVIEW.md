@@ -1,44 +1,26 @@
 # Project Overview
 
-This is Tiffany Dong's static portfolio site. It is intentionally simple: one main `index.html`, modular CSS/JS under `assets/`, a small writing archive page, and local media.
+Tiffany Dong's portfolio is a static site built around one main page, a few focused CSS/JS modules, and local media. It is meant to be easy to open, edit, and publish without a backend.
 
-The site is meant to work on GitHub Pages or any plain static host. There is no build step, no package manager, and no production backend.
+## Structure
 
-## What Is In Here
+- `index.html` is the live portfolio page.
+- `assets/css/` holds layout, media, form, resume, and interaction styles.
+- `assets/js/` handles tabs, boot screen behavior, forms, media windows, audio, video, theme, and small sound effects.
+- `assets/img/` holds stills, project images, and video poster frames.
+- `assets/video-h264/` holds the web video files. These should stay untouched unless the source video itself is intentionally replaced.
+- `assets/audio/` holds MP3 recordings.
+- `assets/docs/` holds the resume, PDFs, and the writing archive page.
+- `scripts/` holds the build/deploy helpers.
 
-- `index.html` is the live portfolio shell.
-- `assets/css/` stores the modular stylesheets.
-- `assets/js/` stores the modular browser scripts.
-- `assets/docs/writing-archive.html` is the public writing page.
-- `assets/img/` stores photos, project images, and preview images.
-- `assets/img/video-posters/` stores video thumbnails.
-- `assets/audio/` stores MP3 recordings.
-- `assets/video-h264/` stores web-ready videos.
-- `assets/docs/` stores PDFs.
+## Editing Notes
 
-## Main Sections
+- Keep file paths relative, like `assets/img/example.jpg`.
+- If an image, PDF, audio file, or video is referenced in HTML, make sure the file exists inside this repo.
+- Do not link to files in Downloads, Desktop, or another personal folder.
+- Keep video replacements in H.264 MP4 when possible. GitHub Pages can serve them directly, and they are easier to preview.
+- Run the build script before deploying if you want the minified `dist/` version.
 
-- Game Dev: `Cries of the Wild`
-- Music: concert videos and audio recordings
-- Film: photos, clips, and profile links
-- Resume: education, work, awards, documents
-- Availability: public availability summary and request form
+## Deployment
 
-## How It Works
-
-The page is static and loads ordered CSS/JS modules:
-
-- `assets/css/base.css`, `boot.css`, `layout.css`, `media.css`, `forms.css`, `resume-projects.css`, `social-availability.css`, and `context-proof-footer.css`
-- `assets/js/utils.js`, `sound.js`, `theme.js`, `boot.js`, `tabs.js`, `forms.js`, `media-windows.js`, `audio-player.js`, `video-controls.js`, and `gates.js`
-
-The JS modules cover the entry screen/minigame, tab switching, request modals, floating media windows, custom audio controls, video setup, and small Web Audio sound effects.
-
-The request forms post to Formspree. The forms are client-side only, so anything sensitive should not be put directly in the static HTML.
-
-## Notes For Future Edits
-
-- Keep links relative, like `assets/img/...`.
-- Do not reference files from a personal folder outside this repo.
-- If an asset is referenced in HTML, it needs to exist in the deployed site too.
-- Prefer MP4/H.264 for public video. Raw `.mov` files are usually too large for GitHub Pages and are easier to break.
-- Client-side gates are only visual gates. They are not private authentication.
+The repo can be published directly from `main`, or through the built `dist/` folder on a Pages branch. The build script minifies text assets and optimizes still images, but it only copies videos and verifies their checksums.

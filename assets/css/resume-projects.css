@@ -54,6 +54,10 @@
   .project-feature.static:hover { border-color: rgba(127,127,127,0.22); background: transparent; transform: none; }
   @media (max-width: 760px) { .project-feature { grid-template-columns: 1fr; width: calc(100% - (var(--pad) * 2)); } }
   .pf-media { display: flex; align-items: center; justify-content: center; padding: clamp(18px, 3vw, 34px); overflow: hidden; border-right: 1px solid var(--line); background: repeating-linear-gradient(45deg,var(--frame-a) 0,var(--frame-a) 1px,transparent 1px,transparent 7px), var(--frame-b); }
+  .pf-media-solid { background: #000; }
+  .pf-media-video { padding: 0; background: transparent; }
+  .media-feature-flush { margin-bottom: 0; }
+  .frame-fill { width: 100%; }
   @media (max-width: 760px) { .pf-media { border-right: none; border-bottom: 1px solid var(--line); } }
   .pf-img { display: block; width: min(100%, 330px); aspect-ratio: 5 / 4; object-fit: cover; object-position: center 44%; border: 1px solid rgba(127,127,127,0.24); background: #000; box-shadow: 0 16px 34px rgba(0,0,0,0.28); }
   .pf-info { padding: clamp(18px, 2.4vw, 32px); display: flex; flex-direction: column; gap: 14px; justify-content: center; }

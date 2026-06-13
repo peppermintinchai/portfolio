@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>tiffany dong | scholarly portfolio</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'none'; object-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src 'self'; connect-src 'self' https://formspree.io; form-action https://formspree.io; frame-src 'self' https://www.youtube.com https://www.youtube-nocookie.com https://player.vimeo.com;" />
+<meta name="referrer" content="strict-origin-when-cross-origin" />
+<title>tiffany dong | portfolio</title>
 <meta name="description" content="tiffany dong portfolio - CS at BU, selected work, recordings, clips, and CV." />
 <meta property="og:type" content="website" />
 <meta property="og:title" content="Tiffany Dong | Portfolio" />
@@ -75,22 +77,22 @@
 
     <!-- ================= TABS ================= -->
     <nav class="tabs" role="tablist" aria-label="Archive navigation">
-      <button class="tab active" type="button" data-target="pane-projects" role="tab" aria-selected="true" aria-controls="pane-projects"><span class="t-idx">01</span><span class="t-name">PROJECTS</span></button>
-      <button class="tab" type="button" data-target="pane-music" role="tab" aria-selected="false" aria-controls="pane-music"><span class="t-idx">02</span><span class="t-name">MUSIC</span></button>
-      <button class="tab" type="button" data-target="pane-film" role="tab" aria-selected="false" aria-controls="pane-film"><span class="t-idx">03</span><span class="t-name">FILM</span></button>
-      <button class="tab" type="button" data-target="pane-resume" role="tab" aria-selected="false" aria-controls="pane-resume"><span class="t-idx">04</span><span class="t-name">CV</span></button>
-      <button class="tab" type="button" data-target="pane-availability" role="tab" aria-selected="false" aria-controls="pane-availability"><span class="t-idx">05</span><span class="t-name">AVAILABILITY</span></button>
+      <button class="tab active" id="tab-projects" type="button" data-target="pane-projects" role="tab" aria-selected="true" aria-controls="pane-projects"><span class="t-idx">01</span><span class="t-name">PROJECTS</span></button>
+      <button class="tab" id="tab-music" type="button" data-target="pane-music" role="tab" aria-selected="false" aria-controls="pane-music"><span class="t-idx">02</span><span class="t-name">MUSIC</span></button>
+      <button class="tab" id="tab-film" type="button" data-target="pane-film" role="tab" aria-selected="false" aria-controls="pane-film"><span class="t-idx">03</span><span class="t-name">FILM</span></button>
+      <button class="tab" id="tab-resume" type="button" data-target="pane-resume" role="tab" aria-selected="false" aria-controls="pane-resume"><span class="t-idx">04</span><span class="t-name">CV</span></button>
+      <button class="tab" id="tab-availability" type="button" data-target="pane-availability" role="tab" aria-selected="false" aria-controls="pane-availability"><span class="t-idx">05</span><span class="t-name">AVAILABILITY</span></button>
     </nav>
 
     <div class="panes">
 
       <!-- ===================== 04 // RESUME ===================== -->
-      <section class="pane" id="pane-resume" role="tabpanel">
+      <section class="pane" id="pane-resume" role="tabpanel" aria-labelledby="tab-resume">
         <div class="module-label"><span class="section-title">[ 04 ] CURRICULUM VITAE</span><span class="tag">ACADEMIC PROFILE</span></div>
 
         <div class="sub-label major"><span class="tag lead"><span class="sl">//</span> EDUCATION</span></div>
         <div class="spec">
-          <div class="xp"><div class="xp-l"><span class="xp-co">BOSTON UNIVERSITY</span><span class="xp-role">B.A. CS · CREATIVE COMPUTING</span><span class="xp-loc">BOSTON, MASSACHUSETTS</span></div><div class="xp-r"><span class="xp-date">EXPECTED MAY 2029</span><div class="chips"><span class="chip-sm">LONDON STUDY ABROAD</span><span class="chip-sm">CONCERT BAND</span><span class="chip-sm">GAMING CLUB · COMMUNITY COORDINATOR</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">BOSTON UNIVERSITY</span><span class="xp-role">B.A. Computer Science</span><span class="xp-loc">BOSTON, MASSACHUSETTS</span></div><div class="xp-r"><span class="xp-date">EXPECTED MAY 2029</span><div class="chips"><span class="chip-sm">LONDON STUDY ABROAD</span><span class="chip-sm">CONCERT BAND</span><span class="chip-sm">GAMING CLUB · COMMUNITY COORDINATOR</span></div></div></div>
           <div class="xp"><div class="xp-l"><span class="xp-co">COLUMBIA UNIVERSITY</span><span class="xp-role">PRE-COLLEGE · BIG DATA, MACHINE LEARNING & APPLIED ANALYTICS</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">2024 – 2025</span><div class="chips"><span class="chip-sm">PYTHON</span><span class="chip-sm">NASA EXOPLANETS</span><span class="chip-sm">PREDICTIVE MODELS</span></div></div></div>
           <div class="xp"><div class="xp-l"><span class="xp-co">CUNY COLLEGE NOW</span><span class="xp-role">BARUCH COLLEGE · BROOKLYN COLLEGE · JOHN JAY COLLEGE</span><span class="xp-loc">NEW YORK, NEW YORK</span></div><div class="xp-r"><span class="xp-date">2023 – 2025</span><div class="chips"><span class="chip-sm">HED 1911</span><span class="chip-sm">HNSC 1200</span><span class="chip-sm">PSY 101</span><span class="chip-sm">ENG 101</span></div></div></div>
           <div class="xp"><div class="xp-l"><span class="xp-co">MIDWOOD HIGH SCHOOL</span><span class="xp-role">High School Diploma, Medical Science · National Honor Society</span><span class="xp-loc">BROOKLYN, NEW YORK</span></div><div class="xp-r"><span class="xp-date">2021 – 2025</span><div class="chips"><span class="chip-sm">ARGUS · COPY EDITOR</span><span class="chip-sm">PATTERNS · LIT DIRECTOR</span><span class="chip-sm">WIND ENSEMBLE · CLARINET SECTION LEADER</span></div></div></div>
@@ -136,21 +138,21 @@
         <div class="sub-label major"><span class="tag lead"><span class="sl">//</span> AWARDS</span></div>
         <div class="spec">
           <div class="xp"><div class="xp-l"><span class="xp-co">APEX FOR YOUTH COLLEGE SUCCESS SCHOLARSHIP</span><span class="xp-role">MERIT SCHOLARSHIP RECIPIENT · COLLEGE ACCESS PROGRAM ALUMNI</span></div><div class="xp-r"><span class="xp-date">2025</span><div class="chips"><span class="chip-sm">$10K / YEAR</span><span class="chip-sm">4 YEARS</span></div></div></div>
-          <div class="xp"><div class="xp-l"><span class="xp-co">NEW YORK ACADEMY OF SCIENCES PROJECT OF DISTINCTION</span><span class="xp-role">COGNITIVE CLASSROOM CHALLENGE · ENLEARNING · <a href="assets/docs/enlearning-final-presentation.pdf" target="_blank" rel="noopener" class="accent-text">PROJECT PDF</a></span></div><div class="xp-r"><span class="xp-date"><a href="assets/docs/resourcing-polyethylene-biochemistry.pdf" target="_blank" rel="noopener" class="accent-text">ADDITIONAL PROJECT PDF</a> · 2023</span><div class="chips"><span class="chip-sm">BRIDGING LANGUAGE GAPS</span><span class="chip-sm">APP PROTOTYPE</span></div></div></div>
+          <div class="xp"><div class="xp-l"><span class="xp-co">NEW YORK ACADEMY OF SCIENCES PROJECT OF DISTINCTION</span><span class="xp-role">COGNITIVE CLASSROOM CHALLENGE · ENLEARNING · <a href="assets/docs/enlearning-final-presentation.pdf" target="_blank" rel="noopener noreferrer" class="accent-text">PROJECT PDF</a></span></div><div class="xp-r"><span class="xp-date"><a href="assets/docs/resourcing-polyethylene-biochemistry.pdf" target="_blank" rel="noopener noreferrer" class="accent-text">ADDITIONAL PROJECT PDF</a> · 2023</span><div class="chips"><span class="chip-sm">BRIDGING LANGUAGE GAPS</span><span class="chip-sm">APP PROTOTYPE</span></div></div></div>
         </div>
-        <div class="sub-label"><span class="tag">CONTACT // <span class="accent-text">TDONG4@BU.EDU</span></span><a href="https://linkedin.com/in/tdong4" target="_blank" rel="noopener" class="tag accent-text">LINKEDIN.COM/IN/TDONG4 &rarr;</a></div>
+        <div class="sub-label"><span class="tag">CONTACT // <span class="accent-text">TDONG4@BU.EDU</span></span><a href="https://linkedin.com/in/tdong4" target="_blank" rel="noopener noreferrer" class="tag accent-text">LINKEDIN.COM/IN/TDONG4 &rarr;</a></div>
         <div class="proof-grid" aria-label="Resume documents">
           <div class="proof-card"><span class="proof-title">FULL PDF RESUME</span><span class="proof-meta">UPDATED PDF COPY FOR DOWNLOAD.</span><a class="download-link" href="assets/docs/Tiffany_Dong_Resume.pdf" download>DOWNLOAD PDF</a></div>
-          <div class="proof-card"><span class="proof-title">PUBLICATIONS</span><span class="proof-meta">ARGUS, ESSAYS, AND SELECTED RESEARCH.</span><a class="download-link" href="assets/docs/writing-archive.html" target="_blank" rel="noopener">OPEN PAGE</a></div>
+          <div class="proof-card"><span class="proof-title">PUBLICATIONS</span><span class="proof-meta">ARGUS, ESSAYS, AND SELECTED RESEARCH.</span><a class="download-link" href="assets/docs/writing-archive.html" target="_blank" rel="noopener noreferrer">OPEN PAGE</a></div>
           <div class="proof-card"><span class="proof-title">REFERENCES</span><span class="proof-meta">RECOMMENDATIONS AND SUPPORTING CONTEXT AVAILABLE ON REQUEST.</span><button type="button" class="download-link cred-open" data-credential-kind="references">REQUEST</button></div>
         </div>
       </section>
 
       <!-- ===================== 01 // PROJECTS ===================== -->
-      <section class="pane active" id="pane-projects" role="tabpanel">
+      <section class="pane active" id="pane-projects" role="tabpanel" aria-labelledby="tab-projects">
         <div class="module-label"><span class="section-title">[ 01 ] GAME DEV</span><span class="tag">UNITY&nbsp;·&nbsp;GAME&nbsp;DESIGN</span></div>
-        <a class="project-feature" href="https://flyinqr.itch.io/cries-of-the-wild" target="_blank" rel="noopener" aria-label="Play Cries of the Wild on itch.io">
-          <div class="pf-media" style="background:#000;"><img class="pf-img" src="assets/img/cries-of-the-wild.png" alt="Cries of the Wild"></div>
+        <a class="project-feature" href="https://flyinqr.itch.io/cries-of-the-wild" target="_blank" rel="noopener noreferrer" aria-label="Play Cries of the Wild on itch.io">
+          <div class="pf-media pf-media-solid"><img class="pf-img" src="assets/img/cries-of-the-wild.png" alt="Cries of the Wild" decoding="async"></div>
           <div class="pf-info">
             <div class="pf-head"><span class="pf-title">CRIES OF THE WILD</span><span class="tag">[ RELEASED 2024 ]</span></div>
             <p class="desc">A collaborative Unity project exploring spatial reasoning, environmental storytelling, and player guidance through a single-player puzzle system.</p>
@@ -162,14 +164,14 @@
       </section>
 
       <!-- ===================== 02 // MUSIC ===================== -->
-      <section class="pane" id="pane-music" role="tabpanel">
+      <section class="pane" id="pane-music" role="tabpanel" aria-labelledby="tab-music">
         <div class="module-label"><span class="section-title">[ 02 ] MUSIC</span><span class="tag">PERFORMANCE&nbsp;·&nbsp;AUDIO</span></div>
 
         <!-- // FEATURED -->
         <div class="sub-label major"><span class="tag lead"><span class="sl">//</span> FEATURED</span><span class="tag">ALL-CITY · '24</span></div>
-        <div class="project-feature media-feature" style="margin-bottom:0;">
-          <div class="pf-media" style="padding:0;background:transparent;overflow:hidden;">
-            <div class="frame-16x9" style="width:100%;">
+        <div class="project-feature media-feature media-feature-flush">
+          <div class="pf-media pf-media-video">
+            <div class="frame-16x9 frame-fill">
               <video preload="none" poster="assets/img/video-posters/nycaccb-emperata-new.jpg" src="assets/video-h264/2024-nycaccb-featured.mp4"></video>
             </div>
           </div>
@@ -184,7 +186,7 @@
         <div class="sub-label major"><span class="tag lead"><span class="sl">//</span> BOSTON UNIVERSITY</span><span class="tag">2026 · CONCERT BAND</span></div>
         <div class="grid grid-2">
           <figure class="card"><div class="cap-top"><span class="tag">APR 2026</span><span class="tag">[ BU · '26 ]</span></div><div class="frame-16x9" data-ph="BU CONCERT BAND SPRING 2"><video preload="none" poster="assets/img/video-posters/bucbs2.jpg" src="assets/video-h264/2026-bucbs2.mp4"></video></div><figcaption class="cap-bottom"><span class="title">BU CONCERT BAND SPRING 2</span><span class="note">BU COLLEGE OF FINE ARTS</span></figcaption></figure>
-          <figure class="card"><div class="cap-top"><span class="tag">MAR 2026</span><span class="tag">[ BU · '26 ]</span></div><div class="frame-16x9" data-ph="BU CONCERT BAND SPRING 1"><video preload="none" poster="assets/img/video-posters/bucbs1.jpg" src="assets/video-h264/2026 bucbs1-005.mp4"></video></div><figcaption class="cap-bottom"><span class="title">BU CONCERT BAND SPRING 1</span><span class="note">TSAI PERFORMANCE CENTER</span></figcaption></figure>
+          <figure class="card"><div class="cap-top"><span class="tag">MAR 2026</span><span class="tag">[ BU · '26 ]</span></div><div class="frame-16x9" data-ph="BU CONCERT BAND SPRING 1"><video preload="none" poster="assets/img/video-posters/bucbs1.jpg" src="assets/video-h264/2026-bucbs1-full-web.mp4"></video></div><figcaption class="cap-bottom"><span class="title">BU CONCERT BAND SPRING 1</span><span class="note">TSAI PERFORMANCE CENTER</span></figcaption></figure>
         </div>
 
         <!-- // ARCHIVE -->
@@ -201,27 +203,27 @@
         <!-- // ADDITIONAL -->
         <div class="sub-label major"><span class="tag lead"><span class="sl">//</span> ADDITIONAL</span><span class="tag">ALL-CITY REHEARSALS · MIDDLE SCHOOL PRODUCTION</span></div>
         <div class="grid grid-3 music-grid">
-          <div class="card music-audio-card" style="grid-column:1/-1;"><div class="cap-top"><span class="tag">RECORDINGS</span><span class="tag">[ AUDIO FILES ]</span></div><div class="audio-stack"><div class="audio-group"><span class="audio-group-title">ALL-CITY CONCERT BAND REHEARSALS</span><div class="audio-row"><span class="tag">EMPERATA OVERTURE</span><audio controls preload="none" src="assets/audio/nycaccb-emperata-overture.mp3"></audio></div><div class="audio-row"><span class="tag">ARABESQUE</span><audio controls preload="none" src="assets/audio/nycaccb-arabesque.mp3"></audio></div></div><div class="audio-group"><span class="audio-group-title">MIDDLE SCHOOL PRODUCTION</span><div class="audio-row"><span class="tag">SOARING</span><audio controls preload="none" src="assets/audio/soaring.mp3"></audio></div><div class="audio-row"><span class="tag">APRICITY</span><audio controls preload="none" src="assets/audio/apricity.mp3"></audio></div></div></div></div>
+          <div class="card music-audio-card"><div class="cap-top"><span class="tag">RECORDINGS</span><span class="tag">[ AUDIO FILES ]</span></div><div class="audio-stack"><div class="audio-group"><span class="audio-group-title">ALL-CITY CONCERT BAND REHEARSALS</span><div class="audio-row"><span class="tag">EMPERATA OVERTURE</span><audio controls preload="none" src="assets/audio/nycaccb-emperata-overture.mp3"></audio></div><div class="audio-row"><span class="tag">ARABESQUE</span><audio controls preload="none" src="assets/audio/nycaccb-arabesque.mp3"></audio></div></div><div class="audio-group"><span class="audio-group-title">MIDDLE SCHOOL PRODUCTION</span><div class="audio-row"><span class="tag">SOARING</span><audio controls preload="none" src="assets/audio/soaring.mp3"></audio></div><div class="audio-row"><span class="tag">APRICITY</span><audio controls preload="none" src="assets/audio/apricity.mp3"></audio></div></div></div></div>
         </div>
       </section>
 
       <!-- ===================== 03 // FILM ===================== -->
-      <section class="pane" id="pane-film" role="tabpanel">
+      <section class="pane" id="pane-film" role="tabpanel" aria-labelledby="tab-film">
         <div class="module-label"><span class="section-title">[ 03 ] FILM</span><span class="tag">PERSONAL&nbsp;ARCHIVE&nbsp;·&nbsp;CLIPS</span></div>
         <div class="sub-label"><span class="tag lead"><span class="sl">//</span> STILLS</span><span class="tag">PLACES · PEOPLE</span></div>
         <div class="stills-layout">
           <div class="photo-wall">
-            <img src="assets/img/IMG_0252.jpg" alt="IMG 0252" loading="lazy">
-            <img src="assets/img/kbbq-dinner.jpg" alt="GOPCHANG STORY" loading="lazy">
-            <img src="assets/img/innovators-summit.jpg" alt="INSPIRING INNOVATOR SUMMIT" loading="lazy">
-            <img src="assets/img/green-room.jpg" alt="GREEN ROOM" loading="lazy">
-            <img src="assets/img/venue-gathering.jpg" alt="GAME CON" loading="lazy">
-            <img src="assets/img/film-set.jpg" alt="URBAN ARTS SPEAKER" loading="lazy">
-            <img src="assets/img/transit-crew.jpg" alt="LONG BEACH W/ FRIENDS" loading="lazy">
-            <img src="assets/img/coworking-session.jpg" alt="APEX FOR YOUTH" loading="lazy">
-            <img src="assets/img/civichall-workshop.jpg" alt="CIVIC HALL" loading="lazy">
-            <img src="assets/img/reading newspaper.png" alt="READING NEWSPAPER" loading="lazy">
-            <img src="assets/img/music performance.png" alt="MUSIC PERFORMANCE" loading="lazy">
+            <img src="assets/img/IMG_0252.jpg" alt="IMG 0252" loading="lazy" decoding="async">
+            <img src="assets/img/kbbq-dinner.jpg" alt="GOPCHANG STORY" loading="lazy" decoding="async">
+            <img src="assets/img/innovators-summit.jpg" alt="INSPIRING INNOVATOR SUMMIT" loading="lazy" decoding="async">
+            <img src="assets/img/green-room.jpg" alt="GREEN ROOM" loading="lazy" decoding="async">
+            <img src="assets/img/venue-gathering.jpg" alt="GAME CON" loading="lazy" decoding="async">
+            <img src="assets/img/film-set.jpg" alt="URBAN ARTS SPEAKER" loading="lazy" decoding="async">
+            <img src="assets/img/transit-crew.jpg" alt="LONG BEACH W/ FRIENDS" loading="lazy" decoding="async">
+            <img src="assets/img/coworking-session.jpg" alt="APEX FOR YOUTH" loading="lazy" decoding="async">
+            <img src="assets/img/civichall-workshop.jpg" alt="CIVIC HALL" loading="lazy" decoding="async">
+            <img src="assets/img/reading newspaper.png" alt="READING NEWSPAPER" loading="lazy" decoding="async">
+            <img src="assets/img/music performance.png" alt="MUSIC PERFORMANCE" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="sub-label"><span class="tag lead"><span class="sl">//</span> CLIPS</span><span class="tag">PERSONAL ARCHIVE</span></div>
@@ -231,13 +233,13 @@
 
         <div class="sub-label major"><span class="tag lead"><span class="sl">//</span> MEDIA</span></div>
         <div class="media-strip">
-          <a href="https://open.spotify.com/user/mkncw5j4rrzm42s2rzb8faky4?si=1d9e641e7bcc40f1" target="_blank" rel="noopener">SPOTIFY</a>
-          <a href="https://www.youtube.com/@peppermintinchai" target="_blank" rel="noopener">YOUTUBE</a>
-          <a href="https://www.instagram.com/peppermintinchai/" target="_blank" rel="noopener">INSTAGRAM</a>
-          <a href="https://letterboxd.com/dtofuu/films/" target="_blank" rel="noopener">LETTERBOXD</a>
-          <a href="https://myanimelist.net/profile/peppermintinchai" target="_blank" rel="noopener">MYANIMELIST</a>
-          <a href="https://mydramalist.com/profile/peppermintinchai" target="_blank" rel="noopener">MYDRAMALIST</a>
-          <a href="https://www.serializd.com/user/peppermintincha/profile" target="_blank" rel="noopener">SERIALIZD</a>
+          <a href="https://open.spotify.com/user/mkncw5j4rrzm42s2rzb8faky4?si=1d9e641e7bcc40f1" target="_blank" rel="noopener noreferrer">SPOTIFY</a>
+          <a href="https://www.youtube.com/@peppermintinchai" target="_blank" rel="noopener noreferrer">YOUTUBE</a>
+          <a href="https://www.instagram.com/peppermintinchai/" target="_blank" rel="noopener noreferrer">INSTAGRAM</a>
+          <a href="https://letterboxd.com/dtofuu/films/" target="_blank" rel="noopener noreferrer">LETTERBOXD</a>
+          <a href="https://myanimelist.net/profile/peppermintinchai" target="_blank" rel="noopener noreferrer">MYANIMELIST</a>
+          <a href="https://mydramalist.com/profile/peppermintinchai" target="_blank" rel="noopener noreferrer">MYDRAMALIST</a>
+          <a href="https://www.serializd.com/user/peppermintincha/profile" target="_blank" rel="noopener noreferrer">SERIALIZD</a>
         </div>
         <div class="sub-label"><span class="tag lead"><span class="sl">//</span> FAVORITES</span><span class="tag">ANIME · DRAMAS · FILMS</span></div>
         <div class="logset"><span class="ls-key">ANIME</span><div class="fav-list">91 DAYS • CRAYON SHIN-CHAN • DORAEMON • ERASED • MARCH COMES IN LIKE A LION • TOKYO REVENGERS • YOUR LIE IN APRIL</div></div>
@@ -246,76 +248,17 @@
       </section>
 
       <!-- ===================== 05 // AVAILABILITY ===================== -->
-      <section class="pane" id="pane-availability" role="tabpanel">
-        <div class="module-label"><span class="section-title">[ 05 ] AVAILABILITY</span><span class="tag">SECURE&nbsp;ZONE&nbsp;//&nbsp;AUTH&nbsp;REQUIRED</span></div>
-        <div class="gate" id="gate">
+      <section class="pane" id="pane-availability" role="tabpanel" aria-labelledby="tab-availability">
+        <div class="module-label"><span class="section-title">[ 05 ] AVAILABILITY</span><span class="tag">REQUEST&nbsp;ONLY&nbsp;//&nbsp;PRIVATE&nbsp;DETAILS</span></div>
+        <div class="gate availability-summary" id="gate">
           <div class="gate-inner">
             <div class="gate-head">
-              <div class="prompt">LOCKED // SCHEDULE<span class="cursor"></span></div>
+              <div class="prompt">AVAILABILITY // REQUEST<span class="cursor"></span></div>
             </div>
-            <div class="gate-meta">AVAILABILITY AND PRIVATE SCHEDULE DETAILS ARE KEPT BEHIND AN ACCESS KEY.</div>
-            <div class="public-availability"><span class="pa-key">SUMMER FREE WINDOWS //</span> MOST WEEKENDS · MON JUL 20 OPEN · SELECT WEEKDAY AFTERNOONS</div>
-            <form class="gate-form" id="gate-form" autocomplete="off">
-              <input type="password" id="gate-input" placeholder="ACCESS KEY" aria-label="Access key" />
-              <button type="submit">OPEN</button>
-            </form>
-            <div class="msg" id="gate-msg">KEY REQUIRED</div>
-            <div style="margin-top:18px;"><button type="button" class="req-btn avail-open">REQUEST AVAILABILITY &rarr;</button></div>
+            <div class="gate-meta">AVAILABLE BY REQUEST.</div>
+            <div class="public-availability"><span class="pa-key">SUMMER //</span> MOST WEEKENDS · SELECT WEEKDAY AFTERNOONS</div>
+            <div class="availability-request"><button type="button" class="req-btn avail-open">REQUEST AVAILABILITY &rarr;</button></div>
           </div>
-        </div>
-        <div class="locked" id="locked-zone">
-          <div class="sub-label schedule-label"><span class="tag lead"><span class="sl">//</span> SCHEDULE</span><span class="tag">2026 TIMELINE</span></div>
-          <div class="spec schedule-table">
-            <div class="schedule-month">June // pre-departure + arrival</div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">BIOECHO CHECK-IN</span><span class="xp-role">REMOTE</span><span class="xp-loc">MONDAYS · UNTIL JUN 22</span></div><div class="xp-r"><span class="xp-date">10:30 AM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">BIOECHO CHECK-IN</span><span class="xp-role">REMOTE</span><span class="xp-loc">WEDNESDAYS · UNTIL JUN 24</span></div><div class="xp-r"><span class="xp-date">10:30 AM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">MEDICAL CHECKUP</span><span class="xp-role">YONG KANG MEDICAL PLLC</span><span class="xp-loc">SAT · JUN 14, 2026</span></div><div class="xp-r"><span class="xp-date">9:30 AM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">DRIVER CLASSES</span><span class="xp-role">DRIVER ED</span><span class="xp-loc">SUN · JUN 15, 2026</span></div><div class="xp-r"><span class="xp-date">4:00 PM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">CONSULTATION</span><span class="xp-role">8 AVE</span><span class="xp-loc">SUN · JUN 15, 2026</span></div><div class="xp-r"><span class="xp-date">TBD</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">REMIND DAD: GET PASSPORT</span><span class="xp-role">NEEDED FOR UK ETA APPLICATION</span><span class="xp-loc">TUE · JUN 17, 2026</span></div><div class="xp-r"><span class="xp-date">REMINDER</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">ORTHODONTIST APPOINTMENT</span><span class="xp-role">STRAIGHT FINISH ORTHODONTICS</span><span class="xp-loc">FRI · JUN 20, 2026</span></div><div class="xp-r"><span class="xp-date">10:45 AM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">APEX CLOSING DAY</span><span class="xp-role">ALUMNI VOLUNTEER · RIVERDALE COUNTRY SCHOOL</span><span class="xp-loc">SAT · JUN 20, 2026</span></div><div class="xp-r"><span class="xp-date">9:00 AM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">HO JAE KIM ART INSTALLATION TOUR</span><span class="xp-role">CHRISTIE'S NEW YORK · 20 ROCKEFELLER PLAZA</span><span class="xp-loc">WED · JUN 24, 2026</span></div><div class="xp-r"><span class="xp-date">2:00 PM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">APEX COTE</span><span class="xp-role">CELEBRATION · 550 MADISON AVE</span><span class="xp-loc">FRI · JUN 26, 2026</span></div><div class="xp-r"><span class="xp-date">12:00 PM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">LONDON ARRIVAL</span><span class="xp-role">NYC → LONDON · ARRIVE AIRPORT 4 HRS BEFORE</span><span class="xp-loc">SAT · JUN 27, 2026</span></div><div class="xp-r"><span class="xp-date">8:55 PM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">ORIENTATION</span><span class="xp-role">LONDON PROGRAM · MANDATORY TEAM ACTIVITY</span><span class="xp-loc">MON · JUN 29, 2026</span></div><div class="xp-r"><span class="xp-date">TBD</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">SS CLASS + SCIENCE MUSEUM</span><span class="xp-role">CLASS 9-11, 1-3 · MEET IN CLASSROOM, THEN MUSEUM VISIT</span><span class="xp-loc">TUE · JUN 30, 2026</span></div><div class="xp-r"><span class="xp-date">9:00 AM</span></div></div>
-            <div class="schedule-month">July // London program</div>
-            <div class="schedule-group">Classes</div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">CLASS BLOCK A</span><span class="xp-role">JUL 1, 3, 10, 15, 17, 22, 24, 29, 31, AUG 4 · WED/FRI SCHEDULE</span><span class="xp-loc">JUL 1-AUG 4</span></div><div class="xp-r"><span class="xp-date">11:00 AM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">CLASS BLOCK B</span><span class="xp-role">JUL 2, 7, 9, 14, 16, 21, 23, 28, 30, AUG 3 · TUE/THU + AUG 3</span><span class="xp-loc">JUL 2-AUG 3</span></div><div class="xp-r"><span class="xp-date">9:00 AM</span></div></div>
-            <div class="schedule-group">Trips / tours / theatre</div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">KEW GARDENS</span><span class="xp-role">DAY TRIP · MANDATORY TEAM ACTIVITY</span><span class="xp-loc">MON · JUL 6, 2026</span></div><div class="xp-r"><span class="xp-date">TBD</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">EAST END TOUR</span><span class="xp-role">STREET ART + HISTORY WITH DUNCAN DUFF · JUL 8 OR JUL 9</span><span class="xp-loc">WED/THU · JUL 8-9, 2026</span></div><div class="xp-r"><span class="xp-date">6 OR 8 PM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">BRIGHTON</span><span class="xp-role">DAY TRIP · MANDATORY TEAM ACTIVITY</span><span class="xp-loc">MON · JUL 13, 2026</span></div><div class="xp-r"><span class="xp-date">8:15 AM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">WAR HORSE</span><span class="xp-role">NATIONAL THEATRE</span><span class="xp-loc">WED · JUL 15, 2026</span></div><div class="xp-r"><span class="xp-date">7:30 PM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">IMPERIAL WAR MUSEUM</span><span class="xp-role">FOR RH · ON YOUR OWN THROUGH SUN JUL 20</span><span class="xp-loc">THU · JUL 16, 2026</span></div><div class="xp-r"><span class="xp-date">OPEN</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">PARLIAMENT TOUR</span><span class="xp-role">HALF TEAM · ONE VISIT REQUIRED</span><span class="xp-loc">FRI · JUL 17, 2026</span></div><div class="xp-r"><span class="xp-date">11:00 AM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">ARCADIA</span><span class="xp-role">PLAY</span><span class="xp-loc">WED · JUL 22, 2026</span></div><div class="xp-r"><span class="xp-date">7:00 PM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">PARLIAMENT TOUR</span><span class="xp-role">HALF TEAM · ONE VISIT REQUIRED</span><span class="xp-loc">FRI · JUL 24, 2026</span></div><div class="xp-r"><span class="xp-date">11:30 AM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">CABARET</span><span class="xp-role">LONDON PROGRAM THEATRE</span><span class="xp-loc">MON · JUL 27, 2026</span></div><div class="xp-r"><span class="xp-date">6:00 PM</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">RISING VOICES AT V&amp;A</span><span class="xp-role">IN HU CLASS · CONTEMPORARY ART FROM ASIA, AUSTRALIA AND THE PACIFIC</span><span class="xp-loc">TUE/WED · JUL 28-29, 2026</span></div><div class="xp-r"><span class="xp-date">CLASS TIME</span></div></div>
-            <div class="schedule-month">August // wrap-up</div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">READING DAY</span><span class="xp-role">CONTINGENCY DAY · STAY IN LONDON</span><span class="xp-loc">WED · AUG 5, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">EXAM DAYS</span><span class="xp-role">LONDON PROGRAM FINALS</span><span class="xp-loc">THU-FRI · AUG 6-7, 2026</span></div><div class="xp-r"><span class="xp-date">TBD</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">LONDON RETURN</span><span class="xp-role">LONDON → NYC · ARRIVE AIRPORT 4 HRS BEFORE</span><span class="xp-loc">SAT · AUG 8, 2026</span></div><div class="xp-r"><span class="xp-date">12:30 PM</span></div></div>
-            <div class="schedule-month">September-December // fall semester</div>
-            <div class="schedule-group">Weekly class pattern · starts Sep 2</div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">FALL CLASSES</span><span class="xp-role">9:05 AM-1:10 PM · CALCULUS, CS, BIOLOGY // 4:30-6:15 PM · ELECTRONIC MUSIC</span><span class="xp-loc">MONDAYS</span></div><div class="xp-r"><span class="xp-date">WEEKLY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">FALL CLASSES</span><span class="xp-role">8:00 AM-10:20 AM · AGENTS OF GLOBAL CHANGE // 11:30 AM-12:20 PM · CS LAB</span><span class="xp-loc">TUESDAYS</span></div><div class="xp-r"><span class="xp-date">WEEKLY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">FALL CLASSES</span><span class="xp-role">9:05 AM-1:10 PM · CALCULUS, CS, BIOLOGY // 4:30-7:45 PM · CALC DIS + CS EVENING LEC</span><span class="xp-loc">WEDNESDAYS</span></div><div class="xp-r"><span class="xp-date">WEEKLY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">FALL CLASSES</span><span class="xp-role">9:30-10:20 AM · GLOBAL CHANGE DIS // 12:30-3:15 PM · BIOLOGY LAB // 6:30-8:30 PM · CALCULUS</span><span class="xp-loc">THURSDAYS</span></div><div class="xp-r"><span class="xp-date">WEEKLY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">FALL CLASSES</span><span class="xp-role">9:05 AM-1:10 PM · CALCULUS, CS, BIOLOGY</span><span class="xp-loc">FRIDAYS</span></div><div class="xp-r"><span class="xp-date">WEEKLY</span></div></div>
-            <div class="schedule-group">Academic dates</div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">CLASSES BEGIN</span><span class="xp-role">FALL 2026 SEMESTER</span><span class="xp-loc">WED · SEP 2, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">HOLIDAY</span><span class="xp-role">CLASSES SUSPENDED</span><span class="xp-loc">MON · SEP 7, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">INDIGENOUS PEOPLE'S DAY</span><span class="xp-role">CLASSES SUSPENDED</span><span class="xp-loc">MON · OCT 12, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">THANKSGIVING RECESS</span><span class="xp-role">NO CLASSES</span><span class="xp-loc">WED-SUN · NOV 25-29, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">LAST DAY OF CLASSES</span><span class="xp-role">FALL 2026 SEMESTER</span><span class="xp-loc">THU · DEC 10, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">STUDY PERIOD</span><span class="xp-role">FINAL PREP</span><span class="xp-loc">FRI-SUN · DEC 11-13, 2026</span></div><div class="xp-r"><span class="xp-date">ALL DAY</span></div></div>
-            <div class="xp"><div class="xp-l"><span class="xp-co">FINAL EXAMS</span><span class="xp-role">BEGIN DEC 14 · END DEC 18</span><span class="xp-loc">MON-FRI · DEC 14-18, 2026</span></div><div class="xp-r"><span class="xp-date">TBD</span></div></div>
-          </div>
-          <div class="sub-label" style="border-bottom:none;"><span class="tag">SCHEDULE // PRIVATE VIEW</span><button type="button" class="req-btn avail-open">REQUEST AVAILABILITY &rarr;</button></div>
         </div>
       </section>
 
@@ -330,13 +273,13 @@
   </main>
 
   <!-- ================= REQUEST CREDENTIALS MODAL ================= -->
-  <div id="cred-modal" class="req-modal credential-modal" role="dialog" aria-modal="true" aria-label="Request credentials">
+  <div id="cred-modal" class="req-modal credential-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Request credentials">
     <div class="req-box">
       <div class="req-head"><span class="rh-t" id="cred-title">REQUEST CREDENTIALS & REFERENCES</span><button type="button" class="req-close" id="cred-close">CLOSE &times;</button></div>
-      <form id="cred-form" autocomplete="off">
+      <form id="cred-form" action="https://formspree.io/f/xrevkwaq" method="POST" autocomplete="off">
         <input type="hidden" id="cred-kind" name="request_type" value="credentials" />
         <label class="req-label" for="cred-name">NAME</label>
-        <input class="req-input" id="cred-name" name="name" type="text" placeholder="your name" autocomplete="off" required />
+        <input class="req-input" id="cred-name" name="name" type="text" placeholder="your name" autocomplete="name" maxlength="80" required />
         <label class="req-label" for="cred-email">EMAIL ADDRESS</label>
         <input class="req-input" id="cred-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
         <span class="req-label">WHAT DO YOU NEED?</span>
@@ -345,7 +288,8 @@
           <label class="choice-pill"><input type="checkbox" name="credential_reason" value="References" />References</label>
         </div>
         <label class="req-label" for="cred-message">MESSAGE</label>
-        <textarea class="req-textarea chat-bubble-input" id="cred-message" name="message" placeholder="tell me what credentials or context would be helpful"></textarea>
+        <textarea class="req-textarea chat-bubble-input" id="cred-message" name="message" placeholder="tell me what credentials or context would be helpful" maxlength="1200"></textarea>
+        <label class="form-hp" aria-hidden="true">Leave this field empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
         <button type="submit" class="req-btn req-send" id="cred-send">SEND &rarr;</button>
         <div class="req-status" id="cred-status"></div>
       </form>
@@ -353,13 +297,13 @@
   </div>
 
   <!-- ================= REQUEST AVAILABILITY MODAL ================= -->
-  <div id="avail-modal" class="req-modal availability-modal" role="dialog" aria-modal="true" aria-label="Request availability">
+  <div id="avail-modal" class="req-modal availability-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Request availability">
     <div class="req-box">
       <div class="req-head"><span class="rh-t">REQUEST AVAILABILITY</span><button type="button" class="req-close" id="avail-close">CLOSE &times;</button></div>
-      <form id="avail-form" autocomplete="off">
+      <form id="avail-form" action="https://formspree.io/f/xrevkwaq" method="POST" autocomplete="off">
         <input type="hidden" name="request_type" value="availability" />
         <label class="req-label" for="avail-name">NAME</label>
-        <input class="req-input" id="avail-name" name="name" type="text" placeholder="your name" autocomplete="off" required />
+        <input class="req-input" id="avail-name" name="name" type="text" placeholder="your name" autocomplete="name" maxlength="80" required />
         <label class="req-label" for="avail-email">EMAIL ADDRESS</label>
         <input class="req-input" id="avail-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
         <span class="req-label">THINGS TO ASK ABOUT</span>
@@ -370,7 +314,8 @@
           <label class="choice-pill"><input type="checkbox" name="ask_about" value="Film" />Film</label>
         </div>
         <label class="req-label" for="avail-message">MESSAGE</label>
-        <textarea class="req-textarea chat-bubble-input" id="avail-message" name="message" placeholder="tell me a little more about what you want to connect on"></textarea>
+        <textarea class="req-textarea chat-bubble-input" id="avail-message" name="message" placeholder="tell me a little more about what you want to connect on" maxlength="1200"></textarea>
+        <label class="form-hp" aria-hidden="true">Leave this field empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
         <button type="submit" class="req-btn req-send" id="avail-send">SEND &rarr;</button>
         <div class="req-status" id="avail-status"></div>
       </form>
@@ -388,6 +333,5 @@
   <script src="assets/js/media-windows.js" defer></script>
   <script src="assets/js/audio-player.js" defer></script>
   <script src="assets/js/video-controls.js" defer></script>
-  <script src="assets/js/gates.js" defer></script>
 </body>
 </html>

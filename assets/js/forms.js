@@ -36,6 +36,7 @@
         utils.setStatus(getStatus(form), '');
         setSubmitState(form, false);
         modal.classList.add('open');
+        modal.setAttribute('aria-hidden', 'false');
         document.body.classList.add('modal-open');
         window.setTimeout(function () {
           var firstField = form.querySelector('input:not([type="hidden"]), textarea, select, button');
@@ -46,6 +47,7 @@
       function closeModal(modal) {
         var wasOpen = modal.classList.contains('open');
         modal.classList.remove('open');
+        modal.setAttribute('aria-hidden', 'true');
         if (!credModal.classList.contains('open') && !availModal.classList.contains('open')) {
           document.body.classList.remove('modal-open');
           if (wasOpen) window.setTimeout(restoreModalFocus, 0);
@@ -59,14 +61,25 @@
       function validEmail(input) {
         return input && input.value.trim() && input.validity.valid;
       }
+      function tooLong(field, max) {
+        return field && field.value.trim().length > max;
+      }
+      function looksLikeBot(form) {
+        var trap = form.querySelector('input[name="_gotcha"]');
+        return trap && trap.value.trim();
+      }
 
       function validateForm(config) {
         var status = getStatus(config.form);
         var name = config.form.querySelector('input[name="name"]');
         var email = config.form.querySelector('input[name="email"]');
+        var message = config.form.querySelector('textarea[name="message"]');
         var checked = config.form.querySelectorAll(config.checkboxSelector + ':checked');
+        if (looksLikeBot(config.form)) { utils.setStatus(status, 'REQUEST BLOCKED', 'err'); return false; }
         if (!name || !name.value.trim()) { utils.setStatus(status, 'NAME REQUIRED', 'err'); return false; }
+        if (tooLong(name, 80)) { utils.setStatus(status, 'NAME IS TOO LONG', 'err'); return false; }
         if (!validEmail(email)) { utils.setStatus(status, 'VALID EMAIL REQUIRED', 'err'); return false; }
+        if (tooLong(message, 1200)) { utils.setStatus(status, 'MESSAGE IS TOO LONG', 'err'); return false; }
         if (!checked.length) { utils.setStatus(status, config.checkboxMessage, 'err'); return false; }
         return true;
       }
@@ -74,8 +87,10 @@
       function sendForm(config) {
         var form = config.form;
         var status = getStatus(form);
+        if (form.dataset.sending === 'true') return;
         var controller = window.AbortController ? new AbortController() : null;
         var timeout = controller ? window.setTimeout(function () { controller.abort(); }, 12000) : 0;
+        form.dataset.sending = 'true';
         setSubmitState(form, true);
         utils.setStatus(status, 'SENDING...');
         fetch(FORMSPREE, {
@@ -98,6 +113,7 @@
           })
           .finally(function () {
             if (timeout) window.clearTimeout(timeout);
+            form.dataset.sending = 'false';
             setSubmitState(form, false);
           });
       }

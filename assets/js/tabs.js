@@ -55,6 +55,7 @@
 
       document.addEventListener('keydown', function (e) {
         if (document.body.classList.contains('booting')) return;
+        if (document.body.classList.contains('modal-open') || utils.isTextEntry(document.activeElement)) return;
 
         var key = e.key;
         if (key >= '1' && key <= '5') {

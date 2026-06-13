@@ -4,3 +4,5 @@ __pycache__/
 serve.py
 *.log
 assets/video/
+node_modules/
+dist/
