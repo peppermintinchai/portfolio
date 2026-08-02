@@ -7,6 +7,7 @@
         '#projects': 'pane-projects',
         '#music': 'pane-music',
         '#film': 'pane-film',
+        '#clips': 'pane-film',
         '#video-diary': 'pane-film',
         '#cv': 'pane-resume',
         '#availability': 'pane-availability'
@@ -26,7 +27,7 @@
 
       function scrollTargetForHash() {
         var hash = (window.location.hash || '').toLowerCase();
-        if (hash === '#video-diary') {
+        if (hash === '#clips' || hash === '#video-diary') {
           return document.getElementById('video-diary');
         }
         return document.querySelector('.panes');
