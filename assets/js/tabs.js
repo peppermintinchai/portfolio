@@ -3,6 +3,43 @@
       var utils = window.portfolioUtils;
       var tabs = utils.qsa('.tab');
       var panes = utils.qsa('.pane');
+      var hashTargets = {
+        '#projects': 'pane-projects',
+        '#music': 'pane-music',
+        '#film': 'pane-film',
+        '#video-diary': 'pane-film',
+        '#cv': 'pane-resume',
+        '#availability': 'pane-availability'
+      };
+      var idHashes = {
+        'pane-projects': '#projects',
+        'pane-music': '#music',
+        'pane-film': '#film',
+        'pane-resume': '#cv',
+        'pane-availability': '#availability'
+      };
+
+      function idFromHash() {
+        var hash = (window.location.hash || '').toLowerCase();
+        return hashTargets[hash] || '';
+      }
+
+      function scrollTargetForHash() {
+        var hash = (window.location.hash || '').toLowerCase();
+        if (hash === '#video-diary') {
+          return document.getElementById('video-diary');
+        }
+        return document.querySelector('.panes');
+      }
+
+      function scrollToActiveArea() {
+        var target = scrollTargetForHash();
+        if (!target) return;
+        var tabsNav = document.querySelector('.tabs');
+        var offset = tabsNav ? tabsNav.getBoundingClientRect().height + 4 : 4;
+        var top = target.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+      }
 
       function setActiveState(id) {
         tabs.forEach(function (t) {
@@ -21,8 +58,11 @@
         });
       }
 
-      function activate(id, focusTab) {
+      function activate(id, focusTab, updateHash) {
         setActiveState(id);
+        if (updateHash !== false && idHashes[id] && window.history && window.history.replaceState) {
+          window.history.replaceState(null, '', idHashes[id]);
+        }
         if (focusTab) {
           var activeTab = tabs.find(function (t) { return t.dataset.target === id; });
           if (activeTab) {
@@ -30,8 +70,7 @@
             catch (e) { activeTab.focus(); }
           }
         }
-        var pc = document.querySelector('.panes');
-        if (pc) window.scrollTo({ top: pc.offsetTop - 4, behavior: 'smooth' });
+        scrollToActiveArea();
       }
 
       function switchTab(idx, focusTab) {
@@ -51,7 +90,20 @@
       });
 
       var initialTab = tabs.find(function (tab) { return tab.classList.contains('active'); }) || tabs[0];
-      if (initialTab) setActiveState(initialTab.dataset.target);
+      var initialTarget = idFromHash() || (initialTab && initialTab.dataset.target);
+      if (initialTarget) setActiveState(initialTarget);
+      if (idFromHash()) {
+        requestAnimationFrame(scrollToActiveArea);
+        setTimeout(scrollToActiveArea, 350);
+      }
+
+      window.addEventListener('hashchange', function () {
+        var target = idFromHash();
+        if (target) {
+          activate(target, false, false);
+          setTimeout(scrollToActiveArea, 120);
+        }
+      });
 
       document.addEventListener('keydown', function (e) {
         if (document.body.classList.contains('booting')) return;

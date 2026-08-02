@@ -31,6 +31,7 @@
     opacity: .78;
   }
   #boot.done { opacity: 0; pointer-events: none; }
+  #boot.parked { display: none; }
   .boot-panel { position: relative; z-index: 1; width: min(440px, 86vw); display: grid; justify-items: center; gap: 16px; text-align: center; }
   .boot-panel::before, .boot-panel::after {
     content: "";

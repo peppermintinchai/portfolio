@@ -535,8 +535,9 @@
         planet.removeAttribute('data-tier');
         setTimeout(function () {
           boot.classList.add('done');
+          boot.setAttribute('aria-hidden', 'true');
           document.body.classList.remove('booting');
-          setTimeout(function () { boot.style.display = 'none'; }, 450);
+          setTimeout(function () { boot.classList.add('parked'); }, 450);
         }, 460);
       }
 
@@ -604,7 +605,8 @@
         setDot(false);
         if (dot) dot.style.left = '';
         resetChargeWindow();
-        boot.style.display = 'flex';
+        boot.classList.remove('parked');
+        boot.setAttribute('aria-hidden', 'false');
         document.body.classList.add('booting');
         resetPlanet();
         panel.classList.remove('is-activating');
