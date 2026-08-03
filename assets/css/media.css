@@ -5,9 +5,9 @@
   @media (max-width: 900px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 760px) { .grid-2 { grid-template-columns: 1fr; } }
   @media (max-width: 560px) { .grid-3 { grid-template-columns: 1fr; } }
-  .card { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: var(--pad); display: flex; flex-direction: column; gap: 10px; transition: background .2s ease, border-color .2s ease; }
+  .card { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: var(--pad); display: flex; flex-direction: column; gap: 10px; transition: background .2s ease, border-color .2s ease, transform .2s ease; }
   @media (hover: hover) {
-    .card:hover { background: rgba(255,255,255,0.012); }
+    .card:hover { background: rgba(255,255,255,0.018); border-bottom-color: rgba(201,31,50,0.28); transform: translateY(-1px); }
     .card:hover .memo { opacity: 1; }
   }
   .grid-3 .card:nth-child(3n) { border-right: none; }
@@ -27,6 +27,8 @@
   .frame-portrait { aspect-ratio: 9 / 16; width: min(100%, 240px); align-self: center; margin-inline: auto; }
   @media (hover: hover) {
     .frame-16x9:hover { border-color: rgba(201,31,50,0.48); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02), 0 0 18px rgba(201,31,50,0.10); }
+    .card:hover .frame-16x9 { border-color: rgba(201,31,50,0.42); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02), 0 0 20px rgba(201,31,50,0.08); }
+    .card:hover .cap-bottom .title { color: var(--accent); }
   }
   .frame-16x9 video, .frame-16x9 img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 1; object-fit: cover; background: #000; }
   .frame-16x9::before { content: attr(data-ph); position: absolute; inset: 0; z-index: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; letter-spacing: var(--track); color: var(--muted); text-transform: uppercase; text-align: center; padding: 12px; }
