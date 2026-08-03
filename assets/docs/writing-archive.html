@@ -48,7 +48,14 @@
       text-transform: uppercase;
       color: var(--dim);
     }
-    .back { color: var(--accent); }
+    .back {
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 6px 12px;
+      font-weight: 600;
+      transition: background 0.2s, color 0.2s;
+    }
+    .back:hover { background: var(--accent); color: #070707; }
     .hero { padding: clamp(34px, 7vw, 72px) clamp(16px, 4vw, 42px) clamp(22px, 4vw, 42px); border-bottom: 1px solid var(--line); }
     h1 { margin: 0; max-width: 920px; font-size: clamp(30px, 5.8vw, 76px); line-height: 0.95; letter-spacing: 0; text-transform: lowercase; font-weight: 620; }
     .intro {
@@ -116,7 +123,7 @@
   <main class="shell">
     <nav class="top" aria-label="Writing navigation">
       <span class="brand">Tiffany Dong / Writing</span>
-      <a class="back" href="../../index.html">Back to Portfolio</a>
+      <a class="back" href="../../index.html">← Back to Portfolio</a>
     </nav>
 
     <header class="hero">
