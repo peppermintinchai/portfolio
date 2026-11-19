@@ -117,7 +117,6 @@
   .media-strip { display: flex; flex-wrap: wrap; gap: 8px 18px; padding: var(--pad); border-bottom: 1px solid var(--line); }
   .media-strip a { display: inline-flex; align-items: center; min-height: 44px; font-size: 11px; letter-spacing: var(--track); text-transform: uppercase; color: var(--dim); transition: color .2s ease; }
   .media-strip a:hover { color: var(--accent); }
-  .fav-list { font-size: 12px; letter-spacing: 0.05em; color: var(--dim); text-transform: uppercase; line-height: 1.9; }
   .cal-note { padding: var(--pad); border-bottom: 1px solid var(--line); font-size: 12px; letter-spacing: 0.05em; color: var(--dim); text-transform: uppercase; line-height: 1.8; max-width: 760px; }
   .req-btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 9px 15px; font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; cursor: pointer; font-family: var(--font); transition: background .2s ease, color .2s ease; }
   .req-btn:hover { background: var(--accent); color: var(--on-accent); }

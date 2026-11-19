@@ -8,10 +8,6 @@
   .conn a .p-foot { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
   .conn a .p-handle { font-size: 10px; letter-spacing: 0.06em; color: var(--dim); text-transform: lowercase; }
   .conn a .p-arr { color: var(--accent); font-size: 12px; }
-  .logset { padding: var(--pad); border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 120px 1fr; gap: 14px 20px; align-items: start; }
-  .logset:last-child { border-bottom: none; }
-  @media (max-width: 560px) { .logset { grid-template-columns: 1fr; gap: 8px; } }
-  .logset .ls-key { font-size: 10px; letter-spacing: var(--track); color: var(--accent); text-transform: uppercase; padding-top: 6px; }
   .chip { border: 1px solid var(--line); padding: 6px 11px; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--dim); }
 
   /* ---- availability request ---- */
