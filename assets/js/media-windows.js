@@ -270,6 +270,7 @@
         if (!frame.querySelector('video, iframe') && !frame.dataset.embedSrc) return;
         if (frame.querySelector('.media-pop-trigger')) return;
         if (frame.querySelector('video[controls]')) return;
+        if (frame.classList.contains('vs-on')) return;
         var button = document.createElement('button');
         button.type = 'button';
         button.className = 'media-pop-trigger';

@@ -29,6 +29,16 @@
     .frame-16x9:hover { border-color: rgba(201,31,50,0.48); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02), 0 0 18px rgba(201,31,50,0.10); }
   }
   .frame-16x9 video, .frame-16x9 img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 1; object-fit: cover; background: #000; }
+  /* video scrubber — hidden until the viewer clicks the frame */
+  .frame-16x9.vs-on video { cursor: pointer; }
+  .frame-16x9 .vs-bar { position: absolute; left: 0; right: 0; bottom: 0; z-index: 4; height: 22px; opacity: 0; pointer-events: none; cursor: pointer; transition: opacity .18s ease; touch-action: none; background: linear-gradient(to top, rgba(0,0,0,0.62), rgba(0,0,0,0)); }
+  .frame-16x9.vs-show .vs-bar { opacity: 1; pointer-events: auto; }
+  .frame-16x9 .vs-bar::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: rgba(255,255,255,0.20); }
+  .frame-16x9 .vs-fill { position: absolute; left: 0; bottom: 0; width: 0%; height: 3px; background: linear-gradient(90deg, rgba(201,31,50,0.95), rgba(201,31,50,0.55)); box-shadow: 0 0 8px rgba(201,31,50,0.42); }
+  .frame-16x9 .vs-thumb { position: absolute; bottom: -1px; width: 2px; height: 11px; background: var(--accent); box-shadow: 0 0 6px rgba(201,31,50,0.7); transform: translateX(-1px); opacity: 0; transition: opacity .15s ease; }
+  .frame-16x9.vs-show .vs-thumb { opacity: 1; }
+  .frame-16x9 .vs-bar:focus-visible { outline: none; }
+  .frame-16x9.vs-show .vs-bar:focus-visible { outline: 1px solid rgba(201,31,50,0.6); outline-offset: -1px; }
   .frame-16x9::before { content: attr(data-ph); position: absolute; inset: 0; z-index: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; letter-spacing: var(--track); color: var(--muted); text-transform: uppercase; text-align: center; padding: 12px; }
   .audio-row { display: flex; flex-direction: column; gap: 8px; margin-top: 4px; }
   .audio-note { font-size: 10px; letter-spacing: 0.08em; color: var(--dim); text-transform: uppercase; line-height: 1.5; }
