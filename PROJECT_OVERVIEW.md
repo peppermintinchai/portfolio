@@ -6,7 +6,7 @@ Tiffany Dong's portfolio is a static site built around one main page, a few focu
 
 - `index.html` is the live portfolio page.
 - `assets/css/` holds layout, media, form, resume, and interaction styles.
-- `assets/js/` handles tabs, boot screen behavior, forms, media windows, audio, video, theme, and small sound effects.
+- `assets/js/` handles tabs, forms, media windows, audio, video, theme, and small sound effects.
 - `assets/img/` holds stills, project images, and video poster frames.
 - `assets/video-h264/` holds the web video files. These should stay untouched unless the source video itself is intentionally replaced.
 - `assets/audio/` holds MP3 recordings.

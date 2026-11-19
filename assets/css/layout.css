@@ -1,8 +1,7 @@
   /* ---- FRAME / HEADER ---- */
   .frame { border-left: 1px solid var(--line); border-right: 1px solid var(--line); max-width: 1600px; margin: 0 auto; min-height: 100vh; }
   header.masthead { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px; padding: var(--pad); border-bottom: 1px solid var(--line); }
-  .brand-lockup { display: flex; align-items: center; min-width: 0; background: transparent; border: 0; color: inherit; font: inherit; text-align: left; cursor: pointer; }
-  .brand-lockup:hover .name, .brand-lockup:focus-visible .name { color: var(--accent); }
+  .brand-lockup { display: flex; align-items: center; min-width: 0; background: transparent; border: 0; color: inherit; font: inherit; text-align: left; }
   .masthead .wordmark { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
   .wordmark .name { text-transform: none; letter-spacing: 0.01em; font-weight: 540; font-size: clamp(14px, 1.35vw, 17px); white-space: nowrap; color: var(--fg); }
   .wordmark .sub { font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); white-space: nowrap; }
