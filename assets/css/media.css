@@ -120,7 +120,6 @@
   .cal-note { padding: var(--pad); border-bottom: 1px solid var(--line); font-size: 12px; letter-spacing: 0.05em; color: var(--dim); text-transform: uppercase; line-height: 1.8; max-width: 760px; }
   .req-btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 9px 15px; font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; cursor: pointer; font-family: var(--font); transition: background .2s ease, color .2s ease; }
   .req-btn:hover { background: var(--accent); color: var(--on-accent); }
-  .availability-request { margin-top: 18px; }
   .sub-label-flush { border-bottom: none; }
   @media (max-width: 680px) {
     .photo-wall img { width: 100%; height: auto; aspect-ratio: 4 / 3; }

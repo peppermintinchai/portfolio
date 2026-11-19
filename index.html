@@ -22,7 +22,6 @@
 <link rel="stylesheet" href="assets/css/media.css" />
 <link rel="stylesheet" href="assets/css/forms.css" />
 <link rel="stylesheet" href="assets/css/resume-projects.css" />
-<link rel="stylesheet" href="assets/css/social-availability.css" />
 <link rel="stylesheet" href="assets/css/context-proof-footer.css" />
 </head>
 <body data-theme="black-cherry">
@@ -36,7 +35,7 @@
       </div>
       <div class="meta">
         <div class="tag">PORTFOLIO&nbsp;ARCHIVE&nbsp;//&nbsp;BU&nbsp;CS</div>
-        <div class="tag reg">PROFILE&nbsp;//&nbsp;BUILD&nbsp;PERFORM</div>
+        <div class="tag reg">PROFILE&nbsp;//&nbsp;CODE&nbsp;&middot;&nbsp;SCORE</div>
         <div class="tag">NYC&nbsp;//&nbsp;BOSTON</div>
       </div>
     </header>
@@ -47,7 +46,6 @@
       <button class="tab" id="tab-music" type="button" data-target="pane-music" role="tab" aria-selected="false" aria-controls="pane-music"><span class="t-idx">02</span><span class="t-name">MUSIC</span></button>
       <button class="tab" id="tab-film" type="button" data-target="pane-film" role="tab" aria-selected="false" aria-controls="pane-film"><span class="t-idx">03</span><span class="t-name">FILM</span></button>
       <button class="tab" id="tab-resume" type="button" data-target="pane-resume" role="tab" aria-selected="false" aria-controls="pane-resume"><span class="t-idx">04</span><span class="t-name">CV</span></button>
-      <button class="tab" id="tab-availability" type="button" data-target="pane-availability" role="tab" aria-selected="false" aria-controls="pane-availability"><span class="t-idx">05</span><span class="t-name">AVAILABILITY</span></button>
     </nav>
 
     <div class="panes">
@@ -189,21 +187,6 @@
         </div>
       </section>
 
-      <!-- ===================== 05 // AVAILABILITY ===================== -->
-      <section class="pane" id="pane-availability" role="tabpanel" aria-labelledby="tab-availability">
-        <div class="module-label"><span class="section-title">[ 05 ] AVAILABILITY</span><span class="tag">REQUEST&nbsp;ONLY&nbsp;//&nbsp;PRIVATE&nbsp;DETAILS</span></div>
-        <div class="gate availability-summary" id="gate">
-          <div class="gate-inner">
-            <div class="gate-head">
-              <div class="prompt">AVAILABILITY // REQUEST<span class="cursor"></span></div>
-            </div>
-            <div class="gate-meta">AVAILABLE BY REQUEST.</div>
-            <div class="public-availability"><span class="pa-key">SUMMER //</span> MOST WEEKENDS · SELECT WEEKDAY AFTERNOONS</div>
-            <div class="availability-request"><button type="button" class="req-btn avail-open">REQUEST AVAILABILITY &rarr;</button></div>
-          </div>
-        </div>
-      </section>
-
       <!-- ===================== 06 // CONTEXT ===================== -->
     </div><!-- /panes -->
 
@@ -234,32 +217,6 @@
         <label class="form-hp" aria-hidden="true">Leave this field empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
         <button type="submit" class="req-btn req-send" id="cred-send">SEND &rarr;</button>
         <div class="req-status" id="cred-status"></div>
-      </form>
-    </div>
-  </div>
-
-  <!-- ================= REQUEST AVAILABILITY MODAL ================= -->
-  <div id="avail-modal" class="req-modal availability-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Request availability">
-    <div class="req-box">
-      <div class="req-head"><span class="rh-t">REQUEST AVAILABILITY</span><button type="button" class="req-close" id="avail-close">CLOSE &times;</button></div>
-      <form id="avail-form" action="https://formspree.io/f/xrevkwaq" method="POST" autocomplete="off">
-        <input type="hidden" name="request_type" value="availability" />
-        <label class="req-label" for="avail-name">NAME</label>
-        <input class="req-input" id="avail-name" name="name" type="text" placeholder="your name" autocomplete="name" maxlength="80" required />
-        <label class="req-label" for="avail-email">EMAIL ADDRESS</label>
-        <input class="req-input" id="avail-email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required />
-        <span class="req-label">THINGS TO ASK ABOUT</span>
-        <div class="choice-grid" role="group" aria-label="Things to ask about">
-          <label class="choice-pill"><input type="checkbox" name="ask_about" value="Music" />Music</label>
-          <label class="choice-pill"><input type="checkbox" name="ask_about" value="Art" />Art</label>
-          <label class="choice-pill"><input type="checkbox" name="ask_about" value="Game Dev" />Game Dev</label>
-          <label class="choice-pill"><input type="checkbox" name="ask_about" value="Film" />Film</label>
-        </div>
-        <label class="req-label" for="avail-message">MESSAGE</label>
-        <textarea class="req-textarea chat-bubble-input" id="avail-message" name="message" placeholder="tell me a little more about what you want to connect on" maxlength="1200"></textarea>
-        <label class="form-hp" aria-hidden="true">Leave this field empty<input type="text" name="_gotcha" tabindex="-1" autocomplete="off" /></label>
-        <button type="submit" class="req-btn req-send" id="avail-send">SEND &rarr;</button>
-        <div class="req-status" id="avail-status"></div>
       </form>
     </div>
   </div>

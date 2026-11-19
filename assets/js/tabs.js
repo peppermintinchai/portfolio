@@ -10,14 +10,12 @@
         '#clips': 'pane-film',
         '#video-diary': 'pane-film',
         '#cv': 'pane-resume',
-        '#availability': 'pane-availability'
       };
       var idHashes = {
         'pane-projects': '#projects',
         'pane-music': '#music',
         'pane-film': '#film',
         'pane-resume': '#cv',
-        'pane-availability': '#availability'
       };
 
       function idFromHash() {

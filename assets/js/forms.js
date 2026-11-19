@@ -6,11 +6,9 @@
       var credForm = document.getElementById('cred-form');
       var credTitle = document.getElementById('cred-title');
       var credKind = document.getElementById('cred-kind');
-      var availModal = document.getElementById('avail-modal');
-      var availForm = document.getElementById('avail-form');
       var lastModalTrigger = null;
 
-      if (!credModal || !credForm || !availModal || !availForm) return;
+      if (!credModal || !credForm) return;
 
       function restoreModalFocus() {
         if (!lastModalTrigger || !document.contains(lastModalTrigger)) return;
@@ -48,14 +46,14 @@
         var wasOpen = modal.classList.contains('open');
         modal.classList.remove('open');
         modal.setAttribute('aria-hidden', 'true');
-        if (!credModal.classList.contains('open') && !availModal.classList.contains('open')) {
+        if (!credModal.classList.contains('open')) {
           document.body.classList.remove('modal-open');
           if (wasOpen) window.setTimeout(restoreModalFocus, 0);
         }
       }
 
       function anyModalOpen() {
-        return credModal.classList.contains('open') || availModal.classList.contains('open');
+        return credModal.classList.contains('open');
       }
 
       function validEmail(input) {
@@ -149,18 +147,9 @@
         }
       });
 
-      bindRequestForm({
-        modal: availModal,
-        form: availForm,
-        openSelector: '.avail-open',
-        checkboxSelector: 'input[name="ask_about"]',
-        checkboxMessage: 'SELECT AT LEAST ONE TOPIC'
-      });
-
       document.addEventListener('keydown', function (e) {
         if (e.key !== 'Escape' || !anyModalOpen()) return;
         e.preventDefault();
         closeModal(credModal);
-        closeModal(availModal);
       });
     })();
