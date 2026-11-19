@@ -270,7 +270,23 @@
         if (!frame.querySelector('video, iframe') && !frame.dataset.embedSrc) return;
         if (frame.querySelector('.media-pop-trigger')) return;
         if (frame.querySelector('video[controls]')) return;
-        if (frame.classList.contains('vs-on')) return;
+        if (frame.querySelector('video')) {
+          frame.classList.add('media-open-frame');
+          frame.setAttribute('role', 'button');
+          frame.setAttribute('tabindex', '0');
+          frame.setAttribute('aria-label', 'Enlarge ' + titleFor(frame));
+          frame.addEventListener('click', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            openWindow(frame);
+          });
+          frame.addEventListener('keydown', function (e) {
+            if (e.key !== 'Enter' && e.key !== ' ') return;
+            e.preventDefault();
+            openWindow(frame);
+          });
+          return;
+        }
         var button = document.createElement('button');
         button.type = 'button';
         button.className = 'media-pop-trigger';
