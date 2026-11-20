@@ -255,7 +255,11 @@
         focusWindow(win);
         makeDraggable(win, head);
         makeResizable(win);
-        win.addEventListener('pointerdown', function () { focusWindow(win); });
+        win.addEventListener('pointerdown', function (e) {
+          /* Let the native video controls handle clicks — refocusing on mousedown swallows them. */
+          if (e.target.closest('.media-stage')) return;
+          focusWindow(win);
+        });
         close.addEventListener('pointerdown', function (e) {
           e.stopPropagation();
         });
@@ -324,22 +328,23 @@
 
       document.addEventListener('keydown', function (e) {
         if (document.body.classList.contains('modal-open')) return;
+        var focusedMedia = document.activeElement && document.activeElement.closest('.media-stage');
         if (e.key === 'Escape') {
           var win = topMediaWindow();
           if (win) closeWindow(win);
-        } else if ((e.code === 'Space' || e.key === ' ') && !utils.isTextEntry(document.activeElement)) {
+        } else if ((e.code === 'Space' || e.key === ' ') && !focusedMedia && !utils.isTextEntry(document.activeElement)) {
           var video = topMediaVideo() || activePageVideo();
           if (video) {
             e.preventDefault();
             toggleVideo(video);
           }
-        } else if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && !utils.isTextEntry(document.activeElement)) {
+        } else if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && !focusedMedia && !utils.isTextEntry(document.activeElement)) {
           var seekTarget = topMediaVideo() || activePageVideo();
           if (seekTarget) {
             e.preventDefault();
             seekVideo(seekTarget, e.key === 'ArrowLeft' ? -15 : 15);
           }
-        } else if ((e.key === 'f' || e.key === 'F') && !utils.isTextEntry(document.activeElement)) {
+        } else if ((e.key === 'f' || e.key === 'F') && !focusedMedia && !utils.isTextEntry(document.activeElement)) {
           var fullscreenTarget = topMediaVideo() || activePageVideo();
           if (fullscreenTarget) {
             e.preventDefault();
