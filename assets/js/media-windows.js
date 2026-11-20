@@ -323,7 +323,7 @@
           var proxy = document.createElement('div');
           proxy.dataset.imgSrc = trigger.getAttribute('data-media-img');
           proxy.dataset.popout = 'portrait';
-          proxy.setAttribute('data-title', trigger.textContent.trim() || 'QR CODE');
+          proxy.setAttribute('data-title', trigger.getAttribute('data-qr-title') || trigger.textContent.trim() || 'QR CODE');
           openWindow(proxy);
         });
       });
