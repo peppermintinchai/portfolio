@@ -117,27 +117,35 @@
   .tab.active::after { transform: scaleX(1); }
   @media (max-width: 760px) {
     .tabs {
-      gap: 22px;
-      padding: 16px var(--pad) 14px;
+      gap: 4px;
+      padding: 12px var(--pad) 10px;
     }
     .tab {
-      flex: 0 0 auto;
+      flex: 1 1 0;
+      min-width: 0;
+      min-height: 50px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding: 6px 2px;
+      text-align: center;
     }
     .tab::after {
-      bottom: -14px;
+      bottom: -10px;
     }
-  }
-  /* kept after the 760px block so it actually wins the cascade */
-  @media (max-width: 430px) {
-    .tabs { gap: 12px; padding: 13px var(--pad) 12px; }
-    .tab { gap: 6px; }
     .t-idx { font-size: 9px; }
     .t-name { font-size: 9px; letter-spacing: 0.06em; }
   }
-  @media (max-width: 360px) {
-    .tabs { gap: 10px; }
-    .tab { gap: 5px; }
+  /* kept after the 760px block so it actually wins the cascade */
+  @media (max-width: 430px) {
+    .tabs { padding: 11px var(--pad) 9px; }
+    .tab { min-height: 48px; }
+    .t-idx { font-size: 8.5px; }
     .t-name { font-size: 8.5px; letter-spacing: 0.04em; }
+  }
+  @media (max-width: 360px) {
+    .t-name { font-size: 8px; letter-spacing: 0.02em; }
   }
 
   /* ---- PANES ---- */
