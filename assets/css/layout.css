@@ -40,9 +40,6 @@
       letter-spacing: 0.04em;
       padding: 10px var(--pad) 12px;
     }
-    .tabs { gap: 18px; padding: 14px var(--pad) 12px; }
-    .t-idx { font-size: 10px; }
-    .t-name { font-size: 10px; letter-spacing: 0.11em; }
   }
 
   /* ---- THEME SWITCH ---- */
@@ -120,23 +117,27 @@
   .tab.active::after { transform: scaleX(1); }
   @media (max-width: 760px) {
     .tabs {
-      gap: 28px;
+      gap: 22px;
       padding: 16px var(--pad) 14px;
-      overflow-x: auto;
-      overscroll-behavior-x: contain;
-      scroll-snap-type: x proximity;
-      scrollbar-width: none;
-      mask-image: linear-gradient(to right, #000 85%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to right, #000 85%, transparent 100%);
     }
-    .tabs::-webkit-scrollbar { display: none; }
     .tab {
       flex: 0 0 auto;
-      scroll-snap-align: start;
     }
     .tab::after {
       bottom: -14px;
     }
+  }
+  /* kept after the 760px block so it actually wins the cascade */
+  @media (max-width: 430px) {
+    .tabs { gap: 12px; padding: 13px var(--pad) 12px; }
+    .tab { gap: 6px; }
+    .t-idx { font-size: 9px; }
+    .t-name { font-size: 9px; letter-spacing: 0.06em; }
+  }
+  @media (max-width: 360px) {
+    .tabs { gap: 10px; }
+    .tab { gap: 5px; }
+    .t-name { font-size: 8.5px; letter-spacing: 0.04em; }
   }
 
   /* ---- PANES ---- */

@@ -12,9 +12,8 @@
   .xp-date { grid-column: 3; grid-row: 1; justify-self: end; text-align: right; font-size: 10px; letter-spacing: var(--track); color: var(--dim); text-transform: uppercase; white-space: nowrap; }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .xp-r .chips { grid-column: 3; grid-row: 2; justify-content: flex-end; justify-self: end; max-width: 100%; min-width: 0; }
-  #pane-resume .xp-r .chips { width: max-content; flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; }
-  #pane-resume .xp-r .chips::-webkit-scrollbar { display: none; }
-  /* chips stay compact and single-line in resume rows */
+  /* chips wrap instead of scrolling so every tag stays visible at any width */
+  #pane-resume .xp-r .chips { width: 100%; flex-wrap: wrap; justify-content: flex-end; }
   /* experience keyword tags — kept boxed but softened so they don't overwhelm */
   .chip-sm { flex: 0 0 auto; border: 1px solid rgba(127,127,127,0.16); background: rgba(127,127,127,0.05); border-radius: 2px; padding: 5px 10px; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; color: var(--dim); }
   .chip-sm.chip-link { color: var(--fg); border-color: rgba(127,127,127,0.18); background: rgba(127,127,127,0.05); transition: border-color .2s ease, background .2s ease, color .2s ease; }
@@ -67,21 +66,16 @@
   .pf-stack { font-size: 12px; letter-spacing: 0.06em; color: var(--dim); text-transform: uppercase; line-height: 1.85; }
   .pf-link { font-size: 11px; letter-spacing: var(--track); color: var(--accent); text-transform: uppercase; }
   @media (max-width: 680px) {
-    .xp { grid-template-columns: 1fr; padding: 14px var(--pad); }
-    .xp-l, .xp-r { display: flex; }
-    .xp-l { flex-direction: column; gap: 6px; min-width: 0; }
+    /* minmax(0,1fr) stops nowrap chips from inflating the grid past the viewport */
+    .xp { grid-template-columns: minmax(0, 1fr); padding: 14px var(--pad); }
+    .xp-l, .xp-r { display: flex; min-width: 0; }
+    .xp-l { flex-direction: column; gap: 6px; }
     .xp-r { flex-direction: column; align-items: flex-start; gap: 9px; text-align: left; }
     .xp-loc, .xp-date, .xp-r .chips { grid-column: auto; grid-row: auto; justify-self: auto; text-align: left; transform: none; }
-    .xp-r .chips { justify-content: flex-start; }
+    .xp-r .chips, #pane-resume .xp-r .chips { width: 100%; justify-content: flex-start; }
     .xp-co { font-size: 14px; }
     .xp-role { font-size: 12px; max-width: none; }
     .xp-loc { font-size: 11px; }
     .xp-date { font-size: 11px; }
-    .chip-sm { font-size: 10px; padding: 6px 10px; }
-    /* fade indicator for horizontally scrollable chips */
-    #pane-resume .xp-r .chips {
-      position: relative;
-      mask-image: linear-gradient(to right, #000 85%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to right, #000 85%, transparent 100%);
-    }
+    .chip-sm { font-size: 10px; padding: 6px 10px; white-space: normal; }
   }
