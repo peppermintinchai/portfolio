@@ -1,0 +1,18 @@
+<!doctype html><html><head><meta charset="utf-8"></head><body><iframe id="f" src="index.html" width="1200" height="900" style="border:0"></iframe>
+<script>
+document.getElementById('f').addEventListener('load', function () {
+  var d = this.contentDocument;
+  d.getElementById('tab-music').click();
+  setTimeout(function () {
+    var v = [].slice.call(d.querySelectorAll('video')).filter(function (x) { return (x.getAttribute('src')||'').indexOf('bucbs1') >= 0 || (x.getAttribute('src')||'').indexOf('media-v1') >= 0; })[0];
+    var out = [];
+    out.push('found=' + !!v);
+    if (v) {
+      out.push('src=' + v.getAttribute('src').slice(0,60));
+      out.push('ready=' + v.readyState + ' net=' + v.networkState + ' err=' + (v.error ? v.error.code + ':' + v.error.message : 'none'));
+      out.push('duration=' + v.duration + ' w=' + v.videoWidth);
+    }
+    document.title = out.join(' || ');
+  }, 6000);
+});
+</script></body></html>
