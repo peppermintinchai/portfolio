@@ -7,6 +7,7 @@
       var count = 0;
 
       function titleFor(frame) {
+        if (frame.dataset.title) return frame.dataset.title;
         var figure = frame.closest('figure');
         var label = figure ? figure.querySelector('.title') : null;
         return label ? label.textContent.trim() : 'MEDIA';
@@ -45,7 +46,8 @@
       function keyFor(frame) {
         var sourceVideo = frame.querySelector('video');
         var sourceIframe = frame.querySelector('iframe');
-        return sourceVideo ? (sourceVideo.currentSrc || sourceVideo.getAttribute('src')) : frame.dataset.embedSrc || (sourceIframe && sourceIframe.getAttribute('src')) || titleFor(frame);
+        var sourceImg = frame.dataset.imgSrc || (frame.querySelector('img') && frame.querySelector('img').getAttribute('src'));
+        return sourceVideo ? (sourceVideo.currentSrc || sourceVideo.getAttribute('src')) : frame.dataset.embedSrc || (sourceIframe && sourceIframe.getAttribute('src')) || sourceImg || titleFor(frame);
       }
       function existingWindowFor(frame) {
         var key = keyFor(frame);
@@ -180,7 +182,8 @@
         var sourceVideo = frame.querySelector('video');
         var sourceIframe = frame.querySelector('iframe');
         var sourceEmbed = frame.dataset.embedSrc;
-        if (!sourceVideo && !sourceIframe && !sourceEmbed) return;
+        var sourceImg = frame.dataset.imgSrc || (frame.querySelector('img') && frame.querySelector('img').getAttribute('src'));
+        if (!sourceVideo && !sourceIframe && !sourceEmbed && !sourceImg) return;
         var existing = existingWindowFor(frame);
         if (existing) {
           focusWindow(existing);
@@ -247,6 +250,12 @@
           iframe.allowFullscreen = true;
           iframe.loading = 'lazy';
           stage.appendChild(iframe);
+        } else if (sourceImg) {
+          var img = document.createElement('img');
+          img.src = sourceImg;
+          img.alt = titleFor(frame);
+          img.className = 'media-still';
+          stage.appendChild(img);
         }
 
         win.appendChild(head);
@@ -306,6 +315,17 @@
           openWindow(frame);
         });
         frame.appendChild(button);
+      });
+
+      utils.qsa('[data-media-img]').forEach(function (trigger) {
+        trigger.addEventListener('click', function (e) {
+          e.preventDefault();
+          var proxy = document.createElement('div');
+          proxy.dataset.imgSrc = trigger.getAttribute('data-media-img');
+          proxy.dataset.popout = 'portrait';
+          proxy.setAttribute('data-title', trigger.textContent.trim() || 'QR CODE');
+          openWindow(proxy);
+        });
       });
 
       utils.qsa('.project-feature.media-feature').forEach(function (card) {
