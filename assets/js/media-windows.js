@@ -255,6 +255,10 @@
           img.src = sourceImg;
           img.alt = titleFor(frame);
           img.className = 'media-still';
+          img.title = 'Click to open full size';
+          img.addEventListener('click', function () {
+            window.open(sourceImg, '_blank', 'noopener,noreferrer');
+          });
           stage.appendChild(img);
         }
 
