@@ -64,7 +64,6 @@
   .music-audio-card { grid-column: 1 / -1; }
   .music-audio-card .audio-stack { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px 18px; }
   .audio-group { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
-  .audio-group-title { font-size: 10px; letter-spacing: var(--track); color: var(--fg); text-transform: uppercase; padding-bottom: 7px; border-bottom: 1px solid rgba(201,31,50,0.26); text-shadow: 0 0 14px rgba(201,31,50,0.18); }
   .music-audio-card .audio-row { margin-top: 0; min-width: 0; padding-top: 10px; border-top: 1px solid rgba(127,127,127,0.12); }
   .audio-group .audio-row:first-of-type { border-top: none; padding-top: 0; }
   .music-audio-card audio { height: 30px; }
