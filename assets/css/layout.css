@@ -157,10 +157,10 @@
   .sub-label { padding: 10px var(--pad); border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
   .sub-label .lead { color: var(--accent); }
   /* in-development: left-aligned with the project card, single line */
-  .dev-block { width: min(920px, calc(100% - (var(--pad) * 2))); margin: 0 auto; padding: 18px 0 22px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: center; }
+  .dev-block { width: min(920px, calc(100% - (var(--pad) * 2))); margin: 0 auto; padding: 18px 0 22px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: left; }
   .dev-eyebrow { display: block; margin-bottom: 12px; font-size: 9.5px; letter-spacing: var(--track); text-transform: uppercase; color: var(--accent); }
   .dev-eyebrow .sl { opacity: 0.45; }
-  .dev-line { display: flex; flex-wrap: wrap; justify-content: center; align-items: baseline; gap: 4px 7px; font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); }
+  .dev-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 7px; font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); }
   .dev-line .dot { color: var(--accent); line-height: 1; }
   .lead .sl { opacity: 0.45; }  /* faded // slashes — muted vs the red text */
   /* major section header: bigger + divider above */
