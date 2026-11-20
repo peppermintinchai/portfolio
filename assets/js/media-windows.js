@@ -260,6 +260,12 @@
             window.open(sourceImg, '_blank', 'noopener,noreferrer');
           });
           stage.appendChild(img);
+          if (frame.dataset.qrNote) {
+            var note = document.createElement('div');
+            note.className = 'media-still-note';
+            note.textContent = frame.dataset.qrNote;
+            stage.appendChild(note);
+          }
         }
 
         win.appendChild(head);
@@ -328,6 +334,7 @@
           proxy.dataset.imgSrc = trigger.getAttribute('data-media-img');
           proxy.dataset.popout = 'portrait';
           proxy.setAttribute('data-title', trigger.getAttribute('data-qr-title') || trigger.textContent.trim() || 'QR CODE');
+          if (trigger.getAttribute('data-qr-note')) proxy.dataset.qrNote = trigger.getAttribute('data-qr-note');
           openWindow(proxy);
         });
       });

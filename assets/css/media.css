@@ -87,7 +87,8 @@
   .media-close:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
   .media-stage { position: relative; flex: 1 1 auto; min-height: 0; background: #000; }
   .media-stage video, .media-stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; object-fit: contain; }
-  .media-stage img.media-still { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 14px; background: #000; cursor: zoom-in; }
+  .media-stage img.media-still { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 14px 14px 40px; background: #000; cursor: zoom-in; }
+  .media-still-note { position: absolute; left: 0; right: 0; bottom: 0; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); background: rgba(0,0,0,0.85); border-top: 1px solid rgba(160,160,160,0.18); }
   .resize-handle { position: absolute; z-index: 4; opacity: 0; transition: opacity .18s ease, background .18s ease; }
   .media-window:hover .resize-handle { opacity: 1; }
   .resize-n, .resize-s { left: 10px; right: 10px; height: 7px; cursor: ns-resize; }
