@@ -124,26 +124,27 @@
     .media-window { left: 9px !important; top: 72px !important; width: calc(100vw - 18px) !important; height: min(420px, calc(100vh - 90px)) !important; min-width: 0; }
   }
 
-  /* ---- personal: work-style moments masonry ---- */
+  /* ---- personal: photo-led moments masonry ---- */
   #pane-personal .moments-bar { position: relative; }
   #pane-personal .moments-bar::before { content: ""; position: absolute; inset: 0 0 auto; height: 1px; background: var(--line); }
   #video-diary, #snapshots { scroll-margin-top: 86px; }
   .stills-layout {
     width: calc(100% - (var(--pad) * 2));
     margin: 0 auto;
-    padding: 64px 0 56px;
+    padding: 56px 0 32px;
   }
   .photo-wall {
     column-count: 4;
-    column-gap: 40px;
+    column-gap: 32px;
     width: 100%;
   }
   .moment {
     --moment-shift: 0px;
     --moment-drop: 0px;
+    position: relative;
     display: block;
     width: calc(100% - var(--moment-shift));
-    margin: 0 0 48px var(--moment-shift);
+    margin: 0 0 32px var(--moment-shift);
     min-width: 0;
     break-inside: avoid;
     -webkit-column-break-inside: avoid;
@@ -151,25 +152,10 @@
     transition: transform .22s ease;
   }
   .moment:nth-child(4n + 1) { --moment-drop: 0; --moment-shift: 0px; }
-  .moment:nth-child(4n + 2) { --moment-drop: 24px; --moment-shift: 16px; }
-  .moment:nth-child(4n + 3) { --moment-drop: -16px; --moment-shift: 32px; }
-  .moment:nth-child(4n + 4) { --moment-drop: 40px; --moment-shift: 0px; }
-  .moment-label {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
-    margin-bottom: 8px;
-    font-family: var(--font);
-    font-size: 11px;
-    line-height: 1.45;
-    letter-spacing: var(--track);
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-  .moment-date, .moment-place { color: var(--dim); }
-  .moment-place { letter-spacing: 0.08em; }
-  .moment-title { color: var(--fg); font-size: 12px; font-weight: 500; letter-spacing: var(--track); }
+  .moment:nth-child(4n + 2) { --moment-drop: 12px; --moment-shift: 8px; }
+  .moment:nth-child(4n + 3) { --moment-drop: -8px; --moment-shift: 16px; }
+  .moment:nth-child(4n + 4) { --moment-drop: 24px; --moment-shift: 0px; }
+  .moment.moment--lowres, .moment.moment--capped { width: 80%; }
   .moment img {
     display: block;
     width: 100%;
@@ -181,8 +167,8 @@
     transform: scale(1);
     transition: transform .22s ease;
   }
-  .moment--lowres img { max-width: 80%; }
   .moment--video .frame-16x9 {
+    display: block;
     width: 100%;
     padding: 0;
     margin: 0;
@@ -194,12 +180,38 @@
   }
   .moment--video .frame-16x9::before { display: none; }
   .moment--video .frame-16x9:hover { border-color: transparent; box-shadow: none; }
+  .moment--fireworks .frame-16x9 { border: 1px solid rgba(255,255,255,0.08); }
+  .moment--fireworks .frame-16x9:hover { border-color: rgba(255,255,255,0.08); }
+  .moment-label {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    display: block;
+    padding: 30px 12px 10px;
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1.3;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    color: #9a9a9a;
+    background: linear-gradient(0deg, rgba(0,0,0,0.78), rgba(0,0,0,0.32) 45%, transparent);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease;
+  }
   @media (hover: hover) {
     .moment:hover img, .moment:hover .frame-16x9 { transform: scale(1.02); }
-    .moment:hover .moment-label span { color: var(--accent); }
+    .moment:hover .moment-label { opacity: 1; }
   }
   .moment:focus-within img, .moment:focus-within .frame-16x9 { transform: scale(1.02); }
-  .moment:focus-within .moment-label span { color: var(--accent); }
+  .moment:focus-within .moment-label { opacity: 1; }
+  @media (hover: none) and (pointer: coarse) {
+    .moment-label { opacity: 1; }
+  }
   .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
   .grid-4 .card:nth-child(4n) { border-right: none; }
   .personal-links .card { min-height: 76px; }
@@ -217,10 +229,8 @@
     .personal-links .card a:hover { color: var(--accent); }
   }
   @media (max-width: 1100px) {
+    .stills-layout { padding-top: 48px; }
     .photo-wall { column-count: 3; }
-  }
-  @media (min-width: 901px) and (max-width: 1100px) {
-    .stills-layout { padding-top: 48px; padding-bottom: 72px; }
   }
   @media (max-width: 900px) {
     .photo-wall { column-count: 2; }
@@ -236,7 +246,8 @@
     .stills-layout { padding-top: 48px; padding-bottom: 16px; }
     .photo-wall { column-count: 1; column-gap: 0; }
     .moment:nth-child(n) { --moment-drop: 0; --moment-shift: 0px; width: 100%; margin-left: 0; }
-    .moment:nth-child(even) { --moment-shift: 24px; width: calc(100% - 24px); margin-left: 24px; }
+    .moment:nth-child(even) { --moment-shift: 12px; width: calc(100% - 12px); margin-left: 12px; }
+    .moment.moment--lowres, .moment.moment--capped { width: 80%; }
   }
   .cal-note { padding: var(--pad); border-bottom: 1px solid var(--line); font-size: 12px; letter-spacing: 0.05em; color: var(--dim); text-transform: uppercase; line-height: 1.8; max-width: 760px; }
   .req-btn { font-size: 11px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 9px 15px; font-size: 11px; letter-spacing: var(--track); text-transform: uppercase; cursor: pointer; font-family: var(--font); transition: background .2s ease, color .2s ease; }
