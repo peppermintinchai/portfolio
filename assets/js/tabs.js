@@ -4,6 +4,7 @@
       var tabs = utils.qsa('.tab');
       var panes = utils.qsa('.pane');
       var hashTargets = {
+        '#work': 'pane-media',
         '#media': 'pane-media',
         '#projects': 'pane-media',
         '#music': 'pane-media',
@@ -17,7 +18,7 @@
         '#cv': 'pane-resume',
       };
       var idHashes = {
-        'pane-media': '#media',
+        'pane-media': '#work',
         'pane-personal': '#personal',
         'pane-resume': '#cv',
       };
