@@ -44,7 +44,7 @@
   }
   #pane-resume .chips::-webkit-scrollbar { display: none; }
   /* experience keyword tags — compact and kept on one line */
-  #pane-resume .chip-sm { flex: 0 0 auto; border: 1px solid rgba(127,127,127,0.16); background: rgba(127,127,127,0.05); border-radius: 2px; padding: 4px 8px; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; color: var(--dim); }
+  #pane-resume .chip-sm { flex: 0 0 auto; border: 1px solid rgba(127,127,127,0.16); background: rgba(127,127,127,0.05); border-radius: 2px; padding: 4px 8px; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; color: var(--dim); }
   #pane-resume .chip-sm.chip-link { color: var(--fg); border-color: rgba(127,127,127,0.18); background: rgba(127,127,127,0.05); transition: border-color .2s ease, background .2s ease, color .2s ease; }
   #pane-resume .chip-sm.chip-link::after { content: "↗"; margin-left: 6px; color: var(--accent); }
   @media (hover: hover) {
@@ -93,5 +93,5 @@
     #pane-resume .xp-date { justify-self: start; text-align: left; white-space: normal; }
     #pane-resume .xp-role { max-width: none; }
     #pane-resume .chips { margin-top: 9px; }
-    #pane-resume .chip-sm { font-size: 10px; padding: 4px 8px; }
+    #pane-resume .chip-sm { padding: 4px 8px; }
   }

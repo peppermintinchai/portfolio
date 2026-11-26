@@ -81,7 +81,7 @@
   }
   .media-pop-trigger span { width: 42px; height: 42px; border: 1px solid rgba(170,170,170,0.42); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: rgba(7,7,7,0.78); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.025); }
   .media-pop-trigger span::before { content: ""; width: 0; height: 0; border-left: 11px solid var(--accent); border-top: 7px solid transparent; border-bottom: 7px solid transparent; margin-left: 3px; }
-  .media-pop-trigger em { position: absolute; left: 12px; bottom: 10px; font-style: normal; font-size: 10px; letter-spacing: var(--track); color: var(--fg); text-transform: uppercase; }
+  .media-pop-trigger em { position: absolute; left: 12px; bottom: 10px; font-style: normal; font-size: 11px; letter-spacing: var(--track); color: var(--fg); text-transform: uppercase; }
   .media-desktop { position: fixed; inset: 0; z-index: 1120; pointer-events: none; }
   .media-window { position: fixed; left: 50%; top: 50%; width: min(920px, calc(100vw - 28px)); height: min(550px, calc(100vh - 28px)); min-width: 320px; min-height: 230px; max-width: calc(100vw - 18px); max-height: calc(100vh - 18px); overflow: hidden; background: #000; border: 1px solid rgba(150,150,150,0.22); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.028), inset 3px 0 0 rgba(227,33,74,0.42), 0 18px 54px rgba(0,0,0,0.62); pointer-events: auto; display: flex; flex-direction: column; animation: reveal .2s ease; }
   .media-window.portrait { width: min(390px, calc(100vw - 28px)); height: min(610px, calc(100vh - 28px)); }
@@ -105,7 +105,7 @@
   .polaroid-caption { position: absolute; left: 14px; right: 14px; bottom: 0; height: 58px; display: flex; align-items: center; justify-content: center; text-align: center; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); border-top: 1px solid rgba(255,255,255,0.12); }
   @media (max-width: 560px) {
     .media-window.polaroid .media-stage img.media-still { top: 10px; right: auto; bottom: auto; left: 10px; width: calc(100% - 20px); height: calc(100% - 58px); }
-    .polaroid-caption { left: 10px; right: 10px; height: 48px; font-size: 10px; }
+    .polaroid-caption { left: 10px; right: 10px; height: 48px; font-size: 11px; }
   }
   .resize-handle { position: absolute; z-index: 4; opacity: 0; transition: opacity .18s ease, background .18s ease; }
   .media-window:hover .resize-handle { opacity: 1; }
@@ -190,57 +190,43 @@
   .moment--fireworks .frame-16x9 { border: 1px solid rgba(255,255,255,0.08); }
   .moment--fireworks .frame-16x9:hover { border-color: rgba(255,255,255,0.08); }
   #pane-personal .moment--video .frame-16x9.media-open-frame { cursor: pointer; }
-  /* one consistent play marker on every personal video thumbnail */
-  #pane-personal .moment--video .frame-16x9.media-open-frame::before {
-    content: "";
-    display: block;
-    position: absolute;
-    inset: auto;
-    top: 50%;
-    left: 50%;
-    z-index: 4;
-    width: 0;
-    height: 0;
-    padding: 0;
-    border-left: 18px solid #fff;
-    border-top: 11px solid transparent;
-    border-bottom: 11px solid transparent;
-    transform: translate(-50%, -50%) translateX(2px);
-    pointer-events: none;
-    transition: transform .15s ease;
-  }
+  /* personal play marker: matches the WORK // ADDITIONAL audio play button */
+  #pane-personal .moment--video .frame-16x9.media-open-frame::before { content: none; }
   #pane-personal .moment--video .frame-16x9.media-open-frame::after {
-    content: "";
+    content: "\25B6";
     position: absolute;
     inset: auto;
     top: 50%;
     left: 50%;
     z-index: 3;
-    display: block;
-    width: 56px;
-    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
     padding: 0;
     transform: translate(-50%, -50%);
-    border: 1.5px solid #fff;
-    border-radius: 50%;
-    background: rgba(0,0,0,0.45);
-    backdrop-filter: blur(2px);
-    -webkit-backdrop-filter: blur(2px);
+    border: 1px solid rgba(170,170,170,0.24);
+    background: rgba(7,7,7,0.78);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.018);
+    color: var(--accent);
+    font-size: 13px;
+    line-height: 1;
     opacity: 1;
     pointer-events: none;
-    transition: background .15s ease, border-color .15s ease, transform .15s ease, opacity .15s ease;
+    transition: border-color .2s ease, background .2s ease, color .2s ease;
   }
   @media (hover: hover) {
-    #pane-personal .moment--video .frame-16x9.media-open-frame:hover::after,
-    #pane-personal .moment--video .frame-16x9.media-open-frame:focus-visible::after {
-      background: var(--accent);
-      border-color: #fff;
-      opacity: 1;
-      transform: translate(-50%, -50%) scale(1.08);
+    #pane-personal .moment--video .frame-16x9.media-open-frame:hover::after {
+      border-color: rgba(227,33,74,0.62);
+      background: rgba(227,33,74,0.14);
+      color: #fff;
     }
-    #pane-personal .moment--video .frame-16x9.media-open-frame:hover::before {
-      transform: translate(-50%, -50%) translateX(2px) scale(1.08);
-    }
+  }
+  #pane-personal .moment--video .frame-16x9.media-open-frame:focus-visible::after {
+    border-color: rgba(227,33,74,0.62);
+    background: rgba(227,33,74,0.14);
+    color: #fff;
   }
   #pane-personal .moment--video .frame-16x9.media-open-frame:focus-visible {
     outline: 1px solid var(--accent);
