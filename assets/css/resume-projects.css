@@ -29,7 +29,7 @@
   }
   .more-block summary::-webkit-details-marker { display: none; }
   .more-block summary::after { content: "+"; width: 44px; height: 44px; min-width: 44px; border: 1px solid rgba(127,127,127,0.22); display: inline-flex; align-items: center; justify-content: center; color: var(--dim); font-size: 16px; line-height: 1; transition: border-color .2s ease, color .2s ease, background .2s ease; }
-  .more-block[open] summary::after { content: "–"; border-color: var(--accent); color: var(--accent); background: rgba(227,33,74,0.08); }
+  .more-block[open] summary::after { content: "-"; border-color: var(--accent); color: var(--accent); background: rgba(227,33,74,0.08); }
   .more-block .spec { border-top: none; }
   /* ---- single featured project ---- */
   .project-feature { display: grid; grid-template-columns: minmax(260px, 0.82fr) minmax(280px, 1fr); width: min(920px, calc(100% - (var(--pad) * 2))); margin: var(--pad) auto; border: 1px solid rgba(127,127,127,0.22); cursor: pointer; transition: border-color .2s ease, background .2s ease, transform .2s ease; }

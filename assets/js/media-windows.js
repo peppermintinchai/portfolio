@@ -227,7 +227,8 @@
 
         var win = document.createElement('section');
         var portrait = frame.classList.contains('frame-portrait') || frame.dataset.popout === 'portrait';
-        win.className = 'media-window' + (portrait ? ' portrait' : '');
+        var polaroid = frame.dataset.polaroid === '1';
+        win.className = 'media-window' + (portrait ? ' portrait' : '') + (polaroid ? ' polaroid' : '');
         win.dataset.sourceKey = keyFor(frame);
         win.setAttribute('role', 'dialog');
         win.setAttribute('tabindex', '-1');
@@ -295,6 +296,12 @@
             window.open(sourceImg, '_blank', 'noopener,noreferrer');
           });
           stage.appendChild(img);
+          if (polaroid) {
+            var caption = document.createElement('div');
+            caption.className = 'polaroid-caption';
+            caption.textContent = titleFor(frame);
+            stage.appendChild(caption);
+          }
           if (frame.dataset.qrNote) {
             var note = document.createElement('div');
             note.className = 'media-still-note';
@@ -371,6 +378,7 @@
           proxy.dataset.imgSrc = trigger.getAttribute('data-media-img');
           proxy.dataset.popout = 'portrait';
           proxy.setAttribute('data-title', trigger.getAttribute('data-qr-title') || trigger.textContent.trim() || 'QR CODE');
+          if (trigger.closest('.photo-wall')) proxy.dataset.polaroid = '1';
           if (trigger.getAttribute('data-qr-note')) proxy.dataset.qrNote = trigger.getAttribute('data-qr-note');
           openWindow(proxy);
         });

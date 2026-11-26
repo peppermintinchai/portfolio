@@ -8,12 +8,17 @@
         '#projects': 'pane-media',
         '#music': 'pane-media',
         '#film': 'pane-media',
-        '#clips': 'pane-media',
-        '#video-diary': 'pane-media',
+        '#personal': 'pane-personal',
+        '#archive': 'pane-personal',
+        '#stills': 'pane-personal',
+        '#links': 'pane-personal',
+        '#clips': 'pane-personal',
+        '#video-diary': 'pane-personal',
         '#cv': 'pane-resume',
       };
       var idHashes = {
         'pane-media': '#media',
+        'pane-personal': '#personal',
         'pane-resume': '#cv',
       };
 
@@ -115,7 +120,7 @@
         if (utils.qsa('.media-window').length) return;
 
         var key = e.key;
-        if (key >= '1' && key <= '2') {
+        if (key >= '1' && key <= '3') {
           e.preventDefault();
           switchTab(parseInt(key, 10) - 1, true);
           return;
