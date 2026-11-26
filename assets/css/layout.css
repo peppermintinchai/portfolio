@@ -3,7 +3,7 @@
   header.masthead { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px; padding: clamp(22px, 3vw, 40px) var(--pad); border-bottom: 1px solid var(--line); }
   .brand-lockup { display: flex; align-items: center; min-width: 0; background: transparent; border: 0; color: inherit; font: inherit; text-align: left; }
   .masthead .wordmark { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
-  .wordmark .name { text-transform: none; letter-spacing: 0.01em; font-weight: 600; font-size: clamp(18px, 1.8vw, 24px); white-space: nowrap; color: var(--fg); }
+  .wordmark .name { text-transform: none; letter-spacing: 0.01em; font-weight: 540; font-size: clamp(14px, 1.35vw, 17px); white-space: nowrap; color: var(--fg); }
   .wordmark .sub { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); white-space: nowrap; }
   .wordmark .sub .accent-text { color: var(--accent); }
   .masthead .meta { text-align: right; line-height: 1.85; }
