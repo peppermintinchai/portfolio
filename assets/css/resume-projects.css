@@ -74,19 +74,18 @@
   .pf-title { font-size: clamp(17px, 2.2vw, 24px); text-transform: uppercase; letter-spacing: var(--track); color: var(--fg); font-weight: 600; }
   .pf-stack-label { font-size: 11px; letter-spacing: var(--track); color: var(--accent); text-transform: uppercase; margin-bottom: 6px; }
   .cv-note { text-transform: none; letter-spacing: 0.04em; }
-  /* ---- CV skills + awards: label left, wrapped list right ---- */
+  /* ---- CV skills + awards: items sit in the left gutter under their red heading ---- */
   #pane-resume .cv-list-row {
-    display: grid;
-    grid-template-columns: minmax(90px, 22%) minmax(0, 1fr);
-    gap: 8px clamp(14px, 2.1vw, 28px);
-    align-items: start;
+    display: block;
     padding: 14px var(--pad);
     border-bottom: 1px solid var(--line);
   }
   #pane-resume .cv-list-row:last-child { border-bottom: none; }
-  #pane-resume .cv-list-label { font-size: 11px; letter-spacing: var(--track); color: var(--fg); text-transform: uppercase; }
   #pane-resume .cv-list-items { display: flex; flex-wrap: wrap; gap: 10px 24px; min-width: 0; font-size: 11px; letter-spacing: .06em; line-height: 1.6; text-transform: uppercase; color: var(--dim); }
   #pane-resume .cv-item { white-space: nowrap; }
+  /* awards: one award per line instead of one long run */
+  #pane-resume .cv-list-row--awards .cv-list-items { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  #pane-resume .cv-list-row--awards .cv-item { white-space: normal; }
   .pf-stack { font-size: 12px; letter-spacing: 0.06em; color: var(--dim); text-transform: uppercase; line-height: 1.85; }
   .pf-link { font-size: 11px; letter-spacing: var(--track); color: var(--accent); text-transform: uppercase; }
   @media (max-width: 680px) {
@@ -95,5 +94,4 @@
     #pane-resume .xp-role { max-width: none; }
     #pane-resume .chips { margin-top: 9px; }
     #pane-resume .chip-sm { font-size: 10px; padding: 4px 8px; }
-    #pane-resume .cv-list-row { grid-template-columns: minmax(0, 1fr); gap: 8px; }
   }

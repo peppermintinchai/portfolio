@@ -56,6 +56,8 @@
   .sw.active { border-color: var(--accent); color: var(--fg); background: var(--accent-soft); }
 
   /* ---- MAIN MENU ---- */
+  /* keep anchored content clear of the sticky tab bar */
+  html { scroll-padding-top: 83px; }
   .tabs {
     position: sticky;
     top: 0;
@@ -117,10 +119,12 @@
   .tab:hover .t-idx { color: rgba(255,255,255,0.5); }
   .tab:hover .t-name { color: rgba(255,255,255,0.9); }
   .tab:active { transform: translateY(1px); }
+  .tab:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
   .tab.active .t-idx { color: var(--accent); }
   .tab.active .t-name { color: var(--fg); }
   .tab.active::after { transform: scaleX(1); }
   @media (max-width: 760px) {
+    html { scroll-padding-top: 73px; }
     .tabs {
       gap: 4px;
       padding: 12px var(--pad) 10px;
@@ -144,6 +148,7 @@
   }
   /* kept after the 760px block so it actually wins the cascade */
   @media (max-width: 430px) {
+    html { scroll-padding-top: 69px; }
     .tabs { padding: 11px var(--pad) 9px; }
     .tab { min-height: 48px; }
     .t-idx { font-size: 11px; }
