@@ -11,6 +11,7 @@
     .card:hover .memo { opacity: 1; }
   }
   .grid-3 .card:nth-child(3n) { border-right: none; }
+  .grid-3 > .card:last-child:nth-child(3n + 1) { border-right: none; }
   .grid-2 .card:nth-child(2n) { border-right: none; }
   @media (max-width: 900px) { .grid-3 .card:nth-child(3n){border-right:1px solid var(--line);} .grid-3 .card:nth-child(2n){border-right:none;} }
   @media (max-width: 560px) { .grid-3 .card { border-right:none; } }
