@@ -14,7 +14,7 @@
     display: grid;
     grid-template-columns: minmax(0, 38fr) minmax(0, 31fr) minmax(0, 31fr);
     gap: 5px clamp(14px, 2.1vw, 28px);
-    align-items: baseline;
+    align-items: start;
     min-width: 0;
   }
   @media (hover: hover) {
@@ -24,8 +24,11 @@
   #pane-resume .xp-org { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
   #pane-resume .xp-co { font-size: clamp(13px,1.6vw,15px); text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg); font-weight: 600; }
   #pane-resume .xp-loc { font-size: 11px; letter-spacing: var(--track); color: var(--dim); text-transform: uppercase; line-height: 1.5; }
-  #pane-resume .xp-role { align-self: baseline; min-width: 0; font-size: 12px; letter-spacing: 0.055em; color: var(--dim); text-transform: uppercase; line-height: 1.55; }
-  #pane-resume .xp-date { align-self: baseline; justify-self: end; text-align: right; font-size: 11px; letter-spacing: var(--track); color: var(--dim); text-transform: uppercase; white-space: nowrap; }
+  #pane-resume .xp-role { align-self: start; min-width: 0; font-size: 12px; letter-spacing: 0.055em; color: var(--dim); text-transform: uppercase; line-height: 1.55; }
+  #pane-resume .xp-date { align-self: start; justify-self: end; text-align: right; font-size: 11px; letter-spacing: var(--track); color: var(--dim); text-transform: uppercase; white-space: nowrap; }
+  /* tighter opening heading on CV + Personal, using the low end of the shared scale */
+  #pane-resume > .module-label + .sub-label.major,
+  #pane-personal > .sub-label.major { padding-top: 22px; }
   #pane-resume .chips {
     grid-column: 1;
     display: flex;
@@ -57,6 +60,12 @@
   .pf-media-solid { background: #000; }
   .pf-media-video { padding: 0; background: transparent; }
   .media-feature-flush { margin-bottom: 0; }
+  /* WORK: feature card reaches both content gutters */
+  #pane-media .project-feature { width: calc(100% - (var(--pad) * 2)); }
+  #pane-media .dev-block + .module-label { margin-top: 48px; }
+  #pane-media .dev-block { width: calc(100% - (var(--pad) * 2)); margin: 0 auto; text-align: left; }
+  #pane-media .dev-eyebrow { font-size: clamp(14px, 2vw, 18px); font-weight: 600; letter-spacing: var(--track); }
+  #pane-media .dev-line { justify-content: flex-start; }
   .frame-fill { width: 100%; }
   @media (max-width: 760px) { .pf-media { border-right: none; border-bottom: 1px solid var(--line); } }
   .pf-img { display: block; width: min(100%, 330px); aspect-ratio: 5 / 4; object-fit: cover; object-position: center 44%; border: 1px solid rgba(127,127,127,0.24); background: #000; box-shadow: 0 16px 34px rgba(0,0,0,0.28); }
