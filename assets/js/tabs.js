@@ -93,7 +93,6 @@
       function switchTab(idx, focusTab) {
         if (tabs[idx] && !tabs[idx].classList.contains('active')) {
           utils.pauseAllMedia();
-          if (window.vaultSound) window.vaultSound.menu();
           activate(tabs[idx].dataset.target, focusTab);
         }
       }

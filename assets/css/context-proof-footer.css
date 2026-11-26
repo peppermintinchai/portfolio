@@ -2,10 +2,6 @@
   footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; padding: var(--pad); border-top: 1px solid var(--line); }
   footer .tag:last-child { text-transform: none; letter-spacing: 0.08em; }
   footer a.tag { display: inline-flex; align-items: center; min-height: 44px; }
-  footer .sound-toggle { display: inline-flex; align-items: center; min-height: 44px; padding: 0; border: 0; background: transparent; color: var(--dim); font-family: inherit; cursor: pointer; }
-  footer .sound-toggle:hover, footer .sound-toggle:focus-visible { color: var(--accent); }
-  footer .sound-toggle[aria-pressed="true"] { color: var(--fg); }
-
   /* ---- disclosure + role notes ---- */
   .moment-open:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 

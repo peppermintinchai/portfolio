@@ -223,7 +223,6 @@
         }
         utils.pauseAllMedia();
         count += 1;
-        if (window.vaultSound) window.vaultSound.open();
 
         var win = document.createElement('section');
         var portrait = frame.dataset.popout === 'portrait';

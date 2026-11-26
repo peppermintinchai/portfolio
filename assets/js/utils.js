@@ -47,17 +47,6 @@
           } catch (e) {}
         });
       }
-      function safeStorageGet(key, fallback) {
-        try {
-          var value = localStorage.getItem(key);
-          return value == null ? fallback : value;
-        } catch (e) {
-          return fallback;
-        }
-      }
-      function safeStorageSet(key, value) {
-        try { localStorage.setItem(key, value); } catch (e) {}
-      }
       window.portfolioUtils = {
         toArray: toArray,
         qsa: qsa,
@@ -66,8 +55,6 @@
         formatTime: formatTime,
         prepareVideo: prepareVideo,
         playMedia: playMedia,
-        pauseAllMedia: pauseAllMedia,
-        safeStorageGet: safeStorageGet,
-        safeStorageSet: safeStorageSet
+        pauseAllMedia: pauseAllMedia
       };
     })();
