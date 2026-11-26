@@ -126,14 +126,43 @@
 
   /* ---- photo wall (masonry stills) ---- */
   .stills-layout { border-bottom: 1px solid var(--line); }
-  .photo-wall { column-count: 4; column-gap: 18px; padding: clamp(12px, 2vw, 24px); }
-  .photo-wall img { display: block; width: 100%; height: auto; max-width: 100%; margin: 0 0 18px; break-inside: avoid; -webkit-column-break-inside: avoid; page-break-inside: avoid; border: 1px solid rgba(127,127,127,0.22); cursor: zoom-in; transition: border-color .25s ease, filter .25s ease, transform .25s ease; }
+  .photo-wall {
+    column-count: 4;
+    column-gap: 28px;
+    width: min(1440px, 100%);
+    margin: 0 auto;
+    padding: clamp(18px, 2.6vw, 34px) clamp(14px, 2vw, 28px) clamp(30px, 4vw, 58px);
+  }
+  .photo-wall img {
+    display: block;
+    width: 95%;
+    height: auto;
+    max-width: 100%;
+    margin: 0 0 28px;
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
+    border: 1px solid rgba(127,127,127,0.22);
+    cursor: zoom-in;
+    transition: border-color .25s ease, filter .25s ease, transform .25s ease;
+  }
+  .photo-wall img:nth-child(2n) { width: 90%; margin-left: auto; }
+  .photo-wall img:nth-child(3n) { width: 97%; margin-left: 0; }
+  .photo-wall img:nth-child(4n) { width: 92%; margin-left: 5%; }
+  .photo-wall img:nth-child(5n) { width: 94%; margin-left: 2%; margin-bottom: 32px; }
   @media (hover: hover) {
-    .photo-wall img:hover { border-color: var(--accent); filter: brightness(1.06); transform: translateY(-2px); }
+    .photo-wall img:hover { border-color: var(--accent); filter: brightness(1.04); transform: translateY(-2px); }
   }
   @media (max-width: 1100px) { .photo-wall { column-count: 3; } }
-  @media (max-width: 760px) { .photo-wall { column-count: 2; } }
-  @media (max-width: 520px) { .photo-wall { column-count: 1; } }
+  @media (max-width: 760px) {
+    .photo-wall { column-count: 2; column-gap: 22px; }
+    .photo-wall img { margin-bottom: 24px; }
+  }
+  @media (max-width: 520px) {
+    .photo-wall { column-count: 1; column-gap: 0; padding: 18px var(--pad) 34px; }
+    .photo-wall img,
+    .photo-wall img:nth-child(n) { width: 94%; margin-left: auto; margin-right: auto; margin-bottom: 24px; }
+  }
   .grid-fluid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
   #video-diary { scroll-margin-top: 86px; }
   /* ---- links tile beside the video log ---- */
