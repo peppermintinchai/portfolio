@@ -8,11 +8,6 @@
         var tag = el.tagName;
         return el.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || tag === 'BUTTON';
       }
-      function setStatus(el, message, state) {
-        if (!el) return;
-        el.textContent = message || '';
-        el.className = 'req-status' + (state ? ' ' + state : '');
-      }
       function formatTime(seconds) {
         if (!isFinite(seconds) || seconds < 0) return '0:00';
         var m = Math.floor(seconds / 60);
@@ -68,7 +63,6 @@
         qsa: qsa,
         clamp: clamp,
         isTextEntry: isTextEntry,
-        setStatus: setStatus,
         formatTime: formatTime,
         prepareVideo: prepareVideo,
         playMedia: playMedia,

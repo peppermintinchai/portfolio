@@ -4,17 +4,16 @@
       var tabs = utils.qsa('.tab');
       var panes = utils.qsa('.pane');
       var hashTargets = {
-        '#projects': 'pane-projects',
-        '#music': 'pane-music',
-        '#film': 'pane-film',
-        '#clips': 'pane-film',
-        '#video-diary': 'pane-film',
+        '#media': 'pane-media',
+        '#projects': 'pane-media',
+        '#music': 'pane-media',
+        '#film': 'pane-media',
+        '#clips': 'pane-media',
+        '#video-diary': 'pane-media',
         '#cv': 'pane-resume',
       };
       var idHashes = {
-        'pane-projects': '#projects',
-        'pane-music': '#music',
-        'pane-film': '#film',
+        'pane-media': '#media',
         'pane-resume': '#cv',
       };
 
@@ -116,7 +115,7 @@
         if (utils.qsa('.media-window').length) return;
 
         var key = e.key;
-        if (key >= '1' && key <= '4') {
+        if (key >= '1' && key <= '2') {
           e.preventDefault();
           switchTab(parseInt(key, 10) - 1, true);
           return;
