@@ -86,6 +86,13 @@
 
       tabs.forEach(function (t, i) {
         t.addEventListener('click', function () { switchTab(i); });
+        t.addEventListener('keydown', function (e) {
+          if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+          e.preventDefault();
+          e.stopPropagation();
+          var delta = e.key === 'ArrowRight' ? 1 : -1;
+          switchTab((i + delta + tabs.length) % tabs.length, true);
+        });
       });
 
       var initialTab = tabs.find(function (tab) { return tab.classList.contains('active'); }) || tabs[0];
@@ -106,15 +113,16 @@
 
       document.addEventListener('keydown', function (e) {
         if (document.body.classList.contains('modal-open') || utils.isTextEntry(document.activeElement)) return;
+        if (utils.qsa('.media-window').length) return;
 
         var key = e.key;
-        if (key >= '1' && key <= '5') {
+        if (key >= '1' && key <= '4') {
           e.preventDefault();
           switchTab(parseInt(key, 10) - 1, true);
           return;
         }
 
-        if ((key === 'ArrowRight' || key === 'ArrowLeft') && !utils.isTextEntry(document.activeElement)) {
+        if ((key === 'ArrowRight' || key === 'ArrowLeft') && !utils.isTextEntry(document.activeElement) && !(document.activeElement && document.activeElement.classList.contains('tab'))) {
           e.preventDefault();
           var index = currentTabIndex();
           if (index < 0) return;

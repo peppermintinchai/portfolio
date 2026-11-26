@@ -5,6 +5,25 @@
       if (!desktop) return;
       var stack = 1121;
       var count = 0;
+      var mainFrame = document.querySelector('main.frame');
+
+      function mediaWindows() { return utils.qsa('.media-window', desktop); }
+
+      function setPageInert(on) {
+        if (!mainFrame) return;
+        if ('inert' in mainFrame) mainFrame.inert = on;
+        mainFrame.setAttribute('aria-hidden', on ? 'true' : 'false');
+      }
+
+      function syncMediaDialogState() {
+        var wins = mediaWindows();
+        var top = topMediaWindow();
+        wins.forEach(function (win) {
+          if (win === top) win.setAttribute('aria-modal', 'true');
+          else win.removeAttribute('aria-modal');
+        });
+        setPageInert(wins.length > 0);
+      }
 
       function titleFor(frame) {
         if (frame.dataset.title) return frame.dataset.title;
@@ -20,6 +39,7 @@
           try { win.focus({ preventScroll: true }); }
           catch (e) { win.focus(); }
         }
+        syncMediaDialogState();
       }
       function topMediaWindow() {
         var wins = utils.qsa('.media-window', desktop);
@@ -57,10 +77,21 @@
       }
       function closeWindow(win) {
         if (!win) return;
+        var opener = win._opener;
+        var wasTop = topMediaWindow() === win;
         utils.qsa('audio, video', win).forEach(function (media) {
           try { media.pause(); } catch (e) {}
         });
         win.remove();
+        syncMediaDialogState();
+        if (!mediaWindows().length) {
+          if (opener && document.contains(opener)) {
+            try { opener.focus({ preventScroll: true }); }
+            catch (e) { opener.focus(); }
+          }
+        } else if (wasTop) {
+          focusWindow(topMediaWindow());
+        }
       }
       function activePageVideo() {
         var videos = utils.qsa('video');
@@ -179,11 +210,13 @@
       }
 
       function openWindow(frame) {
+        if (document.body.classList.contains('modal-open')) return;
         var sourceVideo = frame.querySelector('video');
         var sourceIframe = frame.querySelector('iframe');
         var sourceEmbed = frame.dataset.embedSrc;
         var sourceImg = frame.dataset.imgSrc || (frame.querySelector('img') && frame.querySelector('img').getAttribute('src'));
         if (!sourceVideo && !sourceIframe && !sourceEmbed && !sourceImg) return;
+        var opener = document.activeElement && document.activeElement !== document.body ? document.activeElement : (frame && frame.isConnected ? frame : null);
         var existing = existingWindowFor(frame);
         if (existing) {
           focusWindow(existing);
@@ -197,8 +230,8 @@
         win.className = 'media-window' + (portrait ? ' portrait' : '');
         win.dataset.sourceKey = keyFor(frame);
         win.setAttribute('role', 'dialog');
-        win.setAttribute('aria-label', titleFor(frame));
         win.setAttribute('tabindex', '-1');
+        win._opener = opener;
         if (!isMobileViewport()) {
           var targetW = portrait ? Math.min(390, window.innerWidth - 28) : Math.min(920, window.innerWidth - 28);
           var targetH = portrait ? Math.min(610, window.innerHeight - 28) : Math.min(550, window.innerHeight - 28);
@@ -215,6 +248,8 @@
         var title = document.createElement('span');
         title.className = 'media-title';
         title.textContent = titleFor(frame);
+        title.id = 'media-title-' + count;
+        win.setAttribute('aria-labelledby', title.id);
         var actions = document.createElement('span');
         actions.className = 'media-actions';
         var close = document.createElement('button');
@@ -295,9 +330,11 @@
         if (frame.querySelector('video[controls]')) return;
         if (frame.querySelector('video')) {
           frame.classList.add('media-open-frame');
-          frame.setAttribute('role', 'button');
-          frame.setAttribute('tabindex', '0');
-          frame.setAttribute('aria-label', 'Enlarge ' + titleFor(frame));
+          if (frame.tagName !== 'BUTTON') {
+            frame.setAttribute('role', 'button');
+            frame.setAttribute('tabindex', '0');
+          }
+          if (!frame.hasAttribute('aria-label')) frame.setAttribute('aria-label', 'Open ' + titleFor(frame) + ' in viewer');
           frame.addEventListener('click', function (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -337,6 +374,11 @@
           if (trigger.getAttribute('data-qr-note')) proxy.dataset.qrNote = trigger.getAttribute('data-qr-note');
           openWindow(proxy);
         });
+        trigger.addEventListener('keydown', function (e) {
+          if (e.key !== 'Enter' && e.key !== ' ') return;
+          e.preventDefault();
+          trigger.click();
+        });
       });
 
       utils.qsa('.project-feature.media-feature').forEach(function (card) {
@@ -359,28 +401,46 @@
 
       document.addEventListener('keydown', function (e) {
         if (document.body.classList.contains('modal-open')) return;
+        var wins = mediaWindows();
+        var top = topMediaWindow();
         var focusedMedia = document.activeElement && document.activeElement.closest('.media-stage');
+        var inTopControl = !!(top && document.activeElement && top.contains(document.activeElement) && document.activeElement.matches('button, a, input, textarea, select'));
+
+        if (top && e.key === 'Tab') {
+          var focusables = utils.qsa('button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])', top).filter(function (el) {
+            return !el.disabled && el.type !== 'hidden' && el.getAttribute('aria-hidden') !== 'true' && el.getClientRects().length > 0;
+          });
+          if (!focusables.length) { e.preventDefault(); return; }
+          var first = focusables[0];
+          var last = focusables[focusables.length - 1];
+          if (e.shiftKey && (document.activeElement === first || !top.contains(document.activeElement))) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && (document.activeElement === last || !top.contains(document.activeElement))) {
+            e.preventDefault();
+            first.focus();
+          }
+          return;
+        }
+
         if (e.key === 'Escape') {
-          var win = topMediaWindow();
-          if (win) closeWindow(win);
-        } else if ((e.code === 'Space' || e.key === ' ') && !focusedMedia && !utils.isTextEntry(document.activeElement)) {
-          var video = topMediaVideo() || activePageVideo();
-          if (video) {
-            e.preventDefault();
-            toggleVideo(video);
-          }
-        } else if ((e.key === 'ArrowLeft' || e.key === 'ArrowRight') && !focusedMedia && !utils.isTextEntry(document.activeElement)) {
-          var seekTarget = topMediaVideo() || activePageVideo();
-          if (seekTarget) {
-            e.preventDefault();
-            seekVideo(seekTarget, e.key === 'ArrowLeft' ? -15 : 15);
-          }
-        } else if ((e.key === 'f' || e.key === 'F') && !focusedMedia && !utils.isTextEntry(document.activeElement)) {
-          var fullscreenTarget = topMediaVideo() || activePageVideo();
-          if (fullscreenTarget) {
-            e.preventDefault();
-            toggleFullscreen(fullscreenTarget);
-          }
+          if (top) { e.preventDefault(); closeWindow(top); }
+          return;
+        }
+
+        if (utils.isTextEntry(document.activeElement)) return;
+        var video = top ? topMediaVideo() : activePageVideo();
+        if (!video || focusedMedia || inTopControl) return;
+
+        if (e.code === 'Space' || e.key === ' ') {
+          e.preventDefault();
+          toggleVideo(video);
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
+          e.preventDefault();
+          seekVideo(video, e.key === 'ArrowLeft' ? -15 : 15);
+        } else if (e.key === 'f' || e.key === 'F') {
+          e.preventDefault();
+          toggleFullscreen(video);
         }
       });
     })();

@@ -2,8 +2,8 @@
      TIFFANY.DONG_VAULT_V3.2   ·   Theme: BLACK (red accent)
      ============================================================ */
   :root, body[data-theme="black-cherry"] {
-    --bg:#000000; --fg:#ffffff; --line:#222222; --muted:#555555; --dim:#888888;
-    --accent:#c91f32; --on-accent:#160305; --accent-soft:rgba(201,31,50,0.18); --accent-glow:rgba(201,31,50,0.38);
+    --bg:#000000; --fg:#ffffff; --line:#222222; --muted:#8a8a8a; --dim:#a0a0a0;
+    --accent:#e3214a; --on-accent:#ffffff; --accent-soft:rgba(227,33,74,0.18); --accent-glow:rgba(227,33,74,0.38);
     --frame-a:#0a0a0a; --frame-b:#050505;
   }
   :root { --pad: clamp(14px, 2.45vw, 34px); --track: 0.15em; --font: "Helvetica Neue", Helvetica, Arial, "Inter", system-ui, sans-serif; --mono: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace; }
@@ -15,7 +15,7 @@
   a:focus-visible, button:focus-visible { outline: 1px solid var(--accent); outline-offset: 3px; }
   button, input, textarea, select { font: inherit; }
   button:disabled { cursor: not-allowed; opacity: 0.48; }
-  .tag { font-size: 9.5px; text-transform: uppercase; letter-spacing: var(--track); color: var(--dim); font-variant-numeric: tabular-nums; }
+  .tag { font-size: 11px; text-transform: uppercase; letter-spacing: var(--track); color: var(--dim); font-variant-numeric: tabular-nums; }
   .section-title { text-transform: uppercase; letter-spacing: var(--track); font-weight: 600; font-size: clamp(12px, 1.15vw, 14px); }
   .accent-text { color: var(--accent); }
   .nowrap { white-space: nowrap; }

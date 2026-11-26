@@ -21,6 +21,20 @@
         return form.querySelector('.req-status');
       }
 
+      function setMainInert(on) {
+        var main = document.querySelector('main.frame');
+        if (!main) return;
+        if ('inert' in main) main.inert = on;
+        main.setAttribute('aria-hidden', on ? 'true' : 'false');
+      }
+
+      function focusableIn(modal) {
+        return utils.qsa('button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])', modal).filter(function (el) {
+          if (el.disabled || el.type === 'hidden' || el.getAttribute('aria-hidden') === 'true') return false;
+          return el.getClientRects().length > 0;
+        });
+      }
+
       function setSubmitState(form, disabled) {
         utils.qsa('.req-send', form).forEach(function (button) {
           button.disabled = disabled;
@@ -36,6 +50,7 @@
         modal.classList.add('open');
         modal.setAttribute('aria-hidden', 'false');
         document.body.classList.add('modal-open');
+        setMainInert(true);
         window.setTimeout(function () {
           var firstField = form.querySelector('input:not([type="hidden"]), textarea, select, button');
           if (firstField) firstField.focus();
@@ -48,6 +63,7 @@
         modal.setAttribute('aria-hidden', 'true');
         if (!credModal.classList.contains('open')) {
           document.body.classList.remove('modal-open');
+          setMainInert(false);
           if (wasOpen) window.setTimeout(restoreModalFocus, 0);
         }
       }
@@ -142,14 +158,33 @@
         checkboxSelector: 'input[name="credential_reason"]',
         checkboxMessage: 'SELECT AT LEAST ONE REASON',
         onOpen: function (button) {
-          if (credKind) credKind.value = button.dataset.credentialKind || 'credentials';
-          if (credTitle) credTitle.textContent = 'REQUEST CREDENTIALS & REFERENCES';
+          var kind = button.dataset.credentialKind || 'credentials';
+          if (credKind) credKind.value = kind;
+          if (credTitle) credTitle.textContent = kind === 'cv' ? 'REQUEST CV & REFERENCES' : 'REQUEST CREDENTIALS & REFERENCES';
+          utils.qsa('input[name="credential_reason"]', credForm).forEach(function (checkbox) {
+            checkbox.checked = (kind === 'cv' && checkbox.value === 'CV');
+          });
         }
       });
 
       document.addEventListener('keydown', function (e) {
-        if (e.key !== 'Escape' || !anyModalOpen()) return;
-        e.preventDefault();
-        closeModal(credModal);
+        if (!anyModalOpen()) return;
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          closeModal(credModal);
+          return;
+        }
+        if (e.key !== 'Tab') return;
+        var focusables = focusableIn(credModal);
+        if (!focusables.length) return;
+        var first = focusables[0];
+        var last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       });
     })();
