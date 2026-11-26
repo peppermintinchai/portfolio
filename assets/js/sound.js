@@ -1,6 +1,14 @@
     /* UI SOUND. Short mechanical clicks built from filtered noise + slightly detuned tones.
-       Every press gets a little pitch and level variance so it never repeats identically. */
+       Every press gets a little pitch and level variance so it never repeats identically.
+       Off by default; the visitor opts in with the footer SOUND toggle. */
     (function () {
+      var utils = window.portfolioUtils;
+      var storageKey = 'portfolio-sound';
+      var enabled = false;
+      if (utils && utils.safeStorageGet) {
+        enabled = utils.safeStorageGet(storageKey, 'off') === 'on';
+      }
+
       var ctx;
       var noiseBuffer;
 
@@ -64,8 +72,17 @@
         osc.stop(t + dur + 0.02);
       }
 
-      window.vaultSound = {
+      function syncToggle() {
+        var btn = document.querySelector('.sound-toggle');
+        if (!btn) return;
+        btn.textContent = enabled ? 'SOUND ON' : 'SOUND OFF';
+        btn.setAttribute('aria-pressed', enabled ? 'true' : 'false');
+        btn.setAttribute('aria-label', enabled ? 'Turn interface sound off' : 'Turn interface sound on');
+      }
+
+      var api = {
         menu: function () {
+          if (!enabled) return;
           try {
             flick(1900, 0, 0.035, 0.013);
             tone(520, 0.006, 0.07, 0.019);
@@ -73,11 +90,25 @@
           } catch (e) {}
         },
         open: function () {
+          if (!enabled) return;
           try {
             flick(1500, 0, 0.045, 0.016);
             tone(360, 0.008, 0.085, 0.016);
             tone(640, 0.062, 0.095, 0.016);
           } catch (e) {}
+        },
+        setEnabled: function (on) {
+          enabled = !!on;
+          if (utils && utils.safeStorageSet) utils.safeStorageSet(storageKey, enabled ? 'on' : 'off');
+          syncToggle();
         }
       };
+
+      window.vaultSound = api;
+
+      var toggle = document.querySelector('.sound-toggle');
+      if (toggle) {
+        toggle.addEventListener('click', function () { api.setEnabled(!enabled); });
+      }
+      syncToggle();
     })();

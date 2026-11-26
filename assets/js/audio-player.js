@@ -68,7 +68,7 @@
           if (handled) e.preventDefault();
         });
         audio.addEventListener('play', function () {
-          play.textContent = 'Ⅱ';
+          play.innerHTML = '<span class="pause-bars" aria-hidden="true"></span>';
           play.setAttribute('aria-label', 'Pause audio');
         });
         audio.addEventListener('pause', function () {

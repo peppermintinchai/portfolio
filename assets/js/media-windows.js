@@ -75,7 +75,7 @@
           return win.dataset.sourceKey === key;
         }) || null;
       }
-      function closeWindow(win, silent) {
+      function closeWindow(win) {
         if (!win) return;
         var opener = win._opener;
         var wasTop = topMediaWindow() === win;
@@ -84,15 +84,13 @@
         });
         win.remove();
         syncMediaDialogState();
-        if (!silent) {
-          if (!mediaWindows().length) {
-            if (opener && document.contains(opener)) {
-              try { opener.focus({ preventScroll: true }); }
-              catch (e) { opener.focus(); }
-            }
-          } else if (wasTop) {
-            focusWindow(topMediaWindow());
+        if (!mediaWindows().length) {
+          if (opener && document.contains(opener)) {
+            try { opener.focus({ preventScroll: true }); }
+            catch (e) { opener.focus(); }
           }
+        } else if (wasTop) {
+          focusWindow(topMediaWindow());
         }
       }
       function activePageVideo() {
@@ -223,7 +221,6 @@
           focusWindow(existing);
           return;
         }
-        mediaWindows().slice().forEach(function (win) { closeWindow(win, true); });
         utils.pauseAllMedia();
         count += 1;
         if (window.vaultSound) window.vaultSound.open();
@@ -273,23 +270,51 @@
           var status = document.createElement('div');
           status.className = 'media-stage-status';
           status.textContent = 'LOADING VIDEO';
-          var video = document.createElement('video');
-          video.src = sourceVideo.currentSrc || sourceVideo.getAttribute('src');
-          video.poster = sourceVideo.getAttribute('poster') || '';
-          video.controls = true;
-          video.preload = 'metadata';
-          video.playsInline = true;
-          video.setAttribute('playsinline', '');
+          var videoSrc = sourceVideo.currentSrc || sourceVideo.getAttribute('src');
+          var videoPoster = sourceVideo.getAttribute('poster') || '';
           function markReady() { stage.dataset.state = 'ready'; }
-          video.addEventListener('loadeddata', markReady);
-          video.addEventListener('canplay', markReady);
-          video.addEventListener('error', function () {
-            video.remove();
+          function showVideoError(failed) {
+            failed.remove();
             stage.dataset.state = 'error';
             status.textContent = 'VIDEO UNAVAILABLE';
-          });
-
-          stage.appendChild(video);
+            if (stage.querySelector('.media-stage-retry')) return;
+            var retry = document.createElement('button');
+            retry.type = 'button';
+            retry.className = 'audio-retry media-stage-retry';
+            retry.textContent = 'RETRY';
+            retry.addEventListener('click', function () {
+              retry.remove();
+              stage.dataset.state = 'loading';
+              status.textContent = 'LOADING VIDEO';
+              var fresh = document.createElement('video');
+              fresh.src = videoSrc;
+              fresh.poster = videoPoster;
+              fresh.controls = true;
+              fresh.preload = 'metadata';
+              fresh.playsInline = true;
+              fresh.setAttribute('playsinline', '');
+              utils.prepareVideo(fresh);
+              fresh.addEventListener('loadeddata', markReady);
+              fresh.addEventListener('canplay', markReady);
+              fresh.addEventListener('error', function () { showVideoError(fresh); });
+              stage.insertBefore(fresh, status);
+            });
+            stage.appendChild(retry);
+          }
+          function makeVideo() {
+            var video = document.createElement('video');
+            video.src = videoSrc;
+            video.poster = videoPoster;
+            video.controls = true;
+            video.preload = 'metadata';
+            video.playsInline = true;
+            video.setAttribute('playsinline', '');
+            video.addEventListener('loadeddata', markReady);
+            video.addEventListener('canplay', markReady);
+            video.addEventListener('error', function () { showVideoError(video); });
+            return video;
+          }
+          stage.appendChild(makeVideo());
           stage.appendChild(status);
         } else if (sourceIframe || sourceEmbed) {
           var iframe = document.createElement('iframe');

@@ -45,9 +45,9 @@
   @media (max-width: 560px) { .audio-ui { padding: 12px; } .audio-ui::after { bottom: 11px; } .audio-ui[data-state="error"] { grid-template-columns: 44px minmax(0, 1fr); } .audio-retry { grid-column: 2; justify-self: start; } }
   .audio-play { width: 44px; height: 44px; border: 1px solid rgba(170,170,170,0.24); background: rgba(255,255,255,0.035); color: var(--accent); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; line-height: 1; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.018); transition: border-color .2s ease, background .2s ease, color .2s ease; }
   .audio-play:hover { border-color: rgba(255,255,255,0.38); background: rgba(255,255,255,0.06); color: var(--fg); }
+  .pause-bars { display: inline-block; width: 12px; height: 14px; background: linear-gradient(90deg, currentColor 0 4px, transparent 4px 8px, currentColor 8px 12px); }
   .audio-play:active, .media-pop-trigger:active, .media-close:active { transform: translateY(1px); }
-  .audio-track { position: relative; height: 12px; min-width: 0; background: rgba(255,255,255,0.055); overflow: hidden; cursor: pointer; border: 1px solid rgba(127,127,127,0.14); }
-  @media (max-width: 560px) { .audio-track { height: 44px; } }
+  .audio-track { position: relative; height: 44px; min-width: 0; background: rgba(255,255,255,0.055); overflow: hidden; cursor: pointer; border: 1px solid rgba(127,127,127,0.14); }
   .audio-fill { position: absolute; inset: 0 auto 0 0; width: 0%; background: linear-gradient(90deg, rgba(227,33,74,0.78), rgba(227,33,74,0.38)); }
   .audio-time { font-family: var(--mono); color: rgba(255,255,255,0.78); font-size: 11px; letter-spacing: 0.04em; white-space: nowrap; }
   .audio-ui[data-state="error"] { grid-template-columns: 44px minmax(0, 1fr) auto auto; }
@@ -93,6 +93,7 @@
   .media-stage img.media-still { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 14px 14px 40px; background: #000; cursor: zoom-in; }
   .media-stage-status { position: absolute; inset: 0; z-index: 4; display: flex; align-items: center; justify-content: center; padding: 18px; background: #000; color: var(--dim); font-size: 11px; letter-spacing: var(--track); text-transform: uppercase; text-align: center; }
   .media-stage[data-state="ready"] .media-stage-status { display: none; }
+  .media-stage-retry { position: absolute; z-index: 5; left: 50%; top: calc(50% + 26px); transform: translateX(-50%); }
   .media-still-note { position: absolute; left: 0; right: 0; bottom: 0; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); background: rgba(0,0,0,0.85); border-top: 1px solid rgba(160,160,160,0.18); }
   /* ---- black polaroid viewer for stills ---- */
   .media-window.polaroid { background: #050505; border-color: rgba(255,255,255,0.2); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.07), 0 18px 54px rgba(0,0,0,0.74); }
@@ -123,7 +124,7 @@
   .resize-n:hover, .resize-s:hover { background: rgba(255,255,255,0.12); }
   .resize-e:hover, .resize-w:hover { background: rgba(255,255,255,0.12); }
   @media (max-width: 560px) {
-    .media-window { left: 9px !important; top: 72px !important; width: calc(100vw - 18px) !important; height: min(420px, calc(100vh - 90px)) !important; min-width: 0; }
+    .media-window { left: 9px !important; top: 72px !important; width: calc(100vw - 18px) !important; height: min(680px, calc(100vh - 90px)) !important; min-width: 0; }
   }
 
   /* ---- personal: tight vsco-style masonry ---- */
@@ -134,7 +135,7 @@
   @media (hover: hover) {
     #pane-personal .personal-links-row .tag:hover { color: var(--accent); }
   }
-  #video-diary, #snapshots { scroll-margin-top: 86px; }
+  #snapshots { scroll-margin-top: 86px; }
   .stills-layout {
     width: calc(100% - (var(--pad) * 2));
     margin: 0 auto;
@@ -266,6 +267,9 @@
   .moment:focus-within .moment-label { opacity: 1; }
   @media (hover: none) and (pointer: coarse) {
     .moment-label { opacity: 1; }
+  }
+  @media (max-width: 560px) {
+    .moment-label { white-space: normal; overflow: visible; text-overflow: clip; line-height: 1.35; padding: 26px 10px 9px; }
   }
   @media (max-width: 1100px) {
     .stills-layout { padding-top: 34px; }

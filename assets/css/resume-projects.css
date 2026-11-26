@@ -9,7 +9,11 @@
     transition: background .2s ease;
   }
   #pane-resume .xp:last-child { border-bottom: none; }
-  #pane-resume .cv-group-label { padding: 10px var(--pad) 2px; color: var(--dim); }
+  #pane-resume .cv-group-label { padding: 10px var(--pad) 2px; color: var(--dim); font-weight: 400; }
+  #pane-resume .cv-jumps { display: inline-flex; align-items: center; gap: 8px; font-weight: 400; }
+  #pane-resume .cv-jump { color: var(--dim); font-size: 11px; letter-spacing: var(--track); text-transform: uppercase; }
+  #pane-resume .cv-jump:hover, #pane-resume .cv-jump:focus-visible { color: var(--accent); }
+  #pane-resume .cv-jump-sep { color: var(--muted); font-size: 11px; }
   #pane-resume .xp-top {
     display: grid;
     grid-template-columns: minmax(0, 38fr) minmax(0, 31fr) minmax(0, 31fr);
@@ -19,6 +23,7 @@
   }
   #pane-resume .xp--lead { background: rgba(255,255,255,0.028); box-shadow: inset 2px 0 0 var(--accent); }
   #pane-resume .xp--lead .xp-co { color: var(--fg); }
+  #pane-resume .xp--lead .xp-role { color: var(--fg); }
   @media (hover: hover) {
     #pane-resume .xp:hover { background: rgba(255,255,255,0.04); }
     #pane-resume .xp:hover .xp-role { color: var(--fg); }

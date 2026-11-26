@@ -15,11 +15,12 @@
         '#links': 'pane-personal',
         '#clips': 'pane-personal',
         '#video-diary': 'pane-personal',
+        '#snapshots': 'pane-personal',
         '#cv': 'pane-resume',
       };
       var idHashes = {
         'pane-media': '#work',
-        'pane-personal': '#personal',
+        'pane-personal': '#snapshots',
         'pane-resume': '#cv',
       };
 
@@ -30,8 +31,8 @@
 
       function scrollTargetForHash() {
         var hash = (window.location.hash || '').toLowerCase();
-        if (hash === '#clips' || hash === '#video-diary') {
-          return document.getElementById('video-diary');
+        if (hash === '#clips' || hash === '#video-diary' || hash === '#snapshots') {
+          return document.getElementById('snapshots');
         }
         return document.querySelector('.panes');
       }
@@ -86,10 +87,6 @@
         }
       }
 
-      function currentTabIndex() {
-        return tabs.findIndex(function (tab) { return tab.classList.contains('active'); });
-      }
-
       tabs.forEach(function (t, i) {
         t.addEventListener('click', function () { switchTab(i); });
         t.addEventListener('keydown', function (e) {
@@ -125,15 +122,6 @@
         if (key >= '1' && key <= '3') {
           e.preventDefault();
           switchTab(parseInt(key, 10) - 1, true);
-          return;
-        }
-
-        if ((key === 'ArrowRight' || key === 'ArrowLeft') && !utils.isTextEntry(document.activeElement) && !(document.activeElement && document.activeElement.classList.contains('tab'))) {
-          e.preventDefault();
-          var index = currentTabIndex();
-          if (index < 0) return;
-          var delta = key === 'ArrowRight' ? 1 : -1;
-          switchTab((index + delta + tabs.length) % tabs.length, true);
         }
       });
     })();
