@@ -12,7 +12,7 @@
         return ctx;
       }
 
-      /* one second of white noise, reused for every switch transient */
+      /* one half-second of white noise, reused for every switch transient */
       function noise() {
         var ac = audioCtx();
         if (!noiseBuffer) {
@@ -64,56 +64,6 @@
         osc.stop(t + dur + 0.02);
       }
 
-      function sweep(from, to, start, dur, gain) {
-        var ac = audioCtx();
-        var osc = ac.createOscillator();
-        var vol = ac.createGain();
-        osc.type = 'triangle';
-        var t = ac.currentTime + start;
-        osc.frequency.setValueAtTime(varied(from), t);
-        osc.frequency.exponentialRampToValueAtTime(varied(to), t + dur);
-        vol.gain.setValueAtTime(0.0001, t);
-        vol.gain.exponentialRampToValueAtTime(gain, t + 0.022);
-        vol.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-        osc.connect(vol).connect(ac.destination);
-        osc.start(t);
-        osc.stop(t + dur + 0.03);
-      }
-
-      function pulse(freq, start, dur, gain) {
-        var ac = audioCtx();
-        var osc = ac.createOscillator();
-        var vol = ac.createGain();
-        osc.type = 'square';
-        var t = ac.currentTime + start;
-        osc.frequency.setValueAtTime(varied(freq), t);
-        vol.gain.setValueAtTime(0.0001, t);
-        vol.gain.exponentialRampToValueAtTime(gain, t + 0.006);
-        vol.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-        osc.connect(vol).connect(ac.destination);
-        osc.start(t);
-        osc.stop(t + dur + 0.015);
-      }
-
-      function chime(freq, start, dur, gain) {
-        var ac = audioCtx();
-        var osc = ac.createOscillator();
-        var vol = ac.createGain();
-        var filter = ac.createBiquadFilter();
-        osc.type = 'sine';
-        var t = ac.currentTime + start;
-        osc.frequency.setValueAtTime(varied(freq), t);
-        osc.frequency.exponentialRampToValueAtTime(varied(freq * 1.01), t + dur);
-        filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(2800, t);
-        vol.gain.setValueAtTime(0.0001, t);
-        vol.gain.exponentialRampToValueAtTime(gain, t + 0.018);
-        vol.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-        osc.connect(filter).connect(vol).connect(ac.destination);
-        osc.start(t);
-        osc.stop(t + dur + 0.025);
-      }
-
       window.vaultSound = {
         menu: function () {
           try {
@@ -127,38 +77,6 @@
             flick(1500, 0, 0.045, 0.016);
             tone(360, 0.008, 0.085, 0.016);
             tone(640, 0.062, 0.095, 0.016);
-          } catch (e) {}
-        },
-        unlock: function () {
-          try {
-            flick(2200, 0, 0.04, 0.014);
-            tone(440, 0.008, 0.065, 0.016);
-            tone(660, 0.058, 0.075, 0.018);
-            tone(990, 0.13, 0.11, 0.014);
-          } catch (e) {}
-        },
-        launch: function () {
-          try {
-            flick(900, 0, 0.06, 0.02);
-            pulse(58, 0, 0.075, 0.015);
-            chime(420, 0.04, 0.12, 0.011);
-            chime(840, 0.12, 0.16, 0.011);
-            sweep(620, 1680, 0.16, 0.28, 0.009);
-            chime(1760, 0.34, 0.14, 0.01);
-          } catch (e) {}
-        },
-        signal: function () {
-          try {
-            flick(2600, 0, 0.03, 0.011);
-            chime(660, 0.006, 0.105, 0.011);
-            chime(990, 0.078, 0.115, 0.01);
-            chime(1480, 0.17, 0.145, 0.009);
-          } catch (e) {}
-        },
-        deny: function () {
-          try {
-            flick(600, 0, 0.06, 0.018);
-            tone(180, 0.006, 0.115, 0.018);
           } catch (e) {}
         }
       };

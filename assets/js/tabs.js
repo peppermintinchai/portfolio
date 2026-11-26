@@ -118,7 +118,7 @@
       });
 
       document.addEventListener('keydown', function (e) {
-        if (document.body.classList.contains('modal-open') || utils.isTextEntry(document.activeElement)) return;
+        if (utils.isTextEntry(document.activeElement)) return;
         if (utils.qsa('.media-window').length) return;
 
         var key = e.key;

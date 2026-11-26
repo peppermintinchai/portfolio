@@ -9,6 +9,7 @@
 
         var ui = document.createElement('div');
         ui.className = 'audio-ui';
+        var retry = null;
         var play = document.createElement('button');
         play.type = 'button';
         play.className = 'audio-play';
@@ -80,14 +81,41 @@
         });
         audio.addEventListener('timeupdate', updateProgress);
         audio.addEventListener('loadedmetadata', function () {
+          if (retry) {
+            retry.remove();
+            retry = null;
+            delete ui.dataset.state;
+            play.disabled = false;
+            track.setAttribute('tabindex', '0');
+            track.removeAttribute('aria-disabled');
+          }
           time.textContent = '0:00 / ' + utils.formatTime(audio.duration);
           updateProgress();
         });
-        audio.addEventListener('error', function () {
+        function showError() {
+          ui.dataset.state = 'error';
           play.disabled = true;
           track.removeAttribute('tabindex');
           track.setAttribute('aria-disabled', 'true');
-          time.textContent = 'UNAVAILABLE';
-        });
+          time.textContent = 'AUDIO UNAVAILABLE';
+          if (!retry) {
+            retry = document.createElement('button');
+            retry.type = 'button';
+            retry.className = 'audio-retry';
+            retry.textContent = 'RETRY';
+            retry.addEventListener('click', function () {
+              retry.remove();
+              retry = null;
+              delete ui.dataset.state;
+              play.disabled = false;
+              track.setAttribute('tabindex', '0');
+              track.removeAttribute('aria-disabled');
+              time.textContent = '0:00';
+              audio.load();
+            });
+            ui.appendChild(retry);
+          }
+        }
+        audio.addEventListener('error', showError);
       });
     })();

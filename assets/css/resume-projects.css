@@ -17,9 +17,11 @@
     align-items: start;
     min-width: 0;
   }
+  #pane-resume .xp--lead { background: rgba(255,255,255,0.028); box-shadow: inset 2px 0 0 var(--accent); }
+  #pane-resume .xp--lead .xp-co { color: var(--fg); }
   @media (hover: hover) {
-    #pane-resume .xp:hover { background: rgba(227,33,74,0.07); }
-    #pane-resume .xp:hover .xp-role { color: var(--accent); }
+    #pane-resume .xp:hover { background: rgba(255,255,255,0.04); }
+    #pane-resume .xp:hover .xp-role { color: var(--fg); }
   }
   #pane-resume .xp-org { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
   #pane-resume .xp-co { font-size: clamp(13px,1.6vw,15px); text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg); font-weight: 600; }
@@ -40,19 +42,16 @@
     min-width: 0;
     margin-top: 10px;
     overflow-x: auto;
-    scrollbar-width: none;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(160,160,160,0.45) transparent;
   }
-  #pane-resume .chips::-webkit-scrollbar { display: none; }
+  #pane-resume .chips::-webkit-scrollbar { height: 6px; }
+  #pane-resume .chips::-webkit-scrollbar-thumb { background: rgba(160,160,160,0.45); }
   /* experience keyword tags — compact and kept on one line */
   #pane-resume .chip-sm { flex: 0 0 auto; border: 1px solid rgba(127,127,127,0.16); background: rgba(127,127,127,0.05); border-radius: 2px; padding: 4px 8px; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; color: var(--dim); }
-  #pane-resume .chip-sm.chip-link { color: var(--fg); border-color: rgba(127,127,127,0.18); background: rgba(127,127,127,0.05); transition: border-color .2s ease, background .2s ease, color .2s ease; }
-  #pane-resume .chip-sm.chip-link::after { content: "↗"; margin-left: 6px; color: var(--accent); }
-  @media (hover: hover) {
-    #pane-resume .chip-sm.chip-link:hover { color: var(--accent); border-color: rgba(127,127,127,0.32); background: rgba(127,127,127,0.08); }
-  }
   /* ---- single featured project ---- */
   .project-feature { display: grid; grid-template-columns: minmax(260px, 0.82fr) minmax(280px, 1fr); width: min(920px, calc(100% - (var(--pad) * 2))); margin: clamp(24px, 3vw, 44px) auto; border: 1px solid rgba(127,127,127,0.22); cursor: pointer; transition: border-color .2s ease, background .2s ease, transform .2s ease; }
-  .project-feature:hover { border-color: var(--accent); background: rgba(227,33,74,0.10); transform: translateY(-1px); }
+  .project-feature:hover { border-color: rgba(255,255,255,0.38); background: rgba(255,255,255,0.035); transform: translateY(-1px); }
   .project-feature.static { cursor: default; }
   .project-feature.static:hover { border-color: rgba(127,127,127,0.22); background: transparent; transform: none; }
   @media (max-width: 760px) { .project-feature { grid-template-columns: 1fr; width: calc(100% - (var(--pad) * 2)); } }
@@ -72,7 +71,7 @@
   .pf-info { padding: clamp(18px, 2.4vw, 32px); display: flex; flex-direction: column; gap: 14px; justify-content: center; }
   .pf-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; min-width: 0; }
   .pf-title { font-size: clamp(17px, 2.2vw, 24px); text-transform: uppercase; letter-spacing: var(--track); color: var(--fg); font-weight: 600; }
-  .pf-stack-label { font-size: 11px; letter-spacing: var(--track); color: var(--accent); text-transform: uppercase; margin-bottom: 6px; }
+  .pf-stack-label { font-size: 11px; letter-spacing: var(--track); color: var(--dim); text-transform: uppercase; margin-bottom: 6px; }
   .cv-note { text-transform: none; letter-spacing: 0.04em; }
   /* ---- CV skills + awards: items sit in the left gutter under their red heading ---- */
   #pane-resume .cv-list-row {
