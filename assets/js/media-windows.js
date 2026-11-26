@@ -236,7 +236,7 @@
         if (!isMobileViewport()) {
           var targetW = portrait ? Math.min(390, window.innerWidth - 28) : Math.min(920, window.innerWidth - 28);
           var targetH = portrait ? Math.min(610, window.innerHeight - 28) : Math.min(550, window.innerHeight - 28);
-          var offset = Math.min(count - 1, 3) * 18;
+          var offset = ((count - 1) % 4) * 18;
           win.style.width = Math.max(280, targetW) + 'px';
           win.style.height = Math.max(220, targetH) + 'px';
           win.style.left = Math.max(9, Math.min((window.innerWidth - targetW) / 2 + offset, window.innerWidth - targetW - 9)) + 'px';
@@ -290,6 +290,7 @@
               fresh.src = videoSrc;
               fresh.poster = videoPoster;
               fresh.controls = true;
+              fresh.tabIndex = 0;
               fresh.preload = 'metadata';
               fresh.playsInline = true;
               fresh.setAttribute('playsinline', '');
@@ -306,6 +307,7 @@
             video.src = videoSrc;
             video.poster = videoPoster;
             video.controls = true;
+            video.tabIndex = 0;
             video.preload = 'metadata';
             video.playsInline = true;
             video.setAttribute('playsinline', '');
@@ -428,7 +430,9 @@
         var inTopControl = !!(top && document.activeElement && top.contains(document.activeElement) && document.activeElement.matches('button, a, input, textarea, select'));
 
         if (top && e.key === 'Tab') {
-          var focusables = utils.qsa('button, [href], input, textarea, select, [tabindex]:not([tabindex="-1"])', top).filter(function (el) {
+          var active = document.activeElement;
+          if (active && active.closest && active.closest('.media-stage')) return;
+          var focusables = utils.qsa('button, [href], input, textarea, select, video[controls], [tabindex]:not([tabindex="-1"])', top).filter(function (el) {
             return !el.disabled && el.type !== 'hidden' && el.getAttribute('aria-hidden') !== 'true' && el.getClientRects().length > 0;
           });
           if (!focusables.length) { e.preventDefault(); return; }

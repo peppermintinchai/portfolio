@@ -7,19 +7,22 @@
         audio.classList.add('enhanced');
         audio.controls = false;
 
+        var row = audio.closest('.audio-row');
+        var label = row && row.querySelector('.tag') ? row.querySelector('.tag').textContent.trim() : 'audio';
+
         var ui = document.createElement('div');
         ui.className = 'audio-ui';
         var retry = null;
         var play = document.createElement('button');
         play.type = 'button';
         play.className = 'audio-play';
-        play.setAttribute('aria-label', 'Play audio');
+        play.setAttribute('aria-label', 'Play ' + label);
         play.textContent = '▶';
         var track = document.createElement('div');
         track.className = 'audio-track';
         track.setAttribute('role', 'slider');
         track.setAttribute('tabindex', '0');
-        track.setAttribute('aria-label', 'Audio progress');
+        track.setAttribute('aria-label', label + ' progress');
         track.setAttribute('aria-valuemin', '0');
         track.setAttribute('aria-valuemax', '100');
         track.setAttribute('aria-valuenow', '0');
@@ -69,15 +72,15 @@
         });
         audio.addEventListener('play', function () {
           play.innerHTML = '<span class="pause-bars" aria-hidden="true"></span>';
-          play.setAttribute('aria-label', 'Pause audio');
+          play.setAttribute('aria-label', 'Pause ' + label);
         });
         audio.addEventListener('pause', function () {
           play.textContent = '▶';
-          play.setAttribute('aria-label', 'Play audio');
+          play.setAttribute('aria-label', 'Play ' + label);
         });
         audio.addEventListener('ended', function () {
           play.textContent = '▶';
-          play.setAttribute('aria-label', 'Play audio');
+          play.setAttribute('aria-label', 'Play ' + label);
         });
         audio.addEventListener('timeupdate', updateProgress);
         audio.addEventListener('loadedmetadata', function () {

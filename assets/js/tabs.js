@@ -17,6 +17,10 @@
         '#video-diary': 'pane-personal',
         '#snapshots': 'pane-personal',
         '#cv': 'pane-resume',
+        '#cv-experience': 'pane-resume',
+        '#cv-skills': 'pane-resume',
+        '#cv-certifications': 'pane-resume',
+        '#cv-awards': 'pane-resume',
       };
       var idHashes = {
         'pane-media': '#work',
@@ -34,12 +38,19 @@
         if (hash === '#clips' || hash === '#video-diary' || hash === '#snapshots') {
           return document.getElementById('snapshots');
         }
+        if (hashTargets[hash] === 'pane-resume' && hash !== '#cv') {
+          return document.getElementById(hash.slice(1));
+        }
         return document.querySelector('.panes');
       }
 
       function scrollToActiveArea() {
         var target = scrollTargetForHash();
         if (!target) return;
+        if (target.id && target.id.indexOf('cv-') === 0 && typeof target.scrollIntoView === 'function') {
+          target.scrollIntoView({ block: 'start', behavior: 'smooth' });
+          return;
+        }
         var tabsNav = document.querySelector('.tabs');
         var offset = tabsNav ? tabsNav.getBoundingClientRect().height + 4 : 4;
         var top = target.getBoundingClientRect().top + window.scrollY - offset;
