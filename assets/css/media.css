@@ -129,6 +129,7 @@
   /* ---- personal: tight vsco-style masonry ---- */
   #pane-personal .personal-links-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 32px; padding: 13px var(--pad); border-bottom: 1px solid var(--line); background: rgba(255,255,255,0.012); }
   #pane-personal .personal-links-row .tag { display: inline-flex; align-items: center; min-height: 44px; color: var(--dim); transition: color .2s ease; }
+  #pane-personal .personal-links-row button.tag { background: transparent; border: 0; padding: 0; cursor: pointer; font-family: inherit; }
   #pane-personal .moments-meta { color: var(--dim); font-size: 11px; letter-spacing: var(--track); text-transform: uppercase; }
   @media (hover: hover) {
     #pane-personal .personal-links-row .tag:hover { color: var(--accent); }
