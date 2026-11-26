@@ -7,7 +7,6 @@
   .wordmark .sub { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); white-space: nowrap; }
   .wordmark .sub .accent-text { color: var(--accent); }
   .masthead .meta { text-align: right; line-height: 1.85; }
-  .intro-line { padding: clamp(14px, 2.1vw, 28px) var(--pad); border-bottom: 1px solid var(--line); font-size: clamp(14px, 1.5vw, 18px); line-height: 1.45; letter-spacing: 0.005em; color: var(--fg); text-transform: none; text-wrap: pretty; }
   .contact-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; padding: 10px var(--pad); border-bottom: 1px solid var(--line); background: rgba(255,255,255,0.012); }
   .contact-strip .tag { display: inline-flex; align-items: center; min-height: 44px; color: var(--dim); }
   .contact-strip a.tag { color: var(--accent); }
