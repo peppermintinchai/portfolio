@@ -25,9 +25,9 @@
          anime({
            targets: items,
            opacity: [0, 1],
-           translateY: [6, 0],
-           duration: 240,
-           delay: anime.stagger(14, { start: 20 }),
+           translateY: [12, 0],
+           duration: 420,
+           delay: anime.stagger(20, { start: 30 }),
            easing: 'easeOutQuad',
            complete: function () { clear(items); }
          });
