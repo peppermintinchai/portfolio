@@ -310,7 +310,7 @@
         makeDraggable(win, head);
         makeResizable(win);
         win.addEventListener('pointerdown', function (e) {
-          /* Let the native video controls handle clicks — refocusing on mousedown swallows them. */
+          /* Let the native video controls handle clicks. Refocusing on mousedown swallows them. */
           if (e.target.closest('.media-stage')) return;
           focusWindow(win);
         });

@@ -1,4 +1,4 @@
-    /* UI SOUND — short mechanical clicks built from filtered noise + slightly detuned tones.
+    /* UI SOUND. Short mechanical clicks built from filtered noise + slightly detuned tones.
        Every press gets a little pitch and level variance so it never repeats identically. */
     (function () {
       var ctx;
