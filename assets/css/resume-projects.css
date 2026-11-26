@@ -22,14 +22,13 @@
     .chip-sm.chip-link:hover { color: var(--accent); border-color: rgba(127,127,127,0.32); background: rgba(127,127,127,0.08); }
   }
   .more-block { border-bottom: 1px solid var(--line); }
-  .more-block summary { list-style: none; cursor: pointer; padding: 14px var(--pad); display: flex; justify-content: space-between; align-items: center; gap: 14px; border-bottom: 1px solid var(--line); color: var(--fg); transition: background .2s ease; }
+  .more-block summary { list-style: none; cursor: pointer; padding: 14px var(--pad); display: flex; justify-content: space-between; align-items: center; gap: 14px; border-bottom: 1px solid var(--line); color: var(--accent); transition: background .2s ease; }
   @media (hover: hover) {
     .more-block summary:hover { background: var(--accent-soft); }
     .more-block summary:hover::after { border-color: var(--accent); color: var(--accent); background: rgba(227,33,74,0.08); }
   }
   .more-block summary::-webkit-details-marker { display: none; }
   .more-block summary::after { content: "+"; width: 44px; height: 44px; min-width: 44px; border: 1px solid rgba(127,127,127,0.22); display: inline-flex; align-items: center; justify-content: center; color: var(--dim); font-size: 16px; line-height: 1; transition: border-color .2s ease, color .2s ease, background .2s ease; }
-  .more-block[open] summary { color: var(--accent); }
   .more-block[open] summary::after { content: "–"; border-color: var(--accent); color: var(--accent); background: rgba(227,33,74,0.08); }
   .more-block .spec { border-top: none; }
   /* ---- single featured project ---- */
@@ -48,7 +47,7 @@
   .pf-info { padding: clamp(18px, 2.4vw, 32px); display: flex; flex-direction: column; gap: 14px; justify-content: center; }
   .pf-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px 12px; min-width: 0; }
   .pf-title { font-size: clamp(17px, 2.2vw, 24px); text-transform: uppercase; letter-spacing: var(--track); color: var(--fg); font-weight: 600; }
-  .pf-stack-label { font-size: 11px; letter-spacing: var(--track); color: var(--dim); text-transform: uppercase; margin-bottom: 6px; }
+  .pf-stack-label { font-size: 11px; letter-spacing: var(--track); color: var(--accent); text-transform: uppercase; margin-bottom: 6px; }
   .cv-note { text-transform: none; letter-spacing: 0.04em; }
   .quick-line { display: flex; flex-wrap: wrap; gap: 8px 16px; padding: 12px var(--pad); border-bottom: 1px solid var(--line); font-size: 11px; letter-spacing: .06em; line-height: 1.7; text-transform: uppercase; color: var(--dim); }
   .quick-line:last-child { border-bottom: none; }

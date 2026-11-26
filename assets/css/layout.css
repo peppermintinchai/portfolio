@@ -10,8 +10,7 @@
   .masthead .meta .reg { color: var(--accent); }
   .contact-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; padding: 10px var(--pad); border-bottom: 1px solid var(--line); background: rgba(255,255,255,0.012); }
   .contact-strip .tag { display: inline-flex; align-items: center; min-height: 44px; color: var(--dim); }
-  .contact-strip a.tag { color: var(--fg); }
-  .contact-strip a.tag:hover { color: var(--accent); }
+  .contact-strip a.tag { color: var(--accent); }
   .contact-strip button.tag { color: var(--accent); }
   .contact-strip button.tag { background: transparent; border: 0; font-family: inherit; cursor: pointer; padding: 0; }
   .statusbar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding: 10px var(--pad); border-bottom: 1px solid var(--line); }
@@ -163,13 +162,13 @@
   .module-label { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 12px var(--pad); border-bottom: 1px solid var(--line); text-align: left; }
   .module-label .section-title { margin-right: auto; }
   .sub-label { padding: 10px var(--pad); border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
-  .sub-label .lead { color: var(--dim); }
+  .sub-label .lead { color: var(--accent); }
   /* in-development: left-aligned with the project card, single line */
   .dev-block { width: min(920px, calc(100% - (var(--pad) * 2))); margin: 0 auto; padding: 18px 0 22px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: left; }
-  .dev-eyebrow { display: block; margin-bottom: 12px; font-size: 11px; letter-spacing: var(--track); text-transform: uppercase; color: var(--dim); }
+  .dev-eyebrow { display: block; margin-bottom: 12px; font-size: 11px; letter-spacing: var(--track); text-transform: uppercase; color: var(--accent); }
   .dev-eyebrow .sl { color: var(--dim); opacity: 1; }
   .dev-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 7px; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--dim); }
-  .dev-line .dot { color: var(--dim); line-height: 1; }
+  .dev-line .dot { color: var(--accent); line-height: 1; }
   /* mobile: centered, lighter in-development block */
   @media (max-width: 760px) {
     .dev-block { text-align: center; }

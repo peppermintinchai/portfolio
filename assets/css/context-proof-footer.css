@@ -5,7 +5,7 @@
 
   /* ---- disclosure + role notes ---- */
   .more-block > .grid, .more-block > .media-strip, .more-block > .photo-wall { border-bottom: 1px solid var(--line); }
-  .cap-bottom .role-note { font-size: 11px; letter-spacing: .06em; color: var(--dim); text-transform: uppercase; line-height: 1.5; }
+  .cap-bottom .role-note { font-size: 11px; letter-spacing: .06em; color: var(--accent); text-transform: uppercase; line-height: 1.5; }
   .photo-wall img:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
   /* ---- reduced motion ---- */
