@@ -9,11 +9,12 @@
     transition: background .2s ease;
   }
   #pane-resume .xp:last-child { border-bottom: none; }
+  #pane-resume .cv-group-label { padding: 10px var(--pad) 2px; color: var(--dim); }
   #pane-resume .xp-top {
     display: grid;
-    grid-template-columns: minmax(0, 40fr) minmax(0, 30fr) minmax(0, 30fr);
+    grid-template-columns: minmax(0, 38fr) minmax(0, 31fr) minmax(0, 31fr);
     gap: 5px clamp(14px, 2.1vw, 28px);
-    align-items: start;
+    align-items: baseline;
     min-width: 0;
   }
   @media (hover: hover) {
@@ -23,8 +24,8 @@
   #pane-resume .xp-org { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
   #pane-resume .xp-co { font-size: clamp(13px,1.6vw,15px); text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg); font-weight: 600; }
   #pane-resume .xp-loc { font-size: 11px; letter-spacing: var(--track); color: var(--dim); text-transform: uppercase; line-height: 1.5; }
-  #pane-resume .xp-role { align-self: start; min-width: 0; font-size: 12px; letter-spacing: 0.055em; color: var(--dim); text-transform: uppercase; line-height: 1.55; }
-  #pane-resume .xp-date { justify-self: end; text-align: right; font-size: 11px; letter-spacing: var(--track); color: var(--dim); text-transform: uppercase; white-space: nowrap; }
+  #pane-resume .xp-role { align-self: baseline; min-width: 0; font-size: 12px; letter-spacing: 0.055em; color: var(--dim); text-transform: uppercase; line-height: 1.55; }
+  #pane-resume .xp-date { align-self: baseline; justify-self: end; text-align: right; font-size: 11px; letter-spacing: var(--track); color: var(--dim); text-transform: uppercase; white-space: nowrap; }
   #pane-resume .chips {
     grid-column: 1;
     display: flex;
