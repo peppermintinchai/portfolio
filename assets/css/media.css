@@ -92,18 +92,17 @@
   .media-stage video, .media-stage iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: #000; object-fit: contain; }
   .media-stage img.media-still { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 14px 14px 40px; background: #000; cursor: zoom-in; }
   .media-still-note { position: absolute; left: 0; right: 0; bottom: 0; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); background: rgba(0,0,0,0.85); border-top: 1px solid rgba(160,160,160,0.18); }
-  /* ---- polaroid viewer for stills ---- */
-  .media-window.polaroid { background: #e9e6de; border-color: rgba(0,0,0,0.16); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.55), 0 18px 54px rgba(0,0,0,0.62); }
-  .media-window.polaroid .media-head { background: #ded9cf; border-bottom: 1px solid rgba(0,0,0,0.1); }
-  .media-window.polaroid .media-title { color: #46423c; }
-  .media-window.polaroid .media-close { border-color: rgba(0,0,0,0.2); color: #46423c; }
-  .media-window.polaroid .media-close:hover { border-color: var(--accent); color: var(--accent); background: rgba(227,33,74,0.08); }
-  .media-window.polaroid .media-stage { background: #e9e6de; padding: 14px 14px 58px; transform: rotate(-0.8deg); }
-  .media-window.polaroid .media-stage img.media-still { position: absolute; inset: 14px 14px 58px; width: auto; height: auto; padding: 0; background: #0b0b0b; border: 1px solid rgba(0,0,0,0.14); object-fit: contain; }
-  .polaroid-caption { position: absolute; left: 14px; right: 14px; bottom: 0; height: 58px; display: flex; align-items: center; justify-content: center; text-align: center; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: #46423c; }
+  /* ---- black polaroid viewer for stills ---- */
+  .media-window.polaroid { background: #050505; border-color: rgba(255,255,255,0.2); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.07), 0 18px 54px rgba(0,0,0,0.74); }
+  .media-window.polaroid .media-head { background: #0d0d0d; border-bottom: 1px solid rgba(255,255,255,0.12); }
+  .media-window.polaroid .media-title { color: var(--fg); }
+  .media-window.polaroid .media-close { border-color: rgba(255,255,255,0.24); color: var(--fg); }
+  .media-window.polaroid .media-close:hover { border-color: var(--accent); color: var(--accent); background: rgba(227,33,74,0.1); }
+  .media-window.polaroid .media-stage { background: #000; padding: 0; }
+  .media-window.polaroid .media-stage img.media-still { position: absolute; top: 14px; right: auto; bottom: auto; left: 14px; width: calc(100% - 28px); height: calc(100% - 72px); padding: 0; background: #000; border: 1px solid rgba(255,255,255,0.14); object-fit: contain; }
+  .polaroid-caption { position: absolute; left: 14px; right: 14px; bottom: 0; height: 58px; display: flex; align-items: center; justify-content: center; text-align: center; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); border-top: 1px solid rgba(255,255,255,0.12); }
   @media (max-width: 560px) {
-    .media-window.polaroid .media-stage { padding: 10px 10px 48px; transform: none; }
-    .media-window.polaroid .media-stage img.media-still { inset: 10px 10px 48px; }
+    .media-window.polaroid .media-stage img.media-still { top: 10px; right: auto; bottom: auto; left: 10px; width: calc(100% - 20px); height: calc(100% - 58px); }
     .polaroid-caption { left: 10px; right: 10px; height: 48px; font-size: 10px; }
   }
   .resize-handle { position: absolute; z-index: 4; opacity: 0; transition: opacity .18s ease, background .18s ease; }
