@@ -161,22 +161,6 @@
   .module-label .section-title { margin-right: auto; }
   .sub-label { padding: 10px var(--pad); border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
   .sub-label .lead { color: var(--accent); }
-  /* thin anchored index for WORK */
-  .work-anchor { scroll-margin-top: 88px; }
-  .work-index { display: flex; align-items: center; flex-wrap: wrap; gap: 5px 16px; padding: 9px var(--pad); border-bottom: 1px solid var(--line); font-family: var(--mono); font-size: 10px; letter-spacing: var(--track); text-transform: uppercase; color: var(--dim); }
-  .work-index-label { color: var(--accent); }
-  .work-index a { color: var(--muted); text-decoration: none; padding: 3px 0; border-bottom: 1px solid transparent; transition: color .2s ease, border-color .2s ease; }
-  .work-index a:hover,
-  .work-index a:focus-visible { color: var(--fg); border-bottom-color: var(--accent); outline: none; }
-  .work-index a:first-of-type { color: var(--fg); border-bottom-color: var(--accent); }
-  html:has(.work-anchor:target) .work-index a { color: var(--muted); border-bottom-color: transparent; }
-  html:has(#work-game-dev:target) .work-index a[href="#work-game-dev"],
-  html:has(#work-music:target) .work-index a[href="#work-music"],
-  html:has(#work-archive:target) .work-index a[href="#work-archive"],
-  html:has(#work-additional:target) .work-index a[href="#work-additional"] { color: var(--fg); border-bottom-color: var(--accent); }
-  @media (max-width: 520px) {
-    .work-index { gap: 4px 12px; padding-top: 8px; padding-bottom: 8px; }
-  }
   /* in-development: left-aligned with the project card, single line */
   .dev-block { width: min(920px, calc(100% - (var(--pad) * 2))); margin: 0 auto; padding: 18px 0 22px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); text-align: left; }
   .dev-eyebrow { display: block; margin-bottom: 12px; font-size: 11px; letter-spacing: var(--track); text-transform: uppercase; color: var(--accent); }
