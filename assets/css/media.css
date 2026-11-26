@@ -127,6 +127,12 @@
   /* ---- personal: tight vsco-style masonry ---- */
   #pane-personal .moments-bar { position: relative; }
   #pane-personal .moments-bar::before { content: ""; position: absolute; inset: 0 0 auto; height: 1px; background: var(--line); }
+  #pane-personal .personal-links-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 32px; padding: 10px var(--pad); border-bottom: 1px solid var(--line); background: rgba(255,255,255,0.012); }
+  #pane-personal .personal-links-row + .moments-bar::before { display: none; }
+  #pane-personal .personal-links-row .tag { display: inline-flex; align-items: center; min-height: 44px; color: var(--dim); transition: color .2s ease; }
+  @media (hover: hover) {
+    #pane-personal .personal-links-row .tag:hover { color: var(--accent); }
+  }
   #video-diary, #snapshots { scroll-margin-top: 86px; }
   .stills-layout {
     width: calc(100% - (var(--pad) * 2));
@@ -183,6 +189,34 @@
   .moment--video .frame-16x9:hover { border-color: transparent; box-shadow: none; }
   .moment--fireworks .frame-16x9 { border: 1px solid rgba(255,255,255,0.08); }
   .moment--fireworks .frame-16x9:hover { border-color: rgba(255,255,255,0.08); }
+  #pane-personal .moment--video .frame-16x9.media-open-frame { cursor: pointer; }
+  #pane-personal .moment--video .frame-16x9.media-open-frame::after {
+    content: "\25B6";
+    top: 50%;
+    left: 50%;
+    right: auto;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding-left: 2px;
+    transform: translate(-50%, -50%);
+    border: 1px solid rgba(255,255,255,0.62);
+    border-radius: 0;
+    background: rgba(0,0,0,0.56);
+    color: #fff;
+    font-size: 10px;
+    line-height: 1;
+    letter-spacing: 0;
+    opacity: 0.92;
+    pointer-events: none;
+    transition: opacity .18s ease, color .18s ease, border-color .18s ease, background .18s ease;
+  }
+  @media (hover: hover) {
+    #pane-personal .moment--video .frame-16x9.media-open-frame:hover::after { color: var(--on-accent); border-color: var(--accent); background: rgba(227,33,74,0.82); opacity: 1; }
+  }
   .moment-label {
     position: absolute;
     left: 0;
@@ -215,39 +249,14 @@
   @media (hover: none) and (pointer: coarse) {
     .moment-label { opacity: 1; }
   }
-  .grid-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .grid-4 .card:nth-child(4n) { border-right: none; }
-  .personal-links .card { min-height: 76px; }
-  .personal-links .card a {
-    display: flex;
-    align-items: center;
-    min-height: 44px;
-    font-size: 11px;
-    letter-spacing: var(--track);
-    text-transform: uppercase;
-    color: var(--dim);
-    transition: color .2s ease;
-  }
-  @media (hover: hover) {
-    .personal-links .card a:hover { color: var(--accent); }
-  }
   @media (max-width: 1100px) {
     .stills-layout { padding-top: 48px; }
     .photo-wall { display: block; column-count: 3; column-gap: var(--gallery-gap); }
     .moment-column { display: contents; }
     .moment-column .moment { margin-bottom: var(--gallery-gap); }
   }
-  @media (max-width: 900px) {
-    .grid-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .grid-4 .card:nth-child(n) { border-right: 1px solid var(--line); }
-    .grid-4 .card:nth-child(2n) { border-right: none; }
-  }
   @media (max-width: 760px) {
     .photo-wall { column-count: 2; }
-  }
-  @media (max-width: 560px) {
-    .grid-4 { grid-template-columns: 1fr; }
-    .grid-4 .card:nth-child(n) { border-right: none; }
   }
   .cal-note { padding: var(--pad); border-bottom: 1px solid var(--line); font-size: 12px; letter-spacing: 0.05em; color: var(--dim); text-transform: uppercase; line-height: 1.8; max-width: 760px; }
   .req-btn { font-size: 11px; display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 9px 15px; font-size: 11px; letter-spacing: var(--track); text-transform: uppercase; cursor: pointer; font-family: var(--font); transition: background .2s ease, color .2s ease; }
