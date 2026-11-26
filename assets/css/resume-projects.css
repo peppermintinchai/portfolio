@@ -1,36 +1,51 @@
-  /* ---- xp blocks: balanced resume rows ---- */
-  .xp { display: grid; grid-template-columns: minmax(250px, 1.1fr) minmax(190px, 0.74fr) minmax(210px, 0.82fr); gap: 5px clamp(14px, 2.1vw, 28px); align-items: start; padding: 13px var(--pad); border-bottom: 1px solid var(--line); transition: background .2s ease; }
-  .xp:last-child { border-bottom: none; }
-  @media (hover: hover) {
-    .xp:hover { background: var(--accent-soft); }
-    .xp:hover .xp-role { color: var(--accent); }
+  /* ---- CV experience: consistent three-column rows ---- */
+  #pane-resume .xp {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+    padding: 14px var(--pad);
+    background: transparent;
+    border-bottom: 1px solid var(--line);
+    transition: background .2s ease;
   }
-  .xp-l, .xp-r { display: contents; }
-  .xp-co { font-size: clamp(13px,1.6vw,15px); text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg); font-weight: 600; }
-  .xp-role { grid-column: 2; grid-row: 1 / span 2; align-self: start; max-width: 270px; font-size: 12px; letter-spacing: 0.055em; color: var(--dim); text-transform: uppercase; line-height: 1.55; }
-  .xp-loc { grid-column: 1; grid-row: 2; justify-self: start; text-align: left; font-size: 11px; letter-spacing: var(--track); color: var(--dim); text-transform: uppercase; line-height: 1.7; }
-  .xp-date { grid-column: 3; grid-row: 1; justify-self: end; text-align: right; font-size: 11px; letter-spacing: var(--track); color: var(--dim); text-transform: uppercase; white-space: nowrap; }
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .xp-r .chips { grid-column: 3; grid-row: 2; justify-content: flex-end; justify-self: end; max-width: 100%; min-width: 0; }
-  /* chips wrap instead of scrolling so every tag stays visible at any width */
-  #pane-resume .xp-r .chips { width: 100%; flex-wrap: wrap; justify-content: flex-end; }
-  /* experience keyword tags — kept boxed but softened so they don't overwhelm */
-  .chip-sm { flex: 0 0 auto; border: 1px solid rgba(127,127,127,0.16); background: rgba(127,127,127,0.05); border-radius: 2px; padding: 5px 10px; font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; color: var(--dim); }
-  .chip-sm.chip-link { color: var(--fg); border-color: rgba(127,127,127,0.18); background: rgba(127,127,127,0.05); transition: border-color .2s ease, background .2s ease, color .2s ease; }
-  .chip-sm.chip-link::after { content: "↗"; margin-left: 6px; color: var(--accent); }
-  @media (hover: hover) {
-    .chip-sm.chip-link:hover { color: var(--accent); border-color: rgba(127,127,127,0.32); background: rgba(127,127,127,0.08); }
+  #pane-resume .xp:last-child { border-bottom: none; }
+  #pane-resume .xp-top {
+    display: grid;
+    grid-template-columns: minmax(0, 40fr) minmax(0, 30fr) minmax(0, 30fr);
+    gap: 5px clamp(14px, 2.1vw, 28px);
+    align-items: start;
+    min-width: 0;
   }
-  .more-block { border-bottom: 1px solid var(--line); }
-  .more-block summary { list-style: none; cursor: pointer; padding: 14px var(--pad); display: flex; justify-content: space-between; align-items: center; gap: 14px; border-bottom: 1px solid var(--line); color: var(--accent); transition: background .2s ease; }
   @media (hover: hover) {
-    .more-block summary:hover { background: var(--accent-soft); }
-    .more-block summary:hover::after { border-color: var(--accent); color: var(--accent); background: rgba(227,33,74,0.08); }
+    #pane-resume .xp:hover { background: rgba(227,33,74,0.07); }
+    #pane-resume .xp:hover .xp-role { color: var(--accent); }
   }
-  .more-block summary::-webkit-details-marker { display: none; }
-  .more-block summary::after { content: "+"; width: 44px; height: 44px; min-width: 44px; border: 1px solid rgba(127,127,127,0.22); display: inline-flex; align-items: center; justify-content: center; color: var(--dim); font-size: 16px; line-height: 1; transition: border-color .2s ease, color .2s ease, background .2s ease; }
-  .more-block[open] summary::after { content: "-"; border-color: var(--accent); color: var(--accent); background: rgba(227,33,74,0.08); }
-  .more-block .spec { border-top: none; }
+  #pane-resume .xp-org { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  #pane-resume .xp-co { font-size: clamp(13px,1.6vw,15px); text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg); font-weight: 600; }
+  #pane-resume .xp-loc { font-size: 11px; letter-spacing: var(--track); color: var(--dim); text-transform: uppercase; line-height: 1.5; }
+  #pane-resume .xp-role { align-self: start; min-width: 0; font-size: 12px; letter-spacing: 0.055em; color: var(--dim); text-transform: uppercase; line-height: 1.55; }
+  #pane-resume .xp-date { justify-self: end; text-align: right; font-size: 11px; letter-spacing: var(--track); color: var(--dim); text-transform: uppercase; white-space: nowrap; }
+  #pane-resume .chips {
+    grid-column: 1;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 7px;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin-top: 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  #pane-resume .chips::-webkit-scrollbar { display: none; }
+  /* experience keyword tags — compact and kept on one line */
+  #pane-resume .chip-sm { flex: 0 0 auto; border: 1px solid rgba(127,127,127,0.16); background: rgba(127,127,127,0.05); border-radius: 2px; padding: 4px 8px; font-size: 10px; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; color: var(--dim); }
+  #pane-resume .chip-sm.chip-link { color: var(--fg); border-color: rgba(127,127,127,0.18); background: rgba(127,127,127,0.05); transition: border-color .2s ease, background .2s ease, color .2s ease; }
+  #pane-resume .chip-sm.chip-link::after { content: "↗"; margin-left: 6px; color: var(--accent); }
+  @media (hover: hover) {
+    #pane-resume .chip-sm.chip-link:hover { color: var(--accent); border-color: rgba(127,127,127,0.32); background: rgba(127,127,127,0.08); }
+  }
   /* ---- single featured project ---- */
   .project-feature { display: grid; grid-template-columns: minmax(260px, 0.82fr) minmax(280px, 1fr); width: min(920px, calc(100% - (var(--pad) * 2))); margin: var(--pad) auto; border: 1px solid rgba(127,127,127,0.22); cursor: pointer; transition: border-color .2s ease, background .2s ease, transform .2s ease; }
   .project-feature:hover { border-color: var(--accent); background: rgba(227,33,74,0.10); transform: translateY(-1px); }
@@ -49,22 +64,26 @@
   .pf-title { font-size: clamp(17px, 2.2vw, 24px); text-transform: uppercase; letter-spacing: var(--track); color: var(--fg); font-weight: 600; }
   .pf-stack-label { font-size: 11px; letter-spacing: var(--track); color: var(--accent); text-transform: uppercase; margin-bottom: 6px; }
   .cv-note { text-transform: none; letter-spacing: 0.04em; }
-  .quick-line { display: flex; flex-wrap: wrap; gap: 8px 16px; padding: 12px var(--pad); border-bottom: 1px solid var(--line); font-size: 11px; letter-spacing: .06em; line-height: 1.7; text-transform: uppercase; color: var(--dim); }
-  .quick-line:last-child { border-bottom: none; }
-  .quick-key { color: var(--fg); min-width: 62px; }
+  /* ---- CV skills + awards: label left, wrapped list right ---- */
+  #pane-resume .cv-list-row {
+    display: grid;
+    grid-template-columns: minmax(90px, 22%) minmax(0, 1fr);
+    gap: 8px clamp(14px, 2.1vw, 28px);
+    align-items: start;
+    padding: 14px var(--pad);
+    border-bottom: 1px solid var(--line);
+  }
+  #pane-resume .cv-list-row:last-child { border-bottom: none; }
+  #pane-resume .cv-list-label { font-size: 11px; letter-spacing: var(--track); color: var(--fg); text-transform: uppercase; }
+  #pane-resume .cv-list-items { display: flex; flex-wrap: wrap; gap: 10px 24px; min-width: 0; font-size: 11px; letter-spacing: .06em; line-height: 1.6; text-transform: uppercase; color: var(--dim); }
+  #pane-resume .cv-item { white-space: nowrap; }
   .pf-stack { font-size: 12px; letter-spacing: 0.06em; color: var(--dim); text-transform: uppercase; line-height: 1.85; }
   .pf-link { font-size: 11px; letter-spacing: var(--track); color: var(--accent); text-transform: uppercase; }
   @media (max-width: 680px) {
-    /* minmax(0,1fr) stops nowrap chips from inflating the grid past the viewport */
-    .xp { grid-template-columns: minmax(0, 1fr); padding: 14px var(--pad); }
-    .xp-l, .xp-r { display: flex; min-width: 0; }
-    .xp-l { flex-direction: column; gap: 6px; }
-    .xp-r { flex-direction: column; align-items: flex-start; gap: 9px; text-align: left; }
-    .xp-loc, .xp-date, .xp-r .chips { grid-column: auto; grid-row: auto; justify-self: auto; text-align: left; transform: none; }
-    .xp-r .chips, #pane-resume .xp-r .chips { width: 100%; justify-content: flex-start; }
-    .xp-co { font-size: 14px; }
-    .xp-role { font-size: 12px; max-width: none; }
-    .xp-loc { font-size: 11.5px; }
-    .xp-date { font-size: 11.5px; }
-    .chip-sm { font-size: 11px; padding: 6px 10px; white-space: normal; }
+    #pane-resume .xp-top { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+    #pane-resume .xp-date { justify-self: start; text-align: left; white-space: normal; }
+    #pane-resume .xp-role { max-width: none; }
+    #pane-resume .chips { margin-top: 9px; }
+    #pane-resume .chip-sm { font-size: 10px; padding: 4px 8px; }
+    #pane-resume .cv-list-row { grid-template-columns: minmax(0, 1fr); gap: 8px; }
   }
