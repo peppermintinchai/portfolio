@@ -60,6 +60,7 @@
           p.classList.toggle('active', isActive);
           p.hidden = !isActive;
         });
+        if (window.portfolioMotion) window.portfolioMotion.enter(document.getElementById(id));
       }
 
       function activate(id, focusTab, updateHash) {
