@@ -14,7 +14,7 @@
   .contact-strip button.tag { background: transparent; border: 0; font-family: inherit; cursor: pointer; padding: 0; }
   @media (max-width: 760px) {
     header.masthead { grid-template-columns: 1fr; align-items: start; }
-    .masthead .meta { display: flex; justify-content: flex-start; text-align: left; line-height: 1.5; }
+    .masthead .meta { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; text-align: left; line-height: 1.5; }
     .brand-lockup { align-items: flex-start; }
   }
   @media (max-width: 430px) {
