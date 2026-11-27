@@ -6,7 +6,7 @@
     --accent:#e3214a; --accent-aa:#f23356; --on-accent:#ffffff; --accent-soft:rgba(227,33,74,0.18); --accent-glow:rgba(227,33,74,0.38);
     --frame-a:#0a0a0a; --frame-b:#050505;
   }
-  :root { --pad: clamp(14px, 2.45vw, 34px); --track: 0.15em; --font: "Helvetica Neue", Helvetica, Arial, "Inter", system-ui, sans-serif; --mono: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace; }
+  :root { --pad: clamp(14px, 2.45vw, 34px); --track: 0.15em; --font: "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif; --mono: "SFMono-Regular", ui-monospace, Menlo, Consolas, monospace; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; scroll-behavior: smooth; }
   body { background: var(--bg); color: var(--fg); font-family: var(--font); font-size: 13.5px; line-height: 1.48; letter-spacing: 0.01em; min-height: 100vh; overflow-x: hidden; transition: background .4s ease, color .4s ease; }

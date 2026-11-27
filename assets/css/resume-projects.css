@@ -25,7 +25,7 @@
     align-items: start;
     min-width: 0;
   }
-  #pane-resume .xp--lead { background: rgba(255,255,255,0.028); box-shadow: inset 2px 0 0 var(--accent); }
+  #pane-resume .xp--lead { background: rgba(255,255,255,0.028); }
   #pane-resume .xp--lead .xp-co { color: var(--fg); }
   #pane-resume .xp--lead .xp-role { color: var(--fg); }
   @media (hover: hover) {
