@@ -9,4 +9,5 @@
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
     .pane, .media-window { animation: none; }
+    .tab::after { transition: none; }
   }

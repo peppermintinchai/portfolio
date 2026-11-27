@@ -1,37 +1,36 @@
-     /* MOTION — restrained staggered entrance, anime.js */
-     (function () {
-       var anime = window.anime;
-       var selector = '.project-feature, .card, .moment, .xp, .cv-list-row';
+      /* MOTION — one authored slash sweep on pane activation */
+      (function () {
+        var anime = window.anime;
+        var slashSelector = '.lead .sl';
 
-       function reduced() {
-         return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-       }
+        function reduced() {
+          return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        }
 
-       function clear(items) {
-         Array.prototype.forEach.call(items, function (el) {
-           el.style.opacity = '';
-           el.style.transform = '';
-         });
-       }
+        function clear(items) {
+          Array.prototype.forEach.call(items, function (el) {
+            el.style.opacity = '';
+            el.style.transform = '';
+          });
+        }
 
-       function enter(pane) {
-         if (!anime || !pane || pane.hidden || reduced()) return;
-         var all = document.querySelectorAll(selector);
-         anime.remove(all);
-         clear(all);
+        function punctuate(pane) {
+          if (!anime || !pane || pane.hidden || reduced()) return;
+          var slashes = pane.querySelectorAll(slashSelector);
+          if (!slashes.length) return;
 
-         var items = pane.querySelectorAll(selector);
-         if (!items.length) return;
-         anime({
-           targets: items,
-           opacity: [0, 1],
-           translateY: [12, 0],
-           duration: 420,
-           delay: anime.stagger(20, { start: 30 }),
-           easing: 'easeOutQuad',
-           complete: function () { clear(items); }
-         });
-       }
+          anime.remove(slashes);
+          clear(slashes);
+          anime({
+            targets: slashes,
+            opacity: [0.25, 1],
+            translateX: [-5, 0],
+            duration: 260,
+            delay: anime.stagger(45, { start: 20 }),
+            easing: 'easeOutQuint',
+            complete: function () { clear(slashes); }
+          });
+        }
 
-       window.portfolioMotion = { enter: enter };
-     })();
+        window.portfolioMotion = { enter: punctuate, punctuate: punctuate };
+      })();

@@ -33,6 +33,10 @@
         return hashTargets[hash] || '';
       }
 
+      function scrollBehavior() {
+        return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+      }
+
       function scrollTargetForHash() {
         var hash = (window.location.hash || '').toLowerCase();
         if (hash === '#clips' || hash === '#video-diary' || hash === '#snapshots') {
@@ -48,13 +52,13 @@
         var target = scrollTargetForHash();
         if (!target) return;
         if (target.id && target.id.indexOf('cv-') === 0 && typeof target.scrollIntoView === 'function') {
-          target.scrollIntoView({ block: 'start', behavior: 'smooth' });
+          target.scrollIntoView({ block: 'start', behavior: scrollBehavior() });
           return;
         }
         var tabsNav = document.querySelector('.tabs');
         var offset = tabsNav ? tabsNav.getBoundingClientRect().height + 4 : 4;
         var top = target.getBoundingClientRect().top + window.scrollY - offset;
-        window.scrollTo({ top: top, behavior: 'smooth' });
+        window.scrollTo({ top: top, behavior: scrollBehavior() });
       }
 
       function setActiveState(id) {
@@ -64,7 +68,7 @@
           t.setAttribute('aria-selected', isActive ? 'true' : 'false');
           t.setAttribute('tabindex', isActive ? '0' : '-1');
           if (isActive && typeof t.scrollIntoView === 'function') {
-            t.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'smooth' });
+            t.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: scrollBehavior() });
           }
         });
         panes.forEach(function (p) {
