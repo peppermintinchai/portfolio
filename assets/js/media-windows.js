@@ -426,7 +426,8 @@
         var wins = mediaWindows();
         var top = topMediaWindow();
         var focusedMedia = document.activeElement && document.activeElement.closest('.media-stage');
-        var inTopControl = !!(top && document.activeElement && top.contains(document.activeElement) && document.activeElement.matches('button, a, input, textarea, select'));
+        // keep native Space/Enter behavior on focused controls; isTextEntry now covers only real text inputs
+        var inControl = !!(document.activeElement && document.activeElement.matches('button, a, input, textarea, select, summary, [role="button"]'));
 
         if (top && e.key === 'Tab') {
           var active = document.activeElement;
@@ -454,7 +455,7 @@
 
         if (utils.isTextEntry(document.activeElement)) return;
         var video = top ? topMediaVideo() : activePageVideo();
-        if (!video || focusedMedia || inTopControl) return;
+        if (!video || focusedMedia || inControl) return;
 
         if (e.code === 'Space' || e.key === ' ') {
           e.preventDefault();

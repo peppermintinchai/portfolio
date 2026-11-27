@@ -9,8 +9,8 @@
   .masthead .meta { text-align: right; line-height: 1.85; }
   .contact-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; padding: 10px var(--pad); border-bottom: 1px solid var(--line); background: rgba(255,255,255,0.012); }
   .contact-strip .tag { display: inline-flex; align-items: center; min-height: 44px; color: var(--dim); }
-  .contact-strip a.tag { color: var(--accent); }
-  .contact-strip button.tag { color: var(--accent); }
+  .contact-strip a.tag { color: var(--accent-aa); }
+  .contact-strip button.tag { color: var(--accent-aa); }
   .contact-strip button.tag { background: transparent; border: 0; font-family: inherit; cursor: pointer; padding: 0; }
   @media (max-width: 760px) {
     header.masthead { grid-template-columns: 1fr; align-items: start; }

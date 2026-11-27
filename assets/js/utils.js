@@ -6,7 +6,7 @@
       function isTextEntry(el) {
         if (!el) return false;
         var tag = el.tagName;
-        return el.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || tag === 'BUTTON';
+        return el.isContentEditable || tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
       }
       function formatTime(seconds) {
         if (!isFinite(seconds) || seconds < 0) return '0:00';

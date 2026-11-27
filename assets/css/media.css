@@ -26,9 +26,10 @@
     .frame-16x9:hover { border-color: rgba(255,255,255,0.32); box-shadow: inset 0 0 0 1px rgba(255,255,255,0.02); }
   }
   .frame-16x9.media-open-frame { cursor: zoom-in; }
-  .frame-16x9.media-open-frame::after { content: "\2922"; position: absolute; top: 7px; right: 10px; z-index: 2; font-size: 13px; line-height: 1; color: var(--fg); opacity: 0; transition: opacity .18s ease; }
-  @media (hover: hover) { .frame-16x9.media-open-frame:hover::after { opacity: .7; } }
-  @media (hover: none) and (pointer: coarse) { .frame-16x9.media-open-frame::after { opacity: .55; } }
+  .frame-16x9.media-open-frame::after { content: "\2922"; position: absolute; top: 7px; right: 10px; z-index: 2; font-size: 13px; line-height: 1; color: var(--fg); opacity: .58; text-shadow: 0 1px 2px rgba(0,0,0,0.9); transition: opacity .18s ease; }
+  @media (hover: hover) { .frame-16x9.media-open-frame:hover::after { opacity: .95; } }
+  .frame-16x9.media-open-frame:focus-within::after { opacity: .95; }
+  @media (hover: none) and (pointer: coarse) { .frame-16x9.media-open-frame::after { opacity: .75; } }
   .frame-16x9 video, .frame-16x9 img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; z-index: 1; object-fit: cover; background: #000; }
   .frame-16x9.black-frame { background: #000; border-color: #000; box-shadow: none; }
   .frame-16x9.black-frame::before { display: none; }
@@ -43,7 +44,7 @@
   .audio-ui { position: relative; display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: 10px; border: 1px solid rgba(150,150,150,0.18); background: linear-gradient(135deg, rgba(255,255,255,0.035), transparent 36%), repeating-linear-gradient(90deg, rgba(255,255,255,0.018) 0, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 12px), rgba(7,7,7,0.96); box-shadow: inset 2px 0 0 rgba(227,33,74,0.42), inset 0 0 0 1px rgba(255,255,255,0.018); padding: 9px; min-width: 0; }
   .audio-ui::after { content: ""; position: absolute; left: 56px; right: 10px; bottom: 5px; height: 1px; background: linear-gradient(90deg, rgba(227,33,74,0.34), transparent); opacity: .6; }
   @media (max-width: 560px) { .audio-ui { padding: 12px; } .audio-ui::after { bottom: 11px; } .audio-ui[data-state="error"] { grid-template-columns: 44px minmax(0, 1fr); } .audio-retry { grid-column: 2; justify-self: start; } }
-  .audio-play { width: 44px; height: 44px; border: 1px solid rgba(170,170,170,0.24); background: rgba(255,255,255,0.035); color: var(--accent); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; line-height: 1; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.018); transition: border-color .2s ease, background .2s ease, color .2s ease; }
+  .audio-play { width: 44px; height: 44px; border: 1px solid rgba(170,170,170,0.24); background: rgba(255,255,255,0.035); color: var(--accent-aa); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; font-size: 13px; line-height: 1; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.018); transition: border-color .2s ease, background .2s ease, color .2s ease; }
   .audio-play:hover { border-color: rgba(255,255,255,0.38); background: rgba(255,255,255,0.06); color: var(--fg); }
   .pause-bars { display: inline-block; width: 12px; height: 14px; background: linear-gradient(90deg, currentColor 0 4px, transparent 4px 8px, currentColor 8px 12px); }
   .audio-play:active, .media-pop-trigger:active, .media-close:active { transform: translateY(1px); }
@@ -101,7 +102,7 @@
   .media-window.polaroid .media-head { background: #0d0d0d; border-bottom: 1px solid rgba(255,255,255,0.12); }
   .media-window.polaroid .media-title { color: var(--fg); }
   .media-window.polaroid .media-close { border-color: rgba(255,255,255,0.24); color: var(--fg); }
-  .media-window.polaroid .media-close:hover { border-color: var(--accent); color: var(--accent); background: rgba(227,33,74,0.1); }
+  .media-window.polaroid .media-close:hover { border-color: var(--accent-aa); color: var(--accent-aa); background: rgba(227,33,74,0.1); }
   .media-window.polaroid .media-stage { background: #000; padding: 0; }
   .media-window.polaroid .media-stage img.media-still { position: absolute; top: 14px; right: auto; bottom: auto; left: 14px; width: calc(100% - 28px); height: calc(100% - 72px); padding: 0; background: #000; border: 1px solid rgba(255,255,255,0.14); object-fit: contain; }
   .polaroid-caption { position: absolute; left: 14px; right: 14px; bottom: 0; height: 58px; display: flex; align-items: center; justify-content: center; text-align: center; font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dim); border-top: 1px solid rgba(255,255,255,0.12); }
